@@ -1,18 +1,17 @@
-const { Router } = require("express");
-const axios = require("axios");
-const app = require('firebase');
+const {Router} = require('express');
 
-app.initializeApp({
-    credential: app.credential.applicationDefault(),
-    databaseURL: "https://" //puedo usar variable de entorno aca
-    });
 
-const db = app.database();
+// Importar todos los routers
+const users = require('./users.js');
+const flights = require('./flights.js');
+
 
 
 const router = Router();
 
-//aca abajo van las rutas, o en su defecto habrá que modularizar
+// Configurar los routers
 
+router.use('/', users);
+router.use('/', flights);
 
 module.exports = router;
