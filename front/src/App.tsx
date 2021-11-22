@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
 
 function App() {
   return (
-    <div >
-     <h1>A romperla sapoperros</h1>
-     <img src="https://pbs.twimg.com/media/CluhKCXWMAAZxWS.jpg" alt="sapoperro"/>
+    <div>
+      <p>prueba</p>
     </div>
   );
 }
 
 export default App;
-
