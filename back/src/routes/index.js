@@ -1,13 +1,13 @@
 const { Router } = require("express");
 const axios = require("axios");
-const admin = require('firebase-admin');
+const app = require('firebase');
 
-admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
+app.initializeApp({
+    credential: app.credential.applicationDefault(),
     databaseURL: "https://" //puedo usar variable de entorno aca
     });
 
-const db = admin.database();
+const db = app.database();
 
 
 const router = Router();
