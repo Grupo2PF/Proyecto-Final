@@ -6,6 +6,7 @@ admin.initializeApp({
     credential: admin.credential.applicationDefault(),
     databaseURL: "https://" //puedo usar variable de entorno aca
     });
+
 const db = admin.database();
 
 
