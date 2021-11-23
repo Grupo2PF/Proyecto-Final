@@ -4,13 +4,14 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import  store  from "./redux/store/index";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <App />
+        <Route path="/navbar" component={App} />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
