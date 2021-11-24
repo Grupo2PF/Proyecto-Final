@@ -79,14 +79,28 @@ router.post("/", async function (req, res) {
     AirlineName: offerRequestResponse.data.offers.map(
       (offer) => offer.owner.name
     ),
-
-    transbordos: offerRequestResponse.data.offers.map((offer) =>
-      
-    offer.slices[0].segments.map(
-        (e) =>
-          e.origin.city_name +
+    /*
+var myCar = new Object();
+myCar.make = 'Ford';
+myCar.model = 'Mustang';
+myCar.year = 1969;
+*/
+    transfers: offerRequestResponse.data.offers.map(
+      (offer) =>
+        offer.slices[0].segments.map((e) => {
+          const myTransfer = {
+            origin: e.origin.city_name,
+            destination: e.destination.city_name,
+            departing: e.departing_at,
+            arriving: e.arriving_at,
+            airline: e.marketing_carrier.name,
+            flightNumber: e.marketing_carrier_flight_number,
+          };
+          return myTransfer;
+        })
+      /* +
           "-" +
-          e.destination.city_name +
+           +
           " " +
           e.departing_at +
           " " +
@@ -95,7 +109,7 @@ router.post("/", async function (req, res) {
           e.marketing_carrier.name +
           " " +
           e.marketing_carrier_flight_number
-      )
+      )*/
     ),
     /* si if(segments.length > 1 ) { segments.map(seg => {
       origin: seg.origin.city_name,
