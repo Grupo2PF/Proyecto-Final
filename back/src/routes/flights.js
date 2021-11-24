@@ -68,7 +68,7 @@ router.post("/", async function (req, res) {
   const allTicketsInfo = {
     originCity: offerRequestResponse.data.slices[0].origin.city_name,
     originAirpot: offerRequestResponse.data.slices[0].origin.name,
-    /* offersPrices: offerRequestResponse.data.offers.map(
+    offersPrices: offerRequestResponse.data.offers.map(
       (offer) => offer.total_amount
     ),
     offersCurrencies: offerRequestResponse.data.offers.map(
@@ -78,11 +78,23 @@ router.post("/", async function (req, res) {
 
     AirlineName: offerRequestResponse.data.offers.map(
       (offer) => offer.owner.name
-    ),*/
+    ),
 
     transbordos: offerRequestResponse.data.offers.map((offer) =>
-      offer.slices[0].segments.map(
-        (e) => e.origin.city_name + "-" + e.destination.city_name
+      
+    offer.slices[0].segments.map(
+        (e) =>
+          e.origin.city_name +
+          "-" +
+          e.destination.city_name +
+          " " +
+          e.departing_at +
+          " " +
+          e.arriving_at +
+          " " +
+          e.marketing_carrier.name +
+          " " +
+          e.marketing_carrier_flight_number
       )
     ),
     /* si if(segments.length > 1 ) { segments.map(seg => {
