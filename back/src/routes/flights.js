@@ -60,6 +60,7 @@ router.post("/", async function (req, res) {
         destination: inputDestiny,
         departure_date: "2021-12-21",
       },
+      //otro objeto igual para la vuelta
     ],
     passengers: [{ type: "adult" }],
     cabin_class: "economy",
