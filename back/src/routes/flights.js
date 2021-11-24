@@ -10,16 +10,7 @@ const duffel = new Duffel({
 });
 
 router.get("/SortResult", (req, res) => {
-  const list = duffel.offers.list({
-    after: "g2wAAAACbQAAABBBZXJvbWlzdC1LaGFya2l2bQAAAB=",
-    before: null,
-    limit: 4,
-    offer_request_id: "orq_00009htyDGjIfajdNBZRlw",
-    sort: "total_amount",
-    max_connections: 5,
-  });
-  console.log(list);
-  return res.send(list);
+  
 });
 
 //codes.forEach((e) => console.log(e.iata))
@@ -34,23 +25,21 @@ if(e)
 console.log(addIataCode);*/
 
 router.post("/Result", (req, res) => {
-  const { city } = req.body;
+  // const { city } = req.body;
 
-  const result = codes.filter((e) =>
-    e.city.toLowerCase().includes(city.toLowerCase())
-  );
+  // const result = codes.filter((e) =>
+  //   e.city.toLowerCase().includes(city.toLowerCase())
+  // );
 
-  console.log(result);
+  // console.log(result);
 
-  return res.send(result);
+  // return res.send(result);
 });
 
-router.post("/", async function (req, res) {
-  // const flightApi = await axios.get();
-  /*const aircraft = await duffel.aircraft.get("arc_00009VMF8AhXSSRnQDI6Hi");
-  console.log(aircraft);*/
-  const { inputOrigin } = req.body;
-  const { inputDestiny } = req.body;
+router.get("/", async function (req, res) {
+ 
+  const { inputOrigin } = req.query;
+  const { inputDestiny } = req.query;
 
   const offerRequestResponse = await duffel.offerRequests.create({
     return_offers: true,
@@ -68,7 +57,10 @@ router.post("/", async function (req, res) {
 
   const allTicketsInfo = {
     originCity: offerRequestResponse.data.slices[0].origin.city_name,
-    originAirpot: offerRequestResponse.data.slices[0].origin.name,
+    originAirport: offerRequestResponse.data.slices[0].origin.name,
+    destinyCity: offerRequestResponse.data.slices[0].destination.city_name,
+    destinyAirport: offerRequestResponse.data.slices[0].destination.name,
+    
     offersPrices: offerRequestResponse.data.offers.map(
       (offer) => offer.total_amount
     ),
@@ -80,12 +72,8 @@ router.post("/", async function (req, res) {
     AirlineName: offerRequestResponse.data.offers.map(
       (offer) => offer.owner.name
     ),
-    /*
-var myCar = new Object();
-myCar.make = 'Ford';
-myCar.model = 'Mustang';
-myCar.year = 1969;
-*/
+    class: offerRequestResponse.data.offers.map( e => e.slices[0].fare_brand_name),
+
     transfers: offerRequestResponse.data.offers.map(
       (offer) =>
         offer.slices[0].segments.map((e) => {
@@ -97,61 +85,22 @@ myCar.year = 1969;
             airline: e.marketing_carrier.name,
             flightNumber: e.marketing_carrier_flight_number,
           };
-          return myTransfer;
+          
+          return myTransfer
         })
-      /* +
-          "-" +
-           +
-          " " +
-          e.departing_at +
-          " " +
-          e.arriving_at +
-          " " +
-          e.marketing_carrier.name +
-          " " +
-          e.marketing_carrier_flight_number
-      )*/
-    ),
-    /* si if(segments.length > 1 ) { segments.map(seg => {
-      origin: seg.origin.city_name,
-      destiny:seg.destiny.city_name,
-    }
-    else return ("no hay escalas")
-    })} */
-
-    offers: offerRequestResponse.data.offers,
-
-    destinyCity: offerRequestResponse.data.slices[0].destination.city_name,
-    destinyAirpot: offerRequestResponse.data.slices[0].destination.name,
+        ),
+    
   };
 
   return res.send(allTicketsInfo);
 });
 
-/*  
-origin and destiny
-Airport name
-Date and time
-city name
 
-offer currency
-amount
-
-id ticket
-passenger 
-name , lastname, dni , class
-
-gate 
-seat
-flight number
-
-*/
 
 router.get("/results", async function (req, res) {
-  // const flightApi = await axios.get();
-  const aircraft = await duffel.aircraft.get("arc_00009VMF8AhXSSRnQDI6Hi");
-  console.log(aircraft);
-  return res.send("Hello World from results!");
+  // const aircraft = await duffel.aircraft.get("arc_00009VMF8AhXSSRnQDI6Hi");
+  // console.log(aircraft);
+  // return res.send("Hello World from results!");
 });
 
 module.exports = router;
