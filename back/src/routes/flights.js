@@ -3,8 +3,6 @@ const axios = require("axios");
 const { Duffel } = require("@duffel/api");
 const router = express();
 const codes = require("../../../IATA.json");
-const {createUser} = require("../componentes/Users");
-const {checkIfAuthenticated} = require("../middleware/AuthToken");
 
 const duffel = new Duffel({
   // Store your access token in an environment variable, keep it secret and only readable on your server
@@ -42,20 +40,20 @@ if(e)
 console.log(addIataCode);*/
 // TRANSFORMAR DE CITY A IATA
 router.post("/Result", (req, res) => {
-  // const { city } = req.body;
+  const { city } = req.body;
 
-  // const result = codes.filter((e) =>
-  //   e.city.toLowerCase().includes(city.toLowerCase())
-  // );
+  const result = codes.filter((e) =>
+    e.city.toLowerCase().includes(city.toLowerCase())
+  );
 
-  // console.log(result);
+  console.log(result);
 
-  // return res.send(result);
+  return res.send(result);
 });
 
 router.get("/Seats", async (req, res) => {
   const flightSeats = await duffel.seatMaps.get({
-    offer_id: "off_0000ADkFr3ZYTheaWCJrbH",
+    offer_id: "off_0000ADkUo9tvoAjNhxc66K",
   });
   console.log(flightSeats);
   return res.send(flightSeats.data);
@@ -64,29 +62,48 @@ router.get("/Seats", async (req, res) => {
 router.get("/", async function (req, res) {
   const { inputOrigin } = req.query;
   const { inputDestiny } = req.query;
-  const { inputOriginDate } = req.query;
-  const { inputDestinyDate } = req.query;
+  const { inputDepartureDate } = req.query;
+  const { inputReturnDate } = req.query;
 
+  inputReturnDate
+    ? (offerRequestResponse = await duffel.offerRequests.create({
+        return_offers: true,
+        slices: [
+          {
+            origin: inputOrigin,
+            destination: inputDestiny,
+            departure_date: inputDepartureDate,
+          },
+          {
+            origin: inputDestiny,
+            destination: inputOrigin,
+            departure_date: inputReturnDate,
+          },
+          //otro objeto igual para la vuelta
+        ],
+        passengers: [{ type: "adult" }],
+        cabin_class: "economy",
+      }))
+    : (offerRequestResponse = await duffel.offerRequests.create({
+        return_offers: true,
+        slices: [
+          {
+            origin: inputOrigin,
+            destination: inputDestiny,
+            departure_date: inputDepartureDate,
+          },
+          //otro objeto igual para la vuelta
+        ],
+        passengers: [{ type: "adult" }],
+        cabin_class: "economy",
+      }));
 
-
-  const offerRequestResponse = await duffel.offerRequests.create({
-    return_offers: true,
-    slices: [
-      {
-        origin: inputOrigin,
-        destination: inputDestiny,
-        departure_date: inputOriginDate,
-      },
-      //otro objeto igual para la vuelta
-    ],
-    passengers: [{ type: "adult" }],
-    cabin_class: "economy",
-  });
   const allTicketsInfo = {
     originCity: offerRequestResponse.data.slices[0].origin.city_name,
     originAirport: offerRequestResponse.data.slices[0].origin.name,
     destinyCity: offerRequestResponse.data.slices[0].destination.city_name,
     destinyAirport: offerRequestResponse.data.slices[0].destination.name,
+
     offersCurrencies: offerRequestResponse.data.offers.map(
       (offer) => offer.total_currency
     ),
@@ -110,26 +127,37 @@ router.get("/", async function (req, res) {
           airline: e.marketing_carrier.name,
           flightNumber: e.marketing_carrier_flight_number,
         };
-
         return myTransfer;
       })
     ),
+    todo: offerRequestResponse.data,
   };
-
   return res.send(allTicketsInfo);
 });
-/*
+/*  
 origin and destiny
 Airport name
 Date and time
 city name
 
-router.post('/auth/signup', createUser);
+offer currency
+amount
 
-router.get("/results", checkIfAuthenticated, async function (req, res) {
-  // const aircraft = await duffel.aircraft.get("arc_00009VMF8AhXSSRnQDI6Hi");
-  // console.log(aircraft);
-  // return res.send("Hello World from results!");
-});*/
+id ticket
+passenger 
+name , lastname, dni , class
+
+gate 
+seat
+flight number
+
+*/
+
+router.get("/results", async function (req, res) {
+  // const flightApi = await axios.get();
+  const aircraft = await duffel.aircraft.get("arc_00009VMF8AhXSSRnQDI6Hi");
+  console.log(aircraft);
+  return res.send("Hello World from results!");
+});
 
 module.exports = router;
