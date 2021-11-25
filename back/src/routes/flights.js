@@ -3,6 +3,8 @@ const axios = require("axios");
 const { Duffel } = require("@duffel/api");
 const router = express();
 const codes = require("../../../IATA.json");
+const {createUser} = require("../componentes/Users");
+const {checkIfAuthenticated} = require("../middleware/AuthToken");
 
 const duffel = new Duffel({
   // Store your access token in an environment variable, keep it secret and only readable on your server
@@ -113,22 +115,21 @@ router.get("/", async function (req, res) {
       })
     ),
   };
+
   return res.send(allTicketsInfo);
 });
-/*  
+/*
 origin and destiny
 Airport name
 Date and time
 city name
 
-offer currency
-amount
-*/
+router.post('/auth/signup', createUser);
 
-router.get("/results", async function (req, res) {
+router.get("/results", checkIfAuthenticated, async function (req, res) {
   // const aircraft = await duffel.aircraft.get("arc_00009VMF8AhXSSRnQDI6Hi");
   // console.log(aircraft);
   // return res.send("Hello World from results!");
-});
+});*/
 
 module.exports = router;
