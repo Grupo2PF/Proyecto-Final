@@ -127,10 +127,10 @@ router.get("/", async function (req, res) {
           airline: e.marketing_carrier.name,
           flightNumber: e.marketing_carrier_flight_number,
         };
-
         return myTransfer;
       })
     ),
+    todo: offerRequestResponse.data,
   };
   return res.send(allTicketsInfo);
 });
