@@ -1,0 +1,15 @@
+@import "../../scss/variables";
+
+.searchBarContainer {
+  position: absolute;
+  width: 1333px;
+  height: 288px;
+  left: 53px;
+  top: 191px;
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #686868;
+  box-sizing: border-box;
+  border-radius: 15px;
+  
+}
