@@ -32,12 +32,18 @@ router.get("/SortResult", (req, res) => {
 /*
 if(e)
 */
+
+
+
 /*const addIataCode = function (input) {
   codes.forEach((e) => {
    console.log(e.iata);
   });
 };
 console.log(addIataCode);*/
+
+
+
 // TRANSFORMAR DE CITY A IATA
 router.post("/Result", (req, res) => {
   const { city } = req.body;
