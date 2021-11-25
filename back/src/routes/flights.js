@@ -40,6 +40,8 @@ router.get("/", async function (req, res) {
  
   const { inputOrigin } = req.query;
   const { inputDestiny } = req.query;
+  const { inputOriginDate } = req.query;
+  const { inputDestinyDate } = req.query;
 
   const offerRequestResponse = await duffel.offerRequests.create({
     return_offers: true,
@@ -47,7 +49,7 @@ router.get("/", async function (req, res) {
       {
         origin: inputOrigin,
         destination: inputDestiny,
-        departure_date: "2021-12-21",
+        departure_date: inputOriginDate,
       },
       //otro objeto igual para la vuelta
     ],
@@ -61,11 +63,11 @@ router.get("/", async function (req, res) {
     destinyCity: offerRequestResponse.data.slices[0].destination.city_name,
     destinyAirport: offerRequestResponse.data.slices[0].destination.name,
     
-    offersPrices: offerRequestResponse.data.offers.map(
-      (offer) => offer.total_amount
-    ),
     offersCurrencies: offerRequestResponse.data.offers.map(
       (offer) => offer.total_currency
+    ),
+    offersPrices: offerRequestResponse.data.offers.map(
+      (offer) => offer.total_amount
     ),
     offersIds: offerRequestResponse.data.offers.map((offer) => offer.id),
 
