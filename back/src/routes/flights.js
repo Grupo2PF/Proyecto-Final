@@ -8,7 +8,13 @@ const duffel = new Duffel({
   // Store your access token in an environment variable, keep it secret and only readable on your server
   token: "duffel_test_5oKRr362CbQ5GAv-enslSuMIgYqXC9nrvaFBVSFbYEi",
 });
-
+/*
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const detail = await duffel.offerRequests.get(id);
+  return res.send(detail);
+});*/
+/*
 router.get("/SortResult", (req, res) => {
   const list = duffel.offers.list({
     after: "g2wAAAACbQAAABBBZXJvbWlzdC1LaGFya2l2bQAAAB=",
@@ -20,7 +26,7 @@ router.get("/SortResult", (req, res) => {
   });
   console.log(list);
   return res.send(list);
-});
+});*/
 
 //codes.forEach((e) => console.log(e.iata))
 /*
@@ -32,7 +38,7 @@ if(e)
   });
 };
 console.log(addIataCode);*/
-
+// TRANSFORMAR DE CITY A IATA
 router.post("/Result", (req, res) => {
   const { city } = req.body;
 
@@ -45,12 +51,19 @@ router.post("/Result", (req, res) => {
   return res.send(result);
 });
 
-router.post("/", async function (req, res) {
-  // const flightApi = await axios.get();
-  /*const aircraft = await duffel.aircraft.get("arc_00009VMF8AhXSSRnQDI6Hi");
-  console.log(aircraft);*/
-  const { inputOrigin } = req.body;
-  const { inputDestiny } = req.body;
+router.get("/Seats", async (req, res) => {
+  const flightSeats = await duffel.seatMaps.get({
+    offer_id: "off_0000ADkFr3ZYTheaWCJrbH",
+  });
+  console.log(flightSeats);
+  return res.send(flightSeats.data);
+});
+
+router.get("/", async function (req, res) {
+  const { inputOrigin } = req.query;
+  const { inputDestiny } = req.query;
+  const { inputOriginDate } = req.query;
+  //const { inputDestinyDate } = req.query;
 
   const offerRequestResponse = await duffel.offerRequests.create({
     return_offers: true,
@@ -58,75 +71,49 @@ router.post("/", async function (req, res) {
       {
         origin: inputOrigin,
         destination: inputDestiny,
-        departure_date: "2021-12-21",
+        departure_date: inputOriginDate,
       },
+      //otro objeto igual para la vuelta
     ],
     passengers: [{ type: "adult" }],
     cabin_class: "economy",
   });
-
   const allTicketsInfo = {
     originCity: offerRequestResponse.data.slices[0].origin.city_name,
-    originAirpot: offerRequestResponse.data.slices[0].origin.name,
-    offersPrices: offerRequestResponse.data.offers.map(
-      (offer) => offer.total_amount
-    ),
+    originAirport: offerRequestResponse.data.slices[0].origin.name,
+    destinyCity: offerRequestResponse.data.slices[0].destination.city_name,
+    destinyAirport: offerRequestResponse.data.slices[0].destination.name,
+
     offersCurrencies: offerRequestResponse.data.offers.map(
       (offer) => offer.total_currency
     ),
+    offersPrices: offerRequestResponse.data.offers.map(
+      (offer) => offer.total_amount
+    ),
     offersIds: offerRequestResponse.data.offers.map((offer) => offer.id),
-
     AirlineName: offerRequestResponse.data.offers.map(
       (offer) => offer.owner.name
     ),
-    /*
-var myCar = new Object();
-myCar.make = 'Ford';
-myCar.model = 'Mustang';
-myCar.year = 1969;
-*/
-    transfers: offerRequestResponse.data.offers.map(
-      (offer) =>
-        offer.slices[0].segments.map((e) => {
-          const myTransfer = {
-            origin: e.origin.city_name,
-            destination: e.destination.city_name,
-            departing: e.departing_at,
-            arriving: e.arriving_at,
-            airline: e.marketing_carrier.name,
-            flightNumber: e.marketing_carrier_flight_number,
-          };
-          return myTransfer;
-        })
-      /* +
-          "-" +
-           +
-          " " +
-          e.departing_at +
-          " " +
-          e.arriving_at +
-          " " +
-          e.marketing_carrier.name +
-          " " +
-          e.marketing_carrier_flight_number
-      )*/
+    class: offerRequestResponse.data.offers.map(
+      (e) => e.slices[0].fare_brand_name
     ),
-    /* si if(segments.length > 1 ) { segments.map(seg => {
-      origin: seg.origin.city_name,
-      destiny:seg.destiny.city_name,
-    }
-    else return ("no hay escalas")
-    })} */
+    transfers: offerRequestResponse.data.offers.map((offer) =>
+      offer.slices[0].segments.map((e) => {
+        const myTransfer = {
+          origin: e.origin.city_name,
+          destination: e.destination.city_name,
+          departing: e.departing_at,
+          arriving: e.arriving_at,
+          airline: e.marketing_carrier.name,
+          flightNumber: e.marketing_carrier_flight_number,
+        };
 
-    offers: offerRequestResponse.data.offers,
-
-    destinyCity: offerRequestResponse.data.slices[0].destination.city_name,
-    destinyAirpot: offerRequestResponse.data.slices[0].destination.name,
+        return myTransfer;
+      })
+    ),
   };
-
   return res.send(allTicketsInfo);
 });
-
 /*  
 origin and destiny
 Airport name
