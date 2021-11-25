@@ -5,9 +5,9 @@
     border-top: 4px solid $main-color;
     display: flex;
     width: 100%;
-
     font-family: $content-font;
     font-size: 1.1rem;
+    font-weight: $medium-font;
 
     &Content {
         display: flex;
@@ -23,13 +23,21 @@
         a {
             color: $black;
             text-decoration: none;
+            transition: all .5s;
+
+            &:hover {
+                color: $main-color;
+            }
+            &:active {
+                color: $darkgray;
+            }
         }
 
         p {
             order: 2;
         }
 
-        @media screen and (min-width: $tablet-width) {
+        @media screen and (min-width: 700px) {
             flex-direction: row;
             justify-content: space-between;
             gap: 3rem;
