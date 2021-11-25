@@ -3,6 +3,7 @@ import { faGithub, faInstagram, faLinkedinIn } from "@fortawesome/free-brands-sv
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import style from './AboutUs.module.scss'
 import noimg from './photo/noimg2.jpg'
+import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function AboutUs() {
@@ -16,13 +17,13 @@ export default function AboutUs() {
             <h2>Sobre Nosotros</h2>
             <div className={style.AboutUs}>
 
-                <Template name='Gonzalo Martinez' image={style.cardGonza} linkedin='' github='' instagram='' />
-                <Template name='Ezequiel Grigolatto' image={style.cardEze} linkedin='' github='' instagram='' />
-                <Template name='nombres apellido' image={style.cardEsteban} linkedin='' github='' instagram='' />
-                <Template name='nombres apellido' image={style.cardAngel} linkedin='' github='' instagram='' />
-                <Template name='nombres apellido' image={style.cardFer} linkedin='' github='' instagram='' />
-                <Template name='nombres apellido' image={style.cardDavid} linkedin='' github='' instagram='' />
-                <Template name='nombres apellido' image={style.cardBautista} linkedin='' github='' instagram='' />
+                <Template name='Gonzalo Martinez' image={style.cardGonza} linkedin='https://www.linkedin.com/in/gonzaqepasa' github='https://www.github.com/gonzaqepasa' instagram='https://www.instagram.com/gonzaqepasa' portafolio='' />
+                <Template name='Ezequiel Grigolatto' image={style.cardEze} linkedin='https://www.linkedin.com/in/ezequiel-grigolatto' github='https://www.github.com/Ezegrigolatto' instagram='' portafolio='' />
+                <Template name='Esteban Luna' image={style.cardEsteban} linkedin='https://www.linkedin.com/in/estebanlun' github='https://github.com/Estebanlun' instagram='https://www.instagram.com/tebilc' portafolio='' />
+                <Template name='Fernando Haring' image={style.cardFer} linkedin='https://www.linkedin.com/in/fernando-haring-dev' github='https://www.github.com/KannonH2' instagram='' portafolio='https://www.fer-dev.com' />
+                <Template name='Bautista Manolizi' image={style.cardBautista} linkedin='https://www.linkedin.com/in/bautista-manolizi' github=' https://github.com/bauKSA' instagram='' portafolio='' />
+                <Template name='nombres apellido' image={style.cardAngel} linkedin='' github='' instagram='' portafolio='' />
+                <Template name='nombres apellido' image={style.cardDavid} linkedin='' github='' instagram='' portafolio='' />
 
 
 
@@ -42,7 +43,7 @@ export default function AboutUs() {
 
 
 
-const Template: FC<Props> = ({ name, image, linkedin, github, instagram }) => (
+const Template: FC<Props> = ({ name, image, linkedin, github, instagram, portafolio }) => (
 
 
     < div className={image} >
@@ -51,9 +52,10 @@ const Template: FC<Props> = ({ name, image, linkedin, github, instagram }) => (
 
         <div className={style.linkBox}>
 
-            <a href={linkedin}> <FontAwesomeIcon icon={faLinkedinIn} /></a>
-            <a href={github}> <FontAwesomeIcon icon={faGithub} /></a>
-            {instagram ? <a href={instagram}> <FontAwesomeIcon icon={faInstagram} /></a> : false}
+            {portafolio ? <a target="_blank" href={portafolio}> <FontAwesomeIcon icon={faBriefcase} /></a> : false}
+            {instagram ? <a target="_blank" href={instagram}> <FontAwesomeIcon icon={faInstagram} /></a> : false}
+            <a target="_blank" href={linkedin}> <FontAwesomeIcon icon={faLinkedinIn} /></a>
+            <a target="_blank" href={github}> <FontAwesomeIcon icon={faGithub} /></a>
 
 
 
@@ -96,5 +98,5 @@ type Props = {
     linkedin: string
     github: string
     instagram: string
-
+    portafolio: string
 }

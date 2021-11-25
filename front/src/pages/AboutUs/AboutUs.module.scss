@@ -1,10 +1,10 @@
 @import '../../scss/variables';
 
 .AboutUsTotal {
-    width      : 100%;
-    display    : flex;
+    width         : 100%;
+    display       : flex;
     flex-direction: column;
-    align-items: center;
+    align-items   : center;
 
     h2 {
         margin   : 1rem 0;
@@ -12,6 +12,7 @@
 
         width        : auto;
         border-bottom: solid 2px $main-color;
+
     }
 }
 
@@ -37,7 +38,6 @@
     flex-direction        : column;
     justify-content       : space-between;
     align-items           : center;
-
 
     width     : 21rem;
     height    : 80vh;
@@ -70,7 +70,7 @@
 .cardBautista {
 
     background-color      : aqua;
-    background-image      : url('./photo/noimg2.jpg');
+    background-image      : url('./photo/fotoBautista.jpeg');
     background-size       : cover;
     // border-radius      : 1rem;
     // border          : solid 3px $main-color;
@@ -137,7 +137,7 @@
 .cardEsteban {
 
     background-color      : aqua;
-    background-image      : url('./photo/noimg2.jpg');
+    background-image      : url('./photo/fotoEsteban.jpeg');
     background-size       : cover;
     // border-radius      : 1rem;
     // border          : solid 3px $main-color;
@@ -159,7 +159,7 @@
 .cardFer {
 
     background-color      : aqua;
-    background-image      : url('./photo/noimg2.jpg');
+    background-image      : url('./photo/fotoFer.jpeg');
     background-size       : cover;
     // border-radius      : 1rem;
     // border          : solid 3px $main-color;
@@ -191,7 +191,8 @@
 
 
     h4 {
-        text-shadow: 1px 1px 3px black;
+        // border-bottom: solid 3px $main-color;
+        text-shadow: 1px 1px 5px black;
 
         // color    : $main-color;
         color    : white;
@@ -219,7 +220,19 @@
         // color    : $main-color;
         color       : white;
         filter      : drop-shadow(1px 1px 3px black);
-        margin      : 0 1rem;
+        // margin      : 0 1rem;
+        padding:0.5rem;
+        transition: 0.1s;
+    }
+
+
+    a:hover {
+        color: $main-color;
+    }
+
+    a:active {
+        color: $main-color;
+        filter: brightness(0.8);
     }
 
 }
@@ -242,7 +255,7 @@
     .cardEsteban {
         margin    : 1rem 2rem;
         filter    : brightness(0.4);
-        transition: 0.2s;
+        transition: 0.1s;
         width     : 15rem;
         height    : 60vh;
 
@@ -250,6 +263,7 @@
         h4 {
             display  : none;
             font-size: 1.3rem;
+
         }
 
         a {
@@ -271,6 +285,7 @@
     .cardEsteban:hover {
         // margin: 1rem 2rem;
         filter: brightness(1);
+
 
 
 
