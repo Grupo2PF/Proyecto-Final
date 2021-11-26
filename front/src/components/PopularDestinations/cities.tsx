@@ -1,9 +1,33 @@
 import bali0 from "../../assets/cities/bali/bali-0.webp";
+import bali1 from "../../assets/cities/bali/bali-1.webp";
+import bali2 from "../../assets/cities/bali/bali-2.webp";
+import bali3 from "../../assets/cities/bali/bali-3.webp";
+
 import london0 from "../../assets/cities/london/london-0.webp";
+import london1 from "../../assets/cities/london/london-1.webp";
+import london2 from "../../assets/cities/london/london-2.webp";
+import london3 from "../../assets/cities/london/london-3.webp";
+
 import mexico0 from "../../assets/cities/mexico/mexico-0.webp";
+import mexico1 from "../../assets/cities/mexico/mexico-1.webp";
+import mexico2 from "../../assets/cities/mexico/mexico-2.webp";
+import mexico3 from "../../assets/cities/mexico/mexico-3.webp";
+
 import newYork0 from "../../assets/cities/newYork/newYork-0.webp";
+import newYork1 from "../../assets/cities/newYork/newYork-1.webp";
+import newYork2 from "../../assets/cities/newYork/newYork-2.webp";
+import newYork3 from "../../assets/cities/newYork/newYork-3.webp";
+
 import paris0 from "../../assets/cities/paris/paris-0.webp";
+import paris1 from "../../assets/cities/paris/paris-1.webp";
+import paris2 from "../../assets/cities/paris/paris-2.webp";
+import paris3 from "../../assets/cities/paris/paris-3.webp";
+
 import toronto0 from "../../assets/cities/toronto/toronto-0.webp";
+import toronto1 from "../../assets/cities/toronto/toronto-1.webp";
+import toronto2 from "../../assets/cities/toronto/toronto-2.webp";
+import toronto3 from "../../assets/cities/toronto/toronto-3.webp";
+
 import { City } from "../CityCard/types";
 
 const cities = (): Array<City> => {
@@ -22,7 +46,7 @@ const cities = (): Array<City> => {
         "Si te gustan los trekkings no te pierdas uno de los más bonitos de Indonesia: sube al Monte Batur, el volcán más activo de Bali, para disfrutar de un amanecer inolvidable.",
         "Realiza tours guiados por las multiples cavernas y cuevas que puedes encontrar aquí.",
       ],
-      // images: [bali1, bali2, bali3],
+      images: [bali1, bali2, bali3],
     },
     {
       name: "London",
@@ -37,7 +61,7 @@ const cities = (): Array<City> => {
         "Camina por los parques de la realeza, entre ellos, Hyde Park y Richmond Park. Si buscas actividades en la noche, la ciudad está llena de teatros fantásticos como el Royal Opera House donde puedes disfrutar de la ópera y otras obras.",
         "Si bien no es en Londres realmente, darte una escapada hasta Stonehenge y realizar excursiones guiadas no puede faltar entre tus actividades aquí",
       ],
-      // images: [london1, london2, london3],
+      images: [london1, london2, london3],
     },
     {
       name: "México",
@@ -52,7 +76,7 @@ const cities = (): Array<City> => {
         "Hablar de México y no nombrar sus comidas y diversa gastronomia sería un delito, desde lujosos Restaurants hasta puestos de comidas ambulantes: Debes probar sus diversas comidas y bebidas con su característico toque 'picante'",
         "Recorrer dunas en el desierto de Sonora, tomar un buen vino mexicano en Baja California o nadar con ballenas y tiburones son algunas de las cosas que puedes realizar aquí gracias a sus vastos territorios",
       ],
-      // images: [mexico1, mexico2, mexico3],
+      images: [mexico1, mexico2, mexico3],
     },
     {
       name: "New York",
@@ -69,7 +93,7 @@ const cities = (): Array<City> => {
         "Uno de los parques urbanos más grandes del mundo y el pulmón vegetal de la ciudad es Central Park, Podrás dar un paseo por The Lake, Strawberry Fields, Belvedere Castle, Alice in Wonderland y The Mall, esta última una explanada peatonal que son de las partes del parque que más ha salido en películas.",
         "Broadway es tan famosa como la Quinta Avenida, con sus muchos teatros donde han comenzado sus carreras grandes actores y actrices de Hollywood. Por ello se conoce con el lugar cultural y artístico de Nueva York.",
       ],
-      // images: [newYork1, newYork2, newYork3],
+      images: [newYork1, newYork2, newYork3],
     },
     {
       name: "Paris",
@@ -84,7 +108,7 @@ const cities = (): Array<City> => {
         "Paris es conocida mundialmente por su arte, sin lugar a dudas, si te gusta el arte puedes recorrer sus numerosos museos tales como el Louvre, El centro de Georges Pompidou, el museo Orsay o el Musée de L'orangerie",
         "Si quieres conocer la historia de París, puedes visitar el Museo de la Guerra de la Independencia, el Museo de la Guerra de la Segunda Guerra Mundial, el Museo de la Guerra de la Segunda Guerra Mundial y el Museo de la Guerra de la Segunda Guerra Mundial",
       ],
-      // images: [paris1, paris2, paris3],
+      images: [paris1, paris2, paris3],
     },
     {
       name: "Toronto",
@@ -99,7 +123,7 @@ const cities = (): Array<City> => {
         "La famosa Galería de Arte de Ontario (mejor conocida como AGO, por sus siglas en inglés) es una de las galerías más grandes de Norteamérica. En AGO hay colecciones que reúnen más de 80.000 obras de arte que datan desde el primer siglo hasta la actualidad.",
         "El Toronto Eaton Centre, es un centro comercial ubicado en el corazón de la ciudad. Es una de las atracciones turísticas más famosas de Toronto y es el centro comercial con más afluencia en Norteamérica.",
       ],
-      // images: [toronto1, toronto2, toronto3],
+      images: [toronto1, toronto2, toronto3],
     },
   ];
 };
