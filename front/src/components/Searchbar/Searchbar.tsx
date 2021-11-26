@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFlight } from "../../redux/actions";
 import styles from "./Searchbar.module.scss";
 import json from '../../assets/IATA.json';
+import LoadingScreen from "../LoadingScreen/LoadingScreen";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouseUser, faMapMarkerAlt, faPlane, faPlaneArrival, faPlaneDeparture, faSearch } from "@fortawesome/free-solid-svg-icons";
+
 export default function SearchBar() {
 
 
@@ -12,8 +16,9 @@ export default function SearchBar() {
   // console.log(json.map(p => p.airport))
   const dispatch = useDispatch();
 
+  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [filterOptional, setFilterOptional] = useState([])
-
   const [value, setValue] = useState({
     originCity: "",
     destinyCity: "",
@@ -23,23 +28,62 @@ export default function SearchBar() {
     class: "Economy",
   });
 
+
+
+  function onChageAux(e: any) {
+    const userInput = e.target.value;
+
+
+
+
+
+  }
+
+
+
+
+
+
+  ///////// Logica autocompletado /////////
   function handleChangeOrigen(e: any) {
     e.preventDefault();
     setValue({
       ...value,
       originCity: e.target.value
     });
-    const cities: any = json.filter(d => d.city.toLowerCase().includes(value.originCity.toLowerCase()));
 
+    console.log(filterOptional)
+  }
+
+
+
+
+
+  async function filterCompleted() {
+    const cities: any = json.filter(d => d.city.toLowerCase().includes(value.originCity.toLowerCase()));
     const airports: any = cities.map((d: any) => d.airport)
 
-    setFilterOptional(airports)
-
-
-
-
-    console.log(airports)
+    setFilterOptional(airports.slice(0, 5))
+    console.log(filterOptional)
   }
+
+  useEffect(() => {
+    // filterCompleted()
+  }, [])
+
+
+
+  function combo(e: any) {
+    handleChangeOrigen(e)
+
+    if (value.originCity.length > 3) { filterCompleted() }
+
+  }
+
+  ////////////////////////////////////////////
+
+
+
 
   function handleChange(e: any) {
     setValue({
@@ -63,29 +107,50 @@ export default function SearchBar() {
 
   return (
     <div className={styles.searchBarContainer}>
-      <span> Encuentra las mejores ofertas </span>
+      <div className={styles.titleBox}>
+
+        <h3> Encuentra las mejores ofertas </h3>
+      </div>
       <form>
 
 
+
+
+
+
+
+
+
+
+
+
+
         <div className={styles.selects}>
-          <label> Vuelos </label>
-          <select name="journeyType" onChange={(e) => handleCheck(e)}>
-            <option value="" > Solo ida </option>
-            <option value="true" > Ida y vuelta </option>
-          </select>
-        </div>
-
-        <div className={styles.origin}>
           <label> Origen </label>
-          <input type="text" name="originCity" onChange={e => handleChangeOrigen(e)} />
-          {value.originCity ? filterOptional.map(d => <p>{d}</p>) : (
-            false
-          )}
+          <div className={styles.inputBox}>
+            <FontAwesomeIcon className={styles.icon} icon={faPlaneDeparture} />
+            <input type="text" />
+          </div>
+
+
+
+          < ul role="listbox">
+            {value.originCity.length > 3 ? filterOptional.map((d: any) => d ? <li ><span > {d}</span></li> : false) : false}
+          </ul>
+
         </div>
 
-        <div className={styles.destiny}>
+
+
+
+
+        <div className={styles.selects}>
           <label> Destino </label>
-          <input type="text" name="destinyCity" onChange={handleChange} />
+          <div className={styles.inputBox}>
+            <FontAwesomeIcon className={styles.icon} icon={faPlaneArrival} />
+
+            <input type="text" name="destinyCity" onChange={handleChange} />
+          </div>
           {value.destinyCity ? (
             <select className={styles.selects}>
               {/* {airports.map((airp) => (<option className="op" value={airp.id}> {airp.name} </option>))} */}
@@ -95,28 +160,50 @@ export default function SearchBar() {
           )}
         </div>
 
-        <div className={styles.departureDate}>
-          <label> Fecha de salida </label>
-          <input
-            className={styles.data}
-            type="date"
-            placeholder=""
-            name="departureDate"
-            onChange={handleChange}
-          />
+        <div className={styles.selects}>
+          <label> Vuelos </label>
+
+          <div className={styles.inputBox}>
+            <FontAwesomeIcon className={styles.icon} icon={faPlane} />
+
+            <select name="journeyType" onChange={(e) => handleCheck(e)}>
+              <option value="" > Solo ida </option>
+              <option value="true" > Ida y vuelta </option>
+            </select>
+          </div>
         </div>
 
-        {value.journeyType ? <div className={styles.retunDate}>
-          <label> Fecha de retorno </label>
-          <input
-            className={styles.data}
-            type="date"
-            placeholder=""
-            name="returnDate"
-            onChange={handleChange}
-          />
-        </div> : false}
 
+
+        <div className={styles.dataBox}>
+
+
+          <div className={styles.selectsData}>
+            <label> Ida </label>
+            <input
+              className={styles.inputBox}
+              type="date"
+              placeholder=""
+              name="departureDate"
+              onChange={handleChange}
+            />
+          </div>
+
+
+
+
+          {value.journeyType ? <div className={styles.selectsData}>
+            <label> Vuelta </label>
+            <input
+              className={styles.inputBox}
+              type="date"
+              placeholder=""
+              name="returnDate"
+              onChange={handleChange}
+            />
+          </div> : false}
+
+        </div>
 
         {/*      <div className={styles.selects}>
           <label> Cantidad de pasajeros </label>
@@ -131,16 +218,23 @@ export default function SearchBar() {
 
         <div className={styles.selects}>
           <label> Clase </label>
-          <select name='class' className={styles.calss} onChange={handleChange}>
-            <option value='Economy'> Economy </option>
-            <option value='Premium-economy'> Premium-economy </option>
-            <option value='First'> First </option>
-            <option value='Business'> Business </option>
-          </select>
+          <div className={styles.inputBox}>
+
+            <select name='class' onChange={handleChange}>
+              <option value='Economy'> Economy </option>
+              <option value='Premium-economy'> Premium-economy </option>
+              <option value='First'> First </option>
+              <option value='Business'> Business </option>
+            </select>
+          </div>
         </div>
 
-        <div>
-          <button onClick={handleClick}>dsdsd</button>
+
+
+        <div className={styles.botonBox}>
+          <button className={styles.boton} onClick={handleClick}>Buscar
+            <FontAwesomeIcon className={styles.iconSearch} icon={faSearch} />
+          </button>
         </div>
       </form>
       {/* <button onClick={console.log()}></button> */}

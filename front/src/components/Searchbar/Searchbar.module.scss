@@ -1,37 +1,345 @@
 @import "../../scss/variables";
 
 .searchBarContainer {
-  width          : 80vw;
-  height         : 80vh;
+  width          : 100%;
+  height         : 100vh;
   // position: absolute;
   // left: 53px;
   // top: 191px;
   display        : flex;
-  flex-direction: column;
+  flex-direction : column;
   align-items    : center;
-  justify-content: center;
-  background     : red;
+  justify-content: space-evenly;
+  background     : $white;
   border         : 1px solid #686868;
+  // box-shadow: 0px 0px 6px black ;
   box-sizing     : border-box;
   border-radius  : 15px;
 
+  h3 {
+    padding-top     : 1rem;
+    font-size       : 1.2rem;
+    // font-weight  : $medium-font;
+    font-family     : $titles-font;
+    color           : $black;
+    border-bottom   : solid 2px $main-color;
+  }
 
+  label {
+    color         : $black;
+    // font-weight: $bold-font;
+    font-size     : 1.2rem;
+    font-family   : $content-font;
+  }
+
+  input {
+    // font-weight: $medium-font;
+    color     : $darkgray;
+    border    : none;
+    background: transparent;
+    width     : 85%;
+    height    : 100%;
+    font-size : 1.3rem;
+  }
+
+  select {
+    color     : $lightgray;
+    padding   : 3px;
+    transition: 0.2s;
+    border    : none;
+    width     : inherit;
+    height    : 100%;
+    font-size : 1.2rem;
+
+    :hover {
+      color: $black
+    }
+
+  }
+
+  *:focus {
+    outline: none;
+  }
+
+  .dataBox {
+    display                  : flex;
+    flex-direction           : row;
+    align-items              : center;
+    justify-content          : start;
+    // background-color      : mediumslateblue;
+    width                    : 100%;
+    height                   : 30vh;
+    // border             : 1px solid #505050;
+
+
+    .selectsData {
+
+      width              : 48%;
+      padding            : 0 0.2rem;
+      // background-color: mediumspringgreen;
+
+
+
+      input {
+        font-size: 1.2rem;
+      }
+    }
+
+
+
+
+
+
+  }
+
+  .inputBox {
+    height        : 7vh;
+    border-radius : 5px;
+    width         : 100%;
+    border        : 1px solid #505050;
+    display       : flex;
+    align-items   : center;
+    flex-direction: row;
+    color         : $lightgray;
+    padding-left  : 0.3rem;
+
+  }
+
+  .icon {
+    color        : $lightgray;
+    // height    : 70%;
+    width        : 15%;
+    font-size    : 2rem;
+    // padding  : 0 5px;
+    transition   : 0.2s;
+
+    :hover {
+      color: $main-color;
+    }
+  }
 
   form {
-    background-color: lawngreen;
-    height          : 60%;
-    width           : 60%;
-    display: flex;
+    // background-color: lawngreen;
+    height         : 90%;
+    width          : 90%;
+    display        : flex;
+    flex-direction : column;
+    justify-content: space-around;
+    align-items    : flex-start;
+  }
+
+  div {
+    display       : flex;
     flex-direction: column;
-    justify-content: space-between;
+  }
+
+
+  .selects {
+    height             : 40%;
+    // background-color: lightgreen;
+    width              : 80%;
+    display            : flex;
+    // align-items: center;
+    justify-content    : center;
+    // padding: 1rem 0;
+  }
+
+  .botonBox {
+    width              : 100%;
+    height             : 20%;
+    // background-color: khaki;
+    display            : flex;
+    align-items        : center;
+    justify-content    : center;
+
+    button {
+      background-color: $main-color;
+      color           : $white;
+      height          : 80%;
+      width           : 40%;
+      border          : none;
+      border-radius   : 10px;
+      display         : flex;
+      align-items     : center;
+      justify-content : center;
+      transition      : 0.2s;
+
+      .iconSearch {
+        margin: 0 0.5rem
+      }
+    }
+
+    button:active {
+      box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.5) inset;
+    }
+  }
+}
+
+@media screen and (min-width: $tablet-width) {
+
+  //768px
+
+  .searchBarContainer {
+    width: 90%;
+
+    input {
+      font-size: 1.5rem;
+    }
+
+    .dataBox {
+      width: 60%;
+
+      .selectsData {
+        margin-right: 1rem;
+
+        input {
+          font-size: 1.3rem;
+        }
+      }
+    }
+
+
+    .selects {
+      .inputBox {
+
+        select {
+          font-size: 1.3rem;
+        }
+
+
+        .icon {
+          width: 10%;
+        }
+      }
+    }
+
+
+
+
+
+    .botonBox {
+
+      .boton {
+
+        width: 20%;
+      }
+
+    }
+
+  }
+
+
+
+}
+
+
+@media screen and (min-width: $notebook-width) {
+  //1024
+
+  .searchBarContainer {
+
+
+    height: 40vh;
+    width : 60vw;
+
+    .titleBox {
+      // width : 100%;
+      height         : 10%;
+      display        : flex;
+      justify-content: center;
+
+      h3 {
+        // padding: 3rem 0 0 0;
+      }
+    }
+
+    label {
+      // font-weight: $regular-font;
+      font-size: 1.2rem;
+    }
+
+
+
+    form {
+      // width: 100%;
+      flex-direction : row;
+      flex-wrap      : wrap;
+      justify-content: flex-start;
+      align-items    : center;
+      height         : 70%;
+    }
+
+    input {
+      font-size: 1.5rem;
+    }
+
+    .selects {
+
+      width : 30%;
+      height: initial;
+      margin: 0 0.4rem;
+
+      .inputBox {
+        height: initial;
+
+        select {
+          font-size: 1rem;
+
+        }
+      }
+
+
+    }
+
+
+    .dataBox {
+      width : 64%;
+      height: initial;
+
+      .selectsData {
+        input {
+          font-size: 1.1rem;
+          height   : 0%;
+        }
+
+        width : 45%;
+      }
+    }
+
+
+    .botonBox {
+      .boton {
+        width: 20%;
+      }
+    }
+
+
+  }
+
+
+}
+
+
+
+@media screen and (min-width: $desktop-width) {
+  //1440
+
+
+
+  .searchBarContainer {
+
+
+
+    .botonBox {
+      .boton {
+        width: 20%;
+      }
+    }
   }
 
 
 
 
-  .selects{
-    background-color: lightgreen;
-  }
 
 
 }
