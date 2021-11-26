@@ -1,8 +1,14 @@
-
-
-
-
-.aux{
-    height: 90vh;
-    background-color: antiquewhite;
+.allHome {
+    background-image        : url('../../assets/planes/plane-4.webp');
+    background-size         : cover;
+    background-attachment   : fixed;
+    background-position     : center;
+    padding-top             : 6rem;
+    height               : 94vh;
+    display                 : flex;
+    flex-direction          : column;
+    align-items             : center;
+   
+    // justify-content         : space-evenly;
+    // background-color: antiquewhite;
 }
