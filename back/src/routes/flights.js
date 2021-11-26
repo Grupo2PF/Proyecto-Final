@@ -63,7 +63,9 @@ router.get("/", async function (req, res) {
   const { inputOrigin } = req.query;
   const { inputDestiny } = req.query;
   const { inputOriginDate } = req.query;
-  //const { inputDestinyDate } = req.query;
+  const { inputDestinyDate } = req.query;
+
+
 
   const offerRequestResponse = await duffel.offerRequests.create({
     return_offers: true,
