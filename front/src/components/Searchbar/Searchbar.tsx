@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFlight } from "../../redux/actions";
 import styles from "./Searchbar.module.scss";
 import json from '../../assets/IATA.json';
+import CountrySelect from "./select"
 export default function SearchBar() {
 
 
@@ -64,6 +65,7 @@ export default function SearchBar() {
   return (
     <div className={styles.searchBarContainer}>
       <span> Encuentra las mejores ofertas </span>
+      <CountrySelect/>
       <form>
 
 
