@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFlight } from "../../redux/actions";
 import styles from "./Searchbar.module.scss";
@@ -10,34 +10,21 @@ import { faHouseUser, faMapMarkerAlt, faPlane, faPlaneArrival, faPlaneDeparture,
 export default function SearchBar() {
 
 
-  // const stadoBusqueda:any = useSelector(state => state.allFlight)
 
 
-  // console.log(json.map(p => p.airport))
-  const dispatch = useDispatch();
+  const [error, setError] = useState(false)
 
-  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
-  const [showSuggestions, setShowSuggestions] = useState(false);
   const [filterOptional, setFilterOptional] = useState([])
+  const [filterOptionalBack, setFilterOptionalBack] = useState([])
+
   const [value, setValue] = useState({
     originCity: "",
     destinyCity: "",
     departureDate: "",
     returnDate: "",
-    journeyType: "",
+    journeyType: false,
     class: "Economy",
   });
-
-
-
-  function onChageAux(e: any) {
-    const userInput = e.target.value;
-
-
-
-
-
-  }
 
 
 
@@ -51,62 +38,136 @@ export default function SearchBar() {
       ...value,
       originCity: e.target.value
     });
+  }
+  function handleChangeBack(e: any) {
+    e.preventDefault();
+    setValue({
+      ...value,
+      destinyCity: e.target.value
+    });
 
-    console.log(filterOptional)
   }
 
-
-
-
-
-  async function filterCompleted() {
-    const cities: any = json.filter(d => d.city.toLowerCase().includes(value.originCity.toLowerCase()));
+  function filterCompleted() {
+    const cities: any = json.filter(d => d.city.toLowerCase().includes(value.originCity.toLowerCase()) || d.airport.toLowerCase().includes(value.originCity.toLowerCase()));
     const airports: any = cities.map((d: any) => d.airport)
-
     setFilterOptional(airports.slice(0, 5))
-    console.log(filterOptional)
+
   }
+  function filterCompletedBack() {
+    const citiesB: any = json.filter(d => d.city.toLowerCase().includes(value.destinyCity.toLowerCase()));
+    const airportsB: any = citiesB.map((d: any) => d.airport)
+    setFilterOptionalBack(airportsB.slice(0, 5))
 
-  useEffect(() => {
-    // filterCompleted()
-  }, [])
-
-
+  }
 
   function combo(e: any) {
     handleChangeOrigen(e)
-
-    if (value.originCity.length > 3) { filterCompleted() }
-
+    if (value.originCity.length > 2) { filterCompleted() }
+  }
+  function comboBack(e: any) {
+    handleChangeBack(e)
+    if (value.destinyCity.length > 2) { filterCompletedBack() }
   }
 
+  function handleSelectCountry(e: any) {
+    e.preventDefault()
+    setValue({
+      ...value,
+      originCity: e.target.name,
+    });
+    setFilterOptional([])
+  }
+  function handleSelectCountryBack(e: any) {
+    e.preventDefault()
+    setValue({
+      ...value,
+      destinyCity: e.target.name,
+    });
+    setFilterOptionalBack([])
+  }
   ////////////////////////////////////////////
 
 
 
-
+  ///////// Logica Selects ///////
   function handleChange(e: any) {
     setValue({
       ...value,
       [e.target.name]: e.target.value,
     });
   }
+  ////////////////////////////////////////////
+
+
+  ///////// Click JourneyType (logica para que llegue booleano al value object) /////////
+  function handleChangeJourney(e: any) {
+    e.preventDefault()
+    const val: string = e.target.value
+
+    if (val === 'true') {
+      setValue({
+        ...value,
+        journeyType: true
+      })
+    } else if (val === 'false') {
+      setValue({
+        ...value,
+        journeyType: false
+      })
+    }
+  }
+  ////////////////////////////////////////////
+
+
+  ///////// Click enviar formulario /////////
   function handleClick(e: any) {
     e.preventDefault();
-    dispatch(getFlight(value));
-    // console.log(value)
-  }
+    const cities: any = json.filter(d => d.airport.toLowerCase().includes(value.originCity.toLowerCase()));
+    const citiesBack: any = json.filter(d => d.airport.toLowerCase().includes(value.destinyCity.toLowerCase()));
 
-  function handleCheck(e: any) {
-    e.preventDefault();
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    });
+
+    if (cities.length === 1 && citiesBack.length === 1) {
+
+
+      // const origin: any = json.filter(data => data.airport === value.originCity)
+      // const back: any = json.filter(data => data.airport === value.destinyCity)
+
+
+      console.log()
+
+      const toSend: any = {
+        originCity: cities[0].iata,
+        destinyCity: citiesBack[0].iata,
+        departureDate: value.departureDate,
+        returnDate: value.returnDate,
+        journeyType: value.journeyType,
+        class: value.class,
+      }
+
+      console.log(cities)
+      console.log(citiesBack)
+
+      console.log(toSend)
+    } else { setError(true) }
+    console.log(error)
+    // console.log(citiesBack)
+
+
+    // dispatch(getFlight(cities));
   }
+  ////////////////////////////////////////////
+
+
+
+
+
 
   return (
     <div className={styles.searchBarContainer}>
+
+      {error ? <Errorr setError={setError} /> : false}
+
       <div className={styles.titleBox}>
 
         <h3> Encuentra las mejores ofertas </h3>
@@ -118,25 +179,26 @@ export default function SearchBar() {
 
 
 
-
-
-
-
-
-
-
         <div className={styles.selects}>
           <label> Origen </label>
           <div className={styles.inputBox}>
             <FontAwesomeIcon className={styles.icon} icon={faPlaneDeparture} />
-            <input type="text" />
+            <input name='originCity' value={value.originCity} type="text" onChange={e => combo(e)} autoComplete='off' />
           </div>
 
 
 
-          < ul role="listbox">
-            {value.originCity.length > 3 ? filterOptional.map((d: any) => d ? <li ><span > {d}</span></li> : false) : false}
-          </ul>
+
+
+          <div className={styles.ulBox}>
+
+            < ul role="listbox">
+              {value.originCity.length > 2 ? filterOptional.map((d: any) =>
+                <li > <button name={d} onClick={e => handleSelectCountry(e)} >{d}</button></li>
+              )
+                : false}
+            </ul>
+          </div>
 
         </div>
 
@@ -149,16 +211,26 @@ export default function SearchBar() {
           <div className={styles.inputBox}>
             <FontAwesomeIcon className={styles.icon} icon={faPlaneArrival} />
 
-            <input type="text" name="destinyCity" onChange={handleChange} />
+            <input type="text" name="destinyCity" value={value.destinyCity} onChange={e => comboBack(e)} autoComplete='off' />
           </div>
-          {value.destinyCity ? (
-            <select className={styles.selects}>
-              {/* {airports.map((airp) => (<option className="op" value={airp.id}> {airp.name} </option>))} */}
-            </select>
-          ) : (
-            false
-          )}
+
+
+          <div className={styles.ulBox}>
+
+            < ul role="listbox">
+              {value.destinyCity.length > 2 ? filterOptionalBack.map((d: any) =>
+                <li > <button name={d} onClick={e => handleSelectCountryBack(e)} >{d}</button></li>
+              )
+                : false}
+            </ul>
+          </div>
+
         </div>
+
+
+
+
+
 
         <div className={styles.selects}>
           <label> Vuelos </label>
@@ -166,9 +238,9 @@ export default function SearchBar() {
           <div className={styles.inputBox}>
             <FontAwesomeIcon className={styles.icon} icon={faPlane} />
 
-            <select name="journeyType" onChange={(e) => handleCheck(e)}>
-              <option value="" > Solo ida </option>
-              <option value="true" > Ida y vuelta </option>
+            <select name="journeyType" onChange={(e) => handleChangeJourney(e)}>
+              <option value='false' > Solo ida </option>
+              <option value='true' > Ida y vuelta </option>
             </select>
           </div>
         </div>
@@ -192,20 +264,21 @@ export default function SearchBar() {
 
 
 
-          {value.journeyType ? <div className={styles.selectsData}>
-            <label> Vuelta </label>
+          <div className={styles.selectsData}>
+            <label className={value.journeyType ? styles.label : styles.labelDisableD} > Vuelta </label>
             <input
-              className={styles.inputBox}
+              disabled={!value.journeyType}
+              className={value.journeyType ? styles.inputBox : styles.inputBoxDisabled}
               type="date"
               placeholder=""
               name="returnDate"
               onChange={handleChange}
             />
-          </div> : false}
+          </div>
 
         </div>
 
-        {/*      <div className={styles.selects}>
+        {/*    <div className={styles.selects}>
           <label> Cantidad de pasajeros </label>
           <select className={styles.passengers}>
             <option> 1 </option>
@@ -237,8 +310,28 @@ export default function SearchBar() {
           </button>
         </div>
       </form>
-      {/* <button onClick={console.log()}></button> */}
+
     </div>
   );
 }
 
+
+
+
+const Errorr: FC<Props> = ({ setError }) => {
+
+  return (
+    <div className={styles.ErrorBox}>
+      <div className={styles.errorr}>
+        <h2>Debes ingresar Origen y Destinos validos</h2>
+        <p>Si das Click en autocompletar no deberia dar problemas !</p>
+        <button onClick={() => setError(false)}>Aceptar</button>
+      </div>
+
+    </div>
+
+  )
+}
+type Props = {
+  setError: any
+}
