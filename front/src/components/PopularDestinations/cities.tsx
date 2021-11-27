@@ -1,28 +1,9 @@
 import bali0 from "../../assets/cities/bali/bali-0.webp";
-// import bali1 from "../../assets/cities/bali/bali1.webp";
-// import bali2 from "../../assets/cities/bali/bali2.webp";
-// import bali3 from "../../assets/cities/bali/bali3.webp";
 import london0 from "../../assets/cities/london/london-0.webp";
-// import london1 from "../../assets/cities/london1.webp";
-// import london2 from "../../assets/cities/london2.webp";
-// import london3 from "../../assets/cities/london3.webp";
 import mexico0 from "../../assets/cities/mexico/mexico-0.webp";
-// import mexico1 from "../../assets/cities/mexico1.webp";
-// import mexico2 from "../../assets/cities/mexico2.webp";
-// import mexico3 from "../../assets/cities/mexico3.webp";
 import newYork0 from "../../assets/cities/newYork/newYork-0.webp";
-// import newYork1 from "../../assets/cities/newyork1.webp";
-// import newYork2 from "../../assets/cities/newyork2.webp";
-// import newYork3 from "../../assets/cities/newyork3.webp";
 import paris0 from "../../assets/cities/paris/paris-0.webp";
-// import paris1 from "../../assets/cities/paris1.webp";
-// import paris2 from "../../assets/cities/paris2.webp";
-// import paris3 from "../../assets/cities/paris3.webp";
 import toronto0 from "../../assets/cities/toronto/toronto-0.webp";
-// import toronto1 from "../../assets/cities/toronto1.webp";
-// import toronto2 from "../../assets/cities/toronto2.webp";
-// import toronto3 from "../../assets/cities/toronto3.webp";
-
 import { City } from "../CityCard/types";
 
 const cities = (): Array<City> => {
