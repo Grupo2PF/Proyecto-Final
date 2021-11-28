@@ -6,6 +6,9 @@ import json from '../../assets/IATA.json';
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouseUser, faMapMarkerAlt, faPlane, faPlaneArrival, faPlaneDeparture, faSearch } from "@fortawesome/free-solid-svg-icons";
+import ExtraBox from "./ExtraBox/ExtraBox";
+
+
 
 export default function SearchBar() {
 
@@ -13,7 +16,7 @@ export default function SearchBar() {
 
 
   const [error, setError] = useState(false)
-
+  const [extraBox, setExtraBox] = useState(false)
   const [filterOptional, setFilterOptional] = useState([])
   const [filterOptionalBack, setFilterOptionalBack] = useState([])
 
@@ -24,10 +27,10 @@ export default function SearchBar() {
     returnDate: "",
     journeyType: false,
     class: "Economy",
+    baby: 1,
+    kid: 2,
+    adult: 1
   });
-
-
-
 
 
 
@@ -143,20 +146,29 @@ export default function SearchBar() {
         returnDate: value.returnDate,
         journeyType: value.journeyType,
         class: value.class,
+        baby: value.baby,
+        kid: value.kid,
+        adult: value.adult
       }
 
       console.log(cities)
       console.log(citiesBack)
 
       console.log(toSend)
+      // dispatch(getFlight(toSend));
     } else { setError(true) }
-    console.log(error)
-    // console.log(citiesBack)
 
 
-    // dispatch(getFlight(cities));
+
   }
   ////////////////////////////////////////////
+
+
+  function handleExtraBox(e: any) {
+    e.preventDefault()
+    setExtraBox(!extraBox)
+  }
+
 
 
 
@@ -289,7 +301,7 @@ export default function SearchBar() {
           </select>
         </div> */}
 
-        <div className={styles.selects}>
+        {/*    <div className={styles.selects}>
           <label> Clase </label>
           <div className={styles.inputBox}>
 
@@ -300,9 +312,12 @@ export default function SearchBar() {
               <option value='Business'> Business </option>
             </select>
           </div>
+        </div> */}
+        <div>
+
+          {extraBox ? <ExtraBox handleChange={handleChange} setValue={setValue} value={value}/> : false}
+          <button onClick={e => handleExtraBox(e)}>Hola ke hace</button>
         </div>
-
-
 
         <div className={styles.botonBox}>
           <button className={styles.boton} onClick={handleClick}>Buscar
