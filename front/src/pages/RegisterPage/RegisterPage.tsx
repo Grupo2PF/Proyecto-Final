@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import {ChangeEvent, useEffect, useState} from "react";
+import { Link, useHistory } from "react-router-dom";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FcGoogle } from "react-icons/fc";
 import { FaEnvelope, FaUserAlt } from "react-icons/fa";
@@ -7,6 +7,9 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import styles from "./RegisterPage.module.scss";
 import regex from "../../helpers/regex";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
+import 'firebase/auth';
+import firebase from 'firebase/app';
+
 
 export default function RegisterPage() {
   const [input, setInput] = useState({
@@ -24,6 +27,41 @@ export default function RegisterPage() {
     password: false,
     confirmPassword: false,
   });
+
+  /*-----------------------------------------LoginWithGoogle------------------------------------------------*/
+
+  const [auth, setAuth] = useState(window.localStorage.getItem('auth') === 'true');
+  const [token, setToken] = useState('');
+
+  const history = useHistory();
+
+  useEffect(()  => {
+    firebase.auth().onAuthStateChanged(function (UserCredential) {
+      if (UserCredential) {
+        setAuth(true);
+        window.localStorage.setItem('auth', 'true');
+        UserCredential.getIdToken().then((token) => {
+          setToken(token);
+        });
+      } else {
+        setAuth(false);
+      }
+    });
+  }, []);
+
+  const login = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    firebase.auth().signInWithPopup(provider)
+        .then((UserCredential) => {
+          if (UserCredential) {
+            setAuth(true);
+            history.push('/user');
+            window.localStorage.setItem('auth', 'true');
+          }
+        })
+  }
+  /*-----------------------------------------LoginWithGoogle------------------------------------------------*/
 
   type OnKeyData = {
     id: string;
@@ -304,10 +342,14 @@ export default function RegisterPage() {
           <button type="submit">Registrarse</button>
         </form>
 
-        <button className={styles.googleBtn}>
-          <FcGoogle />
-          Continuar con Google
-        </button>
+          {auth ? (
+              <Link className={styles.userLink} to="/user"/>
+          ) : (
+              <button onClick={login} className={styles.googleBtn}>
+                <FcGoogle />
+                Continuar con Google
+              </button>
+          )}
 
         <Link to="/login">¿Ya tienes una cuenta? Inicia sesión</Link>
       </div>
