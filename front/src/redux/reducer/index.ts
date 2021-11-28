@@ -7,6 +7,7 @@ const initialState:object = {
   type Action = { 
     type: string,
     payload: object|null
+  
   };
  
   export default function rootReducer(state = initialState, action:Action) {
@@ -20,4 +21,6 @@ const initialState:object = {
       default:
         return state;
     }
+
+      
   }

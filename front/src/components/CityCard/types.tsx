@@ -7,6 +7,6 @@ export type City = {
   image: string;
   id: string;
   description: string;
-  placesOfInterest: Array<string>;
-  images: Array<string>;
+  placesOfInterest: string[];
+  images: string[];
 };

@@ -12,7 +12,7 @@ export default function Navbar() {
           <img src={logo} alt="" />
         </Link>
         <div className={styles.user}>
-          <Link className={styles.userLink} to="/user-profile">
+          <Link className={styles.userLink} to="/login">
             <FontAwesomeIcon icon={faUserCircle} size="2x" />
             <span>Iniciar Sesion</span>
           </Link>

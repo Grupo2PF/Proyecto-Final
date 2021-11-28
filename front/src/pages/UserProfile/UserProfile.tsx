@@ -1,9 +1,79 @@
-import React from 'react'
+// import React, { FC } from 'react'
+import datos from "./us";
+import styles from "./UserProfile.module.scss";
+import firebase from 'firebase/app';
+import { useHistory } from "react-router-dom";
 
-export default function UserProfile() {
-    return (
-        <div>
-            
-        </div>
-    )
+
+export default function UserProfile(): JSX.Element {
+
+  const history = useHistory();
+
+  function logout() {
+    firebase.auth().signOut().then(function () {
+      history.push("/");
+    }).catch(function (error) {
+      console.log(error);
+    });
+  }
+
+
+  return (
+    <div className={styles.pageContainer}>
+      {datos.map((dato): JSX.Element => {
+        return (
+          <div className={styles.userProfileContainer}>
+            {/* Contenedor de imagen y nombre */}
+            <div className={styles.imgAndNameContainer}>
+              <img src={dato.img} alt="Sin imagen" />
+              <h1>
+                {dato.name} {dato.apellido}
+              </h1>
+            </div>
+            {/* Contendor de tarjetas de opciones */}
+            <div className={styles.cardOptionsContainer}>
+              <div className={styles.card}>
+                <h1> Mis datos</h1>
+                <div className={styles.cardOptions}>
+                  <h3>Dni: {dato.dni}</h3>
+                  <h3>Fecha de nacimiento: {dato.bDate}</h3>
+                  <h3>Mail: {dato.email}</h3>
+                  <h3>Nº de Teléfono: {dato.phone}</h3>
+                </div>
+              </div>
+
+              <div className={styles.card}>
+                <h1>Mis favs</h1>
+                {dato.fav.map((e: any) => (
+                  <div className={styles.cardOptions}>
+                    <h3>{e.name}</h3>
+                  </div>
+                ))}
+              </div>
+
+              <div className={styles.card}>
+                <h1>Mis tickets</h1>
+                {dato.tik.map((e: any) => (
+                  <div className={styles.cardOptions}>
+                    <h3>{e.originCity}</h3>
+                    <h3>{e.destinyCity}</h3>
+                    <h3>{e.departureDate}</h3>
+                    <h3>{e.returnDate}</h3>
+                    <h3>{e.journeyType}</h3>
+                    <h3>{e.class}</h3>
+                  </div>
+                ))}
+              </div>
+
+              <div className={styles.button}>
+                <button className={styles.btn1} onClick={logout}>Cerrar sesión</button>
+                <button className={styles.btn}>Eliminar cuenta</button>
+              </div>
+
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
