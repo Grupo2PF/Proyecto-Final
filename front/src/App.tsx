@@ -9,7 +9,8 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import PopularDestination from "./pages/PopularDestination/PopularDestination";
-import loginWithGoogle from "./loginWithGoogle";
+import OfferPage from "./pages/OfferPage/OfferPage";
+
 
 function App() {
   return (
@@ -17,15 +18,13 @@ function App() {
       {/* <Navbar /> */}
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route
-            exact
-            path="/popular-destination/:id"
-            component={PopularDestination}
-        />
+        <Route exact path="/popular-destination/:id" component={PopularDestination}/>
         <Route exact path="/about-us" component={AboutUs}/>
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={RegisterPage} />
         <Route exact path="/user" component={UserProfile} />
+        <Route exact path="/offers" component={OfferPage} />
+
       </Switch>
       {/* <Footer/> */}
     </div>
