@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import React, {ChangeEvent, useEffect, useState} from "react";
+import {Link, useHistory} from "react-router-dom";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FcGoogle } from "react-icons/fc";
 import { FaEnvelope } from "react-icons/fa";
@@ -7,6 +7,8 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import styles from "./LoginPage.module.scss";
 import regex from "../../helpers/regex";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
+import 'firebase/auth';
+import firebase from 'firebase/app';
 
 
 export default function LoginPage() {
@@ -19,6 +21,41 @@ export default function LoginPage() {
     email: false,
     password: false,
   });
+
+  /*-----------------------------------------LoginWithGoogle------------------------------------------------*/
+
+  const [auth, setAuth] = useState(window.localStorage.getItem('auth') === 'true');
+  const [token, setToken] = useState('');
+  const history = useHistory();
+
+  useEffect(()  => {
+    firebase.auth().onAuthStateChanged(function (UserCredential) {
+      if (UserCredential) {
+        setAuth(true);
+        window.localStorage.setItem('auth', 'true');
+        UserCredential.getIdToken().then((token) => {
+          setToken(token);
+        });
+      } else {
+        setAuth(false);
+      }
+    });
+  }, []);
+
+  const login = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    firebase.auth().signInWithPopup(provider)
+        .then((UserCredential) => {
+          if (UserCredential) {
+            setAuth(true);
+            history.push('/user');
+            window.localStorage.setItem('auth', 'true');
+          }
+        })
+  }
+  /*-----------------------------------------LoginWithGoogle------------------------------------------------*/
+
 
   type OnKeyData = {
     id: string;
@@ -163,15 +200,13 @@ export default function LoginPage() {
           <button type="submit">Iniciar sesión</button>
         </form>
 
-        <button
-          className={styles.googleBtn}
-          onClick={() => {
-            alert("¿Cómo vamos hacer esto mis panas?");
-          }}
-        >
-          <FcGoogle />
-          Iniciar sesión con Google
-        </button>
+        {auth ? (
+            <Link className={styles.userLink} to="/user"/>
+        ) : (
+            <button onClick={login} className={styles.googleBtn}>
+              <FcGoogle />
+              Iniciar Sesión con Google</button>
+        )}
 
         <Link to="/register">¿No tienes cuenta? Registrate</Link>
       </div>

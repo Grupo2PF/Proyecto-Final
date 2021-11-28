@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import app from "firebase/app";
+import firebase from "firebase/app";
 import "firebase/firestore"
 import "firebase/auth"
 
@@ -11,14 +11,14 @@ const firebaseConfig = {
     projectId: "proyecto-final-c5855",
     storageBucket: "proyecto-final-c5855.appspot.com",
     messagingSenderId: "400989597935",
-    appId: "1:400989597935:web:deb80e5bb43aca6f32eb1a"
+    appId: "1:400989597935:web:4402630d1acedaa232eb1a"
 };
 
 // Initialize Firebase
-app.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
-const db = app.firestore();
-const auth = app.auth();
+const db = firebase.firestore();
+const auth = firebase.auth();
 
 
 export { db, auth };
