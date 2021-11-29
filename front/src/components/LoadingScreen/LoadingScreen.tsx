@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 import logo from '../../assets/logo/dev-sky-white-logo.svg';
 
-export default function loadingScreen() {
+export default function LoadingScreen() {
     return (
         <section className={styles.LoadingScreen} >
             <div className={styles.LoadingScreenContent} >

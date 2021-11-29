@@ -1,12 +1,14 @@
-import { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import {ChangeEvent, useEffect, useState} from "react";
+import { Link, useHistory } from "react-router-dom";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FcGoogle } from "react-icons/fc";
 import { FaEnvelope, FaUserAlt } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import styles from "./RegisterPage.module.scss";
 import regex from "../../helpers/regex";
-import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
+import 'firebase/auth';
+import {auth, firestore, signInWithGoogle} from "../../firebaseConfig";
+import {useAuthState} from "react-firebase-hooks/auth";
 
 export default function RegisterPage() {
   const [input, setInput] = useState({
@@ -25,11 +27,7 @@ export default function RegisterPage() {
     confirmPassword: false,
   });
 
-  type OnKeyData = {
-    id: string;
-    value: string;
-  };
-  const onKeyUpValidation = ({ id, value }: OnKeyData): void => {
+  const onKeyUpValidation = ({ id, value }) => {
     switch (id) {
       case "name":
         if (regex.name.test(value.trim())) {
@@ -64,14 +62,14 @@ export default function RegisterPage() {
     }
   };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
   };
 
-  const validateForm = (): boolean => {
+  const validateForm = () => {
     let isValid = false;
     const { name, lastName, email, password, confirmPassword } = input;
 
@@ -95,7 +93,7 @@ export default function RegisterPage() {
     return isValid;
   };
 
-  const resetForm = (): void => {
+  const resetForm = () => {
     setInput({
       name: "",
       lastName: "",
@@ -112,18 +110,78 @@ export default function RegisterPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       resetForm();
-      alert("Puto el que lo lea");
     }
   };
 
+  /*-----------------------------------createUserWithEmailAndPassword---------------------------------------*/
+  const generateUserDocument = async (user, additionalData) => {
+    if (!user) return;
+
+    const userRef = firestore.doc(`users/${user.uid}`);
+    const snapshot = await userRef.get();
+
+    if (!snapshot.exists) {
+      const { email, displayName, photoURL } = user;
+      try {
+        await userRef.set({
+          displayName,
+          email,
+          photoURL,
+          ...additionalData
+        });
+      } catch (error) {
+        console.error("Error creating user document", error);
+      }
+    }
+    return getUserDocument(user.uid);
+  };
+
+  const getUserDocument = async uid => {
+    if (!uid) return null;
+    try {
+      const userDocument = await firestore.doc(`users/${uid}`).get();
+
+      return {
+        uid,
+        ...userDocument.data()
+      };
+    } catch (error) {
+      console.error("Error fetching user", error);
+    }
+  };
+  const [user, loading, error] = useAuthState(auth);
+  const [displayName, setDisplayName] = useState("");
+
+  const createUserWithEmailAndPasswordHandler = async (event, email, password) => {
+    event.preventDefault();
+    try{
+      const {user} = await auth.createUserWithEmailAndPassword(email, password);
+      await generateUserDocument(user, {displayName});
+      setDisplayName("");
+    }
+    catch(error){
+      setInputError('Error Signing up with email and password');
+    }
+  };
+  const history = useHistory();
+    useEffect(() => {
+      if (loading)
+        return;
+      if (user)
+        history.push("/user");
+    }
+ , [loading, user]);
+
+  /*-----------------------------------createUserWithEmailAndPassword---------------------------------------*/
+
+
   return (
     <section className={styles.loginPage}>
-      <GoHomeButton />
 
       <div className={styles.loginPageContent}>
         <Link to="/">
@@ -212,7 +270,7 @@ export default function RegisterPage() {
             />
             <label htmlFor="email">Email</label>
             <input
-              autoComplete="off"
+              autoComplete="on"
               className={inputError.email ? styles.loginFormInputError : ""}
               type="email"
               id="email"
@@ -301,14 +359,13 @@ export default function RegisterPage() {
             )}
           </div>
 
-          <button type="submit">Registrarse</button>
+          <button onClick={event => createUserWithEmailAndPasswordHandler(event, input.email, input.password)} type="submit">Registrarse</button>
         </form>
 
-        <button className={styles.googleBtn}>
-          <FcGoogle />
-          Continuar con Google
-        </button>
-
+              <button className={styles.googleBtn} onClick={signInWithGoogle}>
+                <FcGoogle />
+                Continuar con Google
+              </button>
         <Link to="/login">¿Ya tienes una cuenta? Inicia sesión</Link>
       </div>
     </section>

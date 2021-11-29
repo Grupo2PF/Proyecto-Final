@@ -28,7 +28,7 @@ import toronto1 from "../../assets/cities/toronto/toronto-1.webp";
 import toronto2 from "../../assets/cities/toronto/toronto-2.webp";
 import toronto3 from "../../assets/cities/toronto/toronto-3.webp";
 
-import { City } from "../CityCard/types";
+import {City} from "../CityCard/types";
 
 const cities = (): Array<City> => {
   return [
