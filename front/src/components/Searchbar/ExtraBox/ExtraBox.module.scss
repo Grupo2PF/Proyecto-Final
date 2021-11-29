@@ -1,28 +1,144 @@
-.extraBox{
-    height: 200px;
-    width: 200px;
-    bottom: 0;
-    background-color: white;
-    padding: 5px;
-    position: absolute;
-    box-shadow: 0px 0px 10px black;
-    border-radius: 5px;
-    
-    
-    
-    .box{
+@import '../../../scss/variables';
 
-        border: solid 1px grey;
+
+.extraBoxx {
+    height             : 56%;
+    width              : 100%;
+    background-color   : white;
+    padding            : 5px;
+    position           : absolute;
+    left               : 0;
+    top                : 20vh;
+    // box-shadow      : 0px 0px 10px black;
+    border-left        : 1px solid #686868;
+    border-right       : 1px solid #686868;
+
+    border-radius  : 5px;
+    display        : flex;
+    flex-direction : row;
+    align-items    : center;
+    justify-content: space-evenly;
+
+    .box {
+        // height: 30%;
+
+        div {
+            border-radius: 2px;
+            border       : 1px solid #505050;
+
+
+        }
+
     }
 
 
+    .counterBox {
+        // background-color   : deeppink;
+        padding            : 5px;
+        width              : 80%;
+        height             : 70%;
+        display            : flex;
+        justify-content    : space-evenly;
+        // flex-direction  : column;
+
+        .counterBoxx {
+            // background-color: red;
+            // padding: 10px;
+            height: 100%;
+
+            width: 100%;
 
 
-    select{
+            .counter {
+
+                display            : flex;
+                flex-direction     : row;
+                align-items        : center;
+                justify-content    : space-between;
+                // background-color: forestgreen;
+                border             : 1px solid grey;
+                height             : 50%;
+
+                :hover {
+                    background-color: rgba(128, 128, 128, 0.1);
+                }
+
+                button {
+                    background   : none;
+                    border-radius: 5px;
+                    width        : 30%;
+                    border       : none;
+                    border-radius: 0px;
+                    transition   : 0.2s;
+
+                }
+
+            }
+        }
+
+
     }
-    
-    
-    button{
 
+}
+
+
+@media screen and (min-width: $notebook-width) {
+    //1024
+
+
+    div {
+
+        .extraBoxx {
+            // background-color   : blue;
+            top                   : 45vh;
+            height                : 18%;
+            width                 : 75%;
+            margin                : 0 20vw 0 5vw;
+            display               : flex;
+            flex-direction        : row;
+            // justify-content    : center;
+            border                : none;
+
+            .box {
+                // background-color: blue;
+                background-color: white;
+                width           : 20%;
+                height          : 100%;
+                justify-content : center;
+            }
+
+
+
+            .counterBox {
+
+                width               : initial;
+                flex-direction      : row;
+                width               : 50%;
+                align-items         : center;
+                // height           : 100%;
+
+                // background-color: green;
+
+                .counterBoxx {
+                    // background-color: red;
+                    // padding: 10px;
+                    height: 100%;
+
+                    width: 30%;
+
+
+                }
+
+
+            }
+
+
+
+
+            .counter {
+                height: 100%;
+            }
+        }
     }
+
 }

@@ -9,15 +9,16 @@
   display        : flex;
   flex-direction : column;
   align-items    : center;
-  justify-content: space-evenly;
+  justify-content: space-around;
   background     : $white;
-  border         : 1px solid #686868;
+
+  border       : 1px solid #686868;
   // box-shadow: 0px 0px 6px black ;
-  box-sizing     : border-box;
-  border-radius  : 15px;
+  box-sizing   : border-box;
+  border-radius: 15px;
 
   h3 {
-    padding-top        : 1rem;
+    // padding-top        : 1rem;
     font-size          : 1.5rem;
     font-weight        : $regular-font;
     // font-family     : $titles-font;
@@ -62,13 +63,13 @@
   }
 
   .dataBox {
-    display                  : flex;
-    flex-direction           : row;
-    align-items              : center;
-    justify-content          : start;
+    display                     : flex;
+    flex-direction              : row;
+    align-items                 : center;
+    justify-content             : start;
     // background-color      : mediumslateblue;
-    width                    : 100%;
-    height                   : 30vh;
+    width                       : 100%;
+    // height                   : 30vh;
     // border             : 1px solid #505050;
 
 
@@ -140,12 +141,12 @@
 
   form {
     // background-color: lawngreen;
-    height         : 90%;
+    height         : 80%;
     width          : 90%;
     display        : flex;
     flex-direction : column;
     justify-content: space-around;
-    align-items    : flex-start;
+    align-items    : center;
   }
 
   div {
@@ -155,12 +156,12 @@
 
 
   .selects {
-    height                   : 40%;
+    // height                   : 40%;
     // background-color      : lightgreen;
-    width                    : 80%;
-    display                  : flex;
+    width                 : 80%;
+    display               : flex;
     // align-items: center;
-    justify-content          : center;
+    justify-content       : center;
     // padding: 1rem 0;
     // position           : relative;
 
@@ -210,7 +211,7 @@
 
   .botonBox {
     width              : 100%;
-    height             : 20%;
+    height             : 10%;
     // background-color: khaki;
     display            : flex;
     align-items        : center;
@@ -219,7 +220,7 @@
     button {
       background-color: $main-color;
       color           : $white;
-      height          : 80%;
+      height          : 100%;
       width           : 40%;
       border          : none;
       border-radius   : 10px;
@@ -227,95 +228,170 @@
       align-items     : center;
       justify-content : center;
       transition      : 0.2s;
+      box-shadow      : -1px -1px 3px 1px black inset;
 
       .iconSearch {
         margin: 0 0.5rem
       }
     }
 
+    button:hover {
+      box-shadow: -1px -1px 5px 1px black inset;
+
+    }
+
     button:active {
-      box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.5) inset;
-    }
-  }
-}
-
-@media screen and (min-width: $tablet-width) {
-
-  //768px
-
-  .searchBarContainer {
-    width: 90%;
-
-    input {
-      font-size: 1.5rem;
-    }
-
-    .dataBox {
-      width: 60%;
-
-      .selectsData {
-        margin-right: 1rem;
-
-        input {
-          font-size: 1.3rem;
-        }
-      }
-    }
-
-
-    .selects {
-
-
-
-
-      .ulBox {
-        // width: 40%;
-
-        ul {
-          width: 65%;
-
-
-        }
-      }
-
-      .inputBox {
-
-        select {
-          font-size: 1.3rem;
-        }
-
-
-        .icon {
-          width: 10%;
-        }
-      }
-    }
-
-
-
-
-
-    .botonBox {
-
-      .boton {
-
-        width: 20%;
-      }
+      box-shadow: 0px 0px 50px 3px rgba(0, 0, 0, 0.5) inset;
 
     }
-
   }
 
 
+  .extraBox {
+
+    width          : 100%;
+    height         : 10%;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    margin-top     : 15px;
+    // transition : 0.2s;
+    // border: solid 1px $lightgray;
+
+
+    button {
+      border-radius: 2px;
+
+      height          : 100%;
+      width           : 60%;
+      background-color: transparent;
+      border          : solid 1px grey;
+      display         : flex;
+      justify-content : center;
+      align-items     : center;
+      transition      : 0.2s;
+
+
+
+
+
+      .divA {
+        color: $lightgray;
+
+        margin             : 1px;
+        // background-color: turquoise;
+        height             : 100%;
+        width              : 33%;
+        display            : flex;
+        flex-direction     : row;
+        justify-content    : space-evenly;
+        align-items        : center;
+        font-size          : 1.5rem;
+        transition : 0.2s;
+
+
+
+      }
+
+    }
+
+    button:hover {
+      // background-color: $main-color;
+      box-shadow: -1px -2px 1px $main-color inset;
+
+      .divA {
+        color: grey;
+      }
+    }
+    button:active {
+      // background-color: $main-color;
+      box-shadow: 1px 2px 4px black inset;
+
+      .divA {
+        color: rgba(0, 0, 0, 0.685);
+      }
+    }
+
+
+  }
+
+  @media screen and (min-width: $tablet-width) {
+
+    //768px
+
+    .searchBarContainer {
+      width: 90%;
+
+      input {
+        font-size: 1.5rem;
+      }
+
+      .dataBox {
+        width: 60%;
+
+        .selectsData {
+          margin-right: 1rem;
+
+          input {
+            font-size: 1.3rem;
+          }
+        }
+      }
+
+
+      .selects {
+
+
+
+
+        .ulBox {
+          // width: 40%;
+
+          ul {
+            width: 65%;
+
+
+          }
+        }
+
+        .inputBox {
+
+          select {
+            font-size: 1.3rem;
+          }
+
+
+          .icon {
+            width: 10%;
+          }
+        }
+      }
+
+
+
+
+
+      .botonBox {
+
+        .boton {
+
+          width: 20%;
+        }
+
+      }
+
+    }
+
+
+
+  }
 
 }
-
 
 @media screen and (min-width: $notebook-width) {
   //1024
 
   .searchBarContainer {
-
 
     height: 40vh;
     width : 90vw;
@@ -337,10 +413,11 @@
 
 
     form {
+      // background-color: blue;
       width          : 95%;
       flex-direction : row;
       flex-wrap      : wrap;
-      justify-content: flex-start;
+      justify-content: space-around;
       align-items    : center;
       height         : 70%;
     }
@@ -384,13 +461,14 @@
 
 
     .dataBox {
-      width             : 34%;
+      width             : 30%;
       height            : initial;
       // justify-content: center;
 
       .selectsData {
-        margin-left : 1rem;
+        // margin-left : 1rem;
         margin-right: 0rem;
+        width       : 50%;
 
         input {
 
@@ -399,21 +477,45 @@
 
         }
 
-        width : 35%;
+
       }
     }
 
 
     .botonBox {
+      // background-color: red;
+      height: 20%;
+
       .boton {
-        height : 10vh;
-        width  : 10%;
+        // height : 10vh;
+        width  : 12%;
         padding: 0 0.5rem;
       }
     }
 
+    .extraBox {
+      width              : initial;
+      // background-color: aqua;
+      height             : 20%;
+      flex-direction     : row;
+      // height: 20vh;
+
+      button {
+        // background-color: blue;
+        width: 12vw;
+
+
+        .divA {
+
+          font-size: 1.2rem;
+        }
+      }
+
+    }
 
   }
+
+
 
 
 }
@@ -428,6 +530,7 @@
   .searchBarContainer {
 
 
+    background-color: blue;
 
     .botonBox {
       .boton {
@@ -463,12 +566,12 @@
   display         : flex;
   justify-content : center;
   align-items     : center;
-z-index: 3000;
+  z-index         : 3000;
 
   .errorr {
     display         : flex;
-  justify-content : center;
-  align-items     : center;
+    justify-content : center;
+    align-items     : center;
     background-color: white;
     height          : 50%;
     width           : 50%;

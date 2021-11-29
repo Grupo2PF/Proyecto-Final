@@ -5,7 +5,7 @@ import styles from "./Searchbar.module.scss";
 import json from '../../assets/IATA.json';
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouseUser, faMapMarkerAlt, faPlane, faPlaneArrival, faPlaneDeparture, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faBaby, faChild, faHouseUser, faMale, faMapMarkerAlt, faPlane, faPlaneArrival, faPlaneDeparture, faSearch } from "@fortawesome/free-solid-svg-icons";
 import ExtraBox from "./ExtraBox/ExtraBox";
 
 
@@ -27,8 +27,8 @@ export default function SearchBar() {
     returnDate: "",
     journeyType: false,
     class: "Economy",
-    baby: 1,
-    kid: 2,
+    baby: 0,
+    kid: 0,
     adult: 1
   });
 
@@ -313,10 +313,22 @@ export default function SearchBar() {
             </select>
           </div>
         </div> */}
-        <div>
+        <div className={styles.extraBox}>
 
-          {extraBox ? <ExtraBox handleChange={handleChange} setValue={setValue} value={value}/> : false}
-          <button onClick={e => handleExtraBox(e)}>Hola ke hace</button>
+          <button onClick={e => handleExtraBox(e)}>
+            <div className={styles.divA}>
+              <FontAwesomeIcon icon={faMale} />{value.adult}
+            </div>
+
+            <div className={styles.divA}>
+              <FontAwesomeIcon icon={faChild} />{value.kid}
+            </div>
+
+            <div className={styles.divA}>
+              <FontAwesomeIcon icon={faBaby} />{value.baby}
+            </div>
+          </button>
+          {extraBox ? <ExtraBox handleChange={handleChange} setValue={setValue} value={value} /> : false}
         </div>
 
         <div className={styles.botonBox}>
