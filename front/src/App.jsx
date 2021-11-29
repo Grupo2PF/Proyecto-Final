@@ -22,11 +22,11 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
-        {/* <Route
+        <Route
             exact
             path="/popular-destination/:id"
             component={PopularDestination}
-        /> */}
+        />
         <Route exact path="/about-us" component={AboutUs}/>
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={RegisterPage} />
