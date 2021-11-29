@@ -14,7 +14,7 @@ export default function Home() {
 
             <SearchBar />
 
-            <PopularDestinations />
+            {/* <PopularDestinations /> */}
 
 
         </div>

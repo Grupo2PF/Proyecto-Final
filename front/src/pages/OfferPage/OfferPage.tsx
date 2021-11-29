@@ -70,6 +70,12 @@ export default function OfferPage(): JSX.Element {
   var oneWay: JSX.Element = <></>;
   var idaVuelta: JSX.Element = <></>;
 
+
+  const handleClick = (e: any) => {
+    e.preventDefault();
+  console.log(response)
+  }
+
   if (response.mode === "oneway") {
     modo = "Solo Ida";
     var oneWay: JSX.Element = (

@@ -21,7 +21,8 @@ export function getFlight(payload: any) {
         const json = await axios.get(
           `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=economy`
         );
-        console.log(json);
+        console.log("soy la respuesta de la api")
+        console.log(json.data);
         return dispatch({
           type: GET_FLIGHT,
           payload: json.data,

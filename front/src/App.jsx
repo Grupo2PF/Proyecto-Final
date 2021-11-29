@@ -12,22 +12,27 @@ import PopularDestination from "./pages/PopularDestination/PopularDestination";
 import Reset from "./pages/ResetPass/ResetPass";
 import Footer from "./components/Footer/Footer";
 import React from "react";
+import OfferPage from "./pages/OfferPage/OfferPage";
+import Navbar from "./components/Navbar/Navbar";
+
 
 function App() {
   return (
     <div>
+      <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route
+        {/* <Route
             exact
             path="/popular-destination/:id"
             component={PopularDestination}
-        />
+        /> */}
         <Route exact path="/about-us" component={AboutUs}/>
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={RegisterPage} />
         <Route exact path="/reset" component={Reset} />
         <Route exact path="/user" component={UserProfile} />
+        <Route exact path="/offers" component={OfferPage} />
       </Switch>
         <Footer/>
     </div>
