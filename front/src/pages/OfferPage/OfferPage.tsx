@@ -61,59 +61,101 @@ type Back = {
 };
 
 export default function OfferPage(): JSX.Element {
-
   const dispatch = useDispatch();
-  
-  const response :any = useSelector((state: any) => state.allFlight);
-  console.log(" soy el response del useSelector ")
+
+  const response: any = useSelector((state: any) => state.allFlight);
+  console.log(" soy el response del useSelector ");
   console.log(response);
-  
-  // useEffect(() => {
-  //   dispatch(response);
-  // }, [response]);
+  let modo: string = "";
+  var oneWay: JSX.Element = <></>;
+  var idaVuelta: JSX.Element = <></>;
 
-// const info1 = Array < Back > ();
-  return (
-    <div>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      
+  if (response.mode === "oneway") {
+    modo = "Solo Ida";
+    var oneWay: JSX.Element = (
       <div>
-       <p> {response.class}</p>
-       <p>{response.mode}</p>
-       <p>{response.origin.city}</p>
-       <p>{response.origin.airport}</p>
-       <p>{response.destination.city}</p>
-       <p>{response.destination.airport}</p>
-      </div>
-
-      <div>
+        
         {response.offers.map((item: any) => (
           <div>
             <div>
-              {item.price}
-              {item.currency}
-              {item.airline}
+              <p> {`${item.currency} ${item.price}`}</p>
+              <h2>Escalas/transbordos</h2>
               {item.transfers.map((item: any) => (
                 <div>
-                  {item.origin}
-                  {item.destination}
-                  {item.departure}
-                  {item.arrive}
-                  {item.airline}
-                  {item.flightNumber}
-                  <br/>
-                  </div>
-              ))}
-              </div>
-              </div>
-        ))}
-
+                  <p>
+                    {item.origin} - {item.destination}
+                  </p>
+                  <p>Salida: {item.departure}</p>
+                  <p>Llegada: {item.arrive}</p>
+                  <p>Aerolinea: {item.airline}</p>
+                  Vuelo Nro: {item.flightNumber}
+                  <br />
                 </div>
+              ))}
+              <br />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  } else {
+    modo = "Ida y Vuelta";
+    var idaVuelta: JSX.Element = (
+      <div>
+        
+        {response.offers.map((item: any) => (
+          <div>
+            <div>
+              <p> {`${item.currency} ${item.price}`}</p>
+              <h2>Escalas/transbordos IDA</h2>
+              {item.departure.transfers.map((item: any) => (
+                <div>
+                  <p>
+                    {item.origin} - {item.destination}
+                  </p>
+                  <p>Salida: {item.departure}</p>
+                  <p>Llegada: {item.arrive}</p>
+                  <p>Aerolinea: {item.airline}</p>
+                  <p>Vuelo Nro: {item.flightNumber}</p>
+                  <br/>
+                </div>
+              ))}
+            </div>
+            <h2>Escalas/transbordos VUELTA</h2>
+            {item.return.transfers.map((item: any) => (
+              <div>
+                <p>
+                  {item.origin} - {item.destination}
+                </p>
+                <p>Salida: {item.departure}</p>
+                  <p>Llegada: {item.arrive}</p>
+                  <p>Aerolinea: {item.airline}</p>
+                  <p>Vuelo Nro: {item.flightNumber}</p>
+                <br/>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  }
 
-      
+  return (
+    <div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <div>
+        {/* <h1>
+          {`${response.offers[0].transfers[0].origin}, destino ${response.destination.city} y clase ${response.class}`}
+        </h1> */}
+        <p>{modo}</p>
+        <p>{response.origin.airport}</p>
+        <p>{response.destination.airport}</p>
+      </div>
+
+      <div>{response.mode === "oneway" ? <div>{oneWay} </div>:<div> {idaVuelta} </div>}</div>
     </div>
   );
 }
