@@ -1,6 +1,6 @@
 import { GET_FLIGHT } from "../actionTypes/index";
 
-const initialState: object = {
+const initialState: any = {
   allFlight: {},
 };
 

@@ -1,72 +1,119 @@
 import styles from "./OfferPage.module.scss";
 import info from "./OfferJson";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+
+type transfers = {
+  id?: string;
+  origin: string;
+  destination: string;
+  departure: string;
+  arrive: string;
+  airline: string;
+  flightNumber: string;
+};
+
+type offer = {
+  id: string;
+  price: string;
+  currency: string;
+  airline: string;
+  departure: {
+    id: string;
+    origin: {
+      city: string;
+      airport: string;
+      date: string;
+    };
+    destiny: {
+      city: string;
+      airport: string;
+    };
+    transfers: Array<transfers>;
+  };
+  return?: {
+    id: string;
+    origin: {
+      city: string;
+      airport: string;
+      date: string;
+    };
+    destiny: {
+      city: string;
+      airport: string;
+    };
+    transfers: Array<transfers>;
+  };
+};
+
+type Back = {
+  mode: string;
+  class: string;
+  origin: {
+    city: string;
+    airport: string;
+  };
+  destination: {
+    city: string;
+    airport: string;
+  };
+  offers: Array<offer>;
+};
 
 export default function OfferPage(): JSX.Element {
+
+  const dispatch = useDispatch();
+  
+  const response :any = useSelector((state: any) => state.allFlight);
+  console.log(" soy el response del useSelector ")
+  console.log(response);
+  
+  // useEffect(() => {
+  //   dispatch(response);
+  // }, [response]);
+
+// const info1 = Array < Back > ();
   return (
     <div>
-      {info.map((el): JSX.Element => {
-        return (
-          <div className={styles.offerPageContainer}>
-            <div>
-              <h1>IDA</h1>
-              <h1>Origen:{el.origin.city}</h1>
-              <h1>{el.origin.airport}</h1>
-              <h1>Destino:{el.destination.city}</h1>
-              <h1>{el.destination.airport}</h1>
-              <h1>Clase:{el.class}</h1>
-            </div>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      
+      <div>
+       <p> {response.class}</p>
+       <p>{response.mode}</p>
+       <p>{response.origin.city}</p>
+       <p>{response.origin.airport}</p>
+       <p>{response.destination.city}</p>
+       <p>{response.destination.airport}</p>
+      </div>
 
-            {el.offers.map((s): JSX.Element => {
-              return (
+      <div>
+        {response.offers.map((item: any) => (
+          <div>
+            <div>
+              {item.price}
+              {item.currency}
+              {item.airline}
+              {item.transfers.map((item: any) => (
                 <div>
-                  <h1>{`${s.currency} ${s.price}`}</h1>
-                  <h1>SEGMENTOS:</h1>
-                  {s.departure.transfers.map((j): JSX.Element => {
-                    return (
-                      <div>
-                        <h1>{j.origin} - {j.destination}</h1>
-                        <h1>{j.airline}</h1>
-                        <h1>Vuelo Nro: {j.flightNumber}</h1>
-                        <h1>Salida:{j.departure}</h1>
-                        <h1>Llegada:{j.arrive}</h1>
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-
-            <div>
-              <br />
-              <br />
-              <br />
-              <h1>VUELTA</h1>
-              {el.offers.map((s): JSX.Element => {
-                return (
-                  <div>
-                    <h1>Origen:{s.return?.origin.city}</h1>
-                    <h1>{s.return?.origin.airport}</h1>
-                    <h1>Destino:{s.return?.destiny.city}</h1>
-                    <h1>{s.return?.destiny.airport}</h1>
-                    <h1>SEGMENTOS:</h1>
-                    {s.return?.transfers.map((j): JSX.Element => {
-                      return (
-                        <div>
-                          <h1>{j.origin} - {j.destination}</h1>
-                          <h1>{j.airline}</h1>
-                          <h1>Vuelo Nro: {j.flightNumber}</h1>
-                          <h1>Salida:{j.departure}</h1>
-                          <h1>Llegada:{j.arrive}</h1>
-                        </div>
-                      );
-                    })}
+                  {item.origin}
+                  {item.destination}
+                  {item.departure}
+                  {item.arrive}
+                  {item.airline}
+                  {item.flightNumber}
+                  <br/>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        );
-      })}
+              ))}
+              </div>
+              </div>
+        ))}
+
+                </div>
+
+      
     </div>
   );
 }

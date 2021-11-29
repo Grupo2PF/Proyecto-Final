@@ -55,6 +55,8 @@ type Back = {
   offers: Array<offer>;
 };
 
+
+
 const info = (): Array<Back> => {
   return [
     {
@@ -93,14 +95,6 @@ const info = (): Array<Back> => {
                 arrive: "2021-12-29T13:40:00",
                 airline: "Aerasds",
                 flightNumber: "11237",
-              },
-              {
-                origin: "El Calafate",
-                destination: "Buenos Aires",
-                departure: "2021-12-29T10:45:00",
-                arrive: "2021-12-29T13:40:00",
-                airline: "Aerolineas Argentinas",
-                flightNumber: "1867",
               }
             ],
           },
@@ -127,22 +121,13 @@ const info = (): Array<Back> => {
               },
               {
                 id: "ost_0000ADpq8TZe0s0bA2MJDW",
-                origin: "Ushuaia",
-                destination: "El Calafate",
-                departure: "2022-01-05T10:30:00",
-                arrive: "2022-01-05T15:05:00",
-                airline: "LAN",
-                flightNumber: "2382",
-              },
-              {
-                id: "ost_0000ADpq8TZe0s0bA2MJDW",
-                origin: "asdasdasdasd",
-                destination: "Ushuadasdasdsaia",
+                origin:  "Ushuaia",
+                destination:"El Calafate",
                 departure: "2022-01-05T04:30:00",
                 arrive: "2022-01-05T08:05:00",
-                airline: "Aeroliasdasdasdasdneas Argentinas",
-                flightNumber: "7882",
-              }
+                airline: "Aeroliadasdadneas Argentinas",
+                flightNumber: "3882",
+              },
             ],
           },
         },
