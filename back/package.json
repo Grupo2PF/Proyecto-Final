@@ -4,16 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -L"
+    "start": "nodemon src/index.js"
   },
-  
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@duffel/api": "^1.6.0",
     "axios": "^0.24.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "firebase": "^9.5.0",
     "firebase-admin": "^10.0.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
