@@ -1,26 +1,23 @@
 import { GET_FLIGHT } from "../actionTypes/index";
 
-const initialState: object = {
-    allFlight: {},
+const initialState: any = {
+  allFlight: {},
 };
 
 type Action = {
-    type: string,
-    payload: object | null
-
+  type: string;
+  payload: object | null;
 };
 
 export default function rootReducer(state = initialState, action: Action) {
-    switch (action.type) {
-        case GET_FLIGHT:
-            return {
-                ...state,
-                allFlight: action.payload
-            }
+  switch (action.type) {
+    case GET_FLIGHT:
+      return {
+        ...state,
+        allFlight: action.payload,
+      };
 
-        default:
-            return state;
-    }
-
-
+    default:
+      return state;
+  }
 }

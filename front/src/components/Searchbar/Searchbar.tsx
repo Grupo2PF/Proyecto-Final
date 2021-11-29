@@ -7,14 +7,15 @@ import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBaby, faChild, faHouseUser, faMale, faMapMarkerAlt, faPlane, faPlaneArrival, faPlaneDeparture, faSearch } from "@fortawesome/free-solid-svg-icons";
 import ExtraBox from "./ExtraBox/ExtraBox";
+import { useHistory } from "react-router-dom";
 
 
 
 export default function SearchBar() {
 
 
-
-
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [error, setError] = useState(false)
   const [extraBox, setExtraBox] = useState(false)
   const [filterOptional, setFilterOptional] = useState([])
@@ -129,15 +130,10 @@ export default function SearchBar() {
     const cities: any = json.filter(d => d.airport.toLowerCase().includes(value.originCity.toLowerCase()));
     const citiesBack: any = json.filter(d => d.airport.toLowerCase().includes(value.destinyCity.toLowerCase()));
 
-
     if (cities.length === 1 && citiesBack.length === 1) {
-
 
       // const origin: any = json.filter(data => data.airport === value.originCity)
       // const back: any = json.filter(data => data.airport === value.destinyCity)
-
-
-      console.log()
 
       const toSend: any = {
         originCity: cities[0].iata,
@@ -150,16 +146,15 @@ export default function SearchBar() {
         kid: value.kid,
         adult: value.adult
       }
-
-      console.log(cities)
-      console.log(citiesBack)
-
       console.log(toSend)
-      // dispatch(getFlight(toSend));
+      dispatch(getFlight(toSend));
     } else { setError(true) }
 
+    const redir = () => {
+      history.push("/offers")
+    }
 
-
+    setTimeout(redir, 5000);
   }
   ////////////////////////////////////////////
 
