@@ -134,6 +134,15 @@ const info = (): Array<Back> => {
                 airline: "LAN",
                 flightNumber: "2382",
               },
+              {
+                id: "ost_0000ADpq8TZe0s0bA2MJDW",
+                origin: "asdasdasdasd",
+                destination: "Ushuadasdasdsaia",
+                departure: "2022-01-05T04:30:00",
+                arrive: "2022-01-05T08:05:00",
+                airline: "Aeroliasdasdasdasdneas Argentinas",
+                flightNumber: "7882",
+              }
             ],
           },
         },
