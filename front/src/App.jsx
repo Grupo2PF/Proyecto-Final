@@ -9,13 +9,13 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import PopularDestination from "./pages/PopularDestination/PopularDestination";
-import Navbar from "./components/Navbar/Navbar";
 import Reset from "./pages/ResetPass/ResetPass";
+import Footer from "./components/Footer/Footer";
+import React from "react";
 
 function App() {
   return (
     <div>
-      <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route
@@ -29,7 +29,7 @@ function App() {
         <Route exact path="/reset" component={Reset} />
         <Route exact path="/user" component={UserProfile} />
       </Switch>
-      {/* <Footer/> */}
+        <Footer/>
     </div>
   );
 }
