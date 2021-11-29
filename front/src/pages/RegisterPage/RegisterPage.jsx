@@ -6,7 +6,6 @@ import { FaEnvelope, FaUserAlt } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import styles from "./RegisterPage.module.scss";
 import regex from "../../helpers/regex";
-import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import 'firebase/auth';
 import {auth, firestore, signInWithGoogle} from "../../firebaseConfig";
 import {useAuthState} from "react-firebase-hooks/auth";
@@ -183,7 +182,6 @@ export default function RegisterPage() {
 
   return (
     <section className={styles.loginPage}>
-      <GoHomeButton />
 
       <div className={styles.loginPageContent}>
         <Link to="/">

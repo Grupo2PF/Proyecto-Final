@@ -5,8 +5,6 @@ import { FcGoogle } from "react-icons/fc";
 import { FaEnvelope } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import styles from "./LoginPage.module.scss";
-import regex from "../../helpers/regex";
-import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import 'firebase/auth';
 import { useAuthState } from "react-firebase-hooks/auth";
 import {auth, signInWithEmailAndPassword, signInWithGoogle} from "../../firebaseConfig";
@@ -144,7 +142,6 @@ export default function LoginPage() {
 
   return (
     <section className={styles.loginPage}>
-      <GoHomeButton />
 
       <div className={styles.loginPageContent}>
         <Link to="/">
