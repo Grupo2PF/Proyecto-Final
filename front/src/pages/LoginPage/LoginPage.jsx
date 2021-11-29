@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FcGoogle } from "react-icons/fc";
@@ -8,7 +8,8 @@ import styles from "./LoginPage.module.scss";
 import regex from "../../helpers/regex";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import 'firebase/auth';
-import firebase from 'firebase/app';
+import { useAuthState } from "react-firebase-hooks/auth";
+import {auth, signInWithEmailAndPassword, signInWithGoogle} from "../../firebaseConfig";
 
 
 export default function LoginPage() {
@@ -22,11 +23,10 @@ export default function LoginPage() {
     password: false,
   });
 
-  /*-----------------------------------------LoginWithGoogle------------------------------------------------*/
+/*  /!*-----------------------------------------LoginWithGoogle------------------------------------------------*!/
 
   const [auth, setAuth] = useState(window.localStorage.getItem('auth') === 'true');
   const [token, setToken] = useState('');
-  const history = useHistory();
 
   useEffect(()  => {
     firebase.auth().onAuthStateChanged(function (UserCredential) {
@@ -53,15 +53,40 @@ export default function LoginPage() {
             window.localStorage.setItem('auth', 'true');
           }
         })
-  }
+  }*/
   /*-----------------------------------------LoginWithGoogle------------------------------------------------*/
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, loading, error] = useAuthState(auth);
+  const history = useHistory();
+  useEffect(() => {
+    if (loading) {
+      // maybe trigger a loading screen
+      return;
+    }
+    if (user) history.replace("/");
+  }, [user, loading]);
 
-  type OnKeyData = {
-    id: string;
-    value: string;
-  };
-  const onKeyUpValidation = ({ id, value }: OnKeyData): void => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const onKeyUpValidation = ({ id, value }) => {
     switch (id) {
       case "email":
         if (regex.email.test(value.trim())) {
@@ -78,14 +103,14 @@ export default function LoginPage() {
     }
   };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
   };
 
-  const validateForm = (): boolean => {
+  const validateForm = () =>{
     let isValid = false;
     const { email, password } = input;
 
@@ -98,7 +123,7 @@ export default function LoginPage() {
     return isValid;
   };
 
-  const resetForm = (): void => {
+  const resetForm = () => {
     setInput({
       email: "",
       password: "",
@@ -109,12 +134,11 @@ export default function LoginPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       resetForm();
-      alert("Puto el que lo lea");
     }
   };
 
@@ -141,13 +165,13 @@ export default function LoginPage() {
             />
             <label htmlFor="email">Email</label>
             <input
-              autoComplete="off"
+              autoComplete="on"
               className={inputError.email ? styles.loginFormInputError : ""}
               type="email"
               id="email"
               name="email"
-              value={input.email}
-              onChange={handleInputChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               onKeyUp={(e) => {
                 const id = e.currentTarget.id;
                 const value = e.currentTarget.value;
@@ -180,8 +204,8 @@ export default function LoginPage() {
               placeholder="contraseña"
               id="password"
               name="password"
-              value={input.password}
-              onChange={handleInputChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               onKeyUp={(e) => {
                 const id = e.currentTarget.id;
                 const value = e.currentTarget.value;
@@ -195,18 +219,20 @@ export default function LoginPage() {
             )}
           </div>
 
-          <Link to="/">¿Olvidaste tu contraseña?</Link>
+          <Link to="/reset">¿Olvidaste tu contraseña?</Link>
 
-          <button type="submit">Iniciar sesión</button>
+          <button
+              className="login__btn"
+              onClick={() => signInWithEmailAndPassword(email, password)}
+          >
+            Login
+          </button>
         </form>
-
-        {auth ? (
             <Link className={styles.userLink} to="/user"/>
-        ) : (
-            <button onClick={login} className={styles.googleBtn}>
+
+            <button className={styles.googleBtn} onClick={signInWithGoogle}>
               <FcGoogle />
               Iniciar Sesión con Google</button>
-        )}
 
         <Link to="/register">¿No tienes cuenta? Registrate</Link>
       </div>
