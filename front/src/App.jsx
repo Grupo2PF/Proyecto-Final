@@ -9,8 +9,11 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import PopularDestination from "./pages/PopularDestination/PopularDestination";
-import Navbar from "./components/Navbar/Navbar";
 import Reset from "./pages/ResetPass/ResetPass";
+import React from "react";
+import OfferPage from "./pages/OfferPage/OfferPage";
+import Navbar from "./components/Navbar/Navbar";
+
 
 function App() {
   return (
@@ -24,8 +27,9 @@ function App() {
         <Route exact path="/register" component={RegisterPage} />
         <Route exact path="/reset" component={Reset} />
         <Route exact path="/user" component={UserProfile} />
+        <Route exact path="/offers" component={OfferPage} />
       </Switch>
-      <Footer/>
+        <Footer/>
     </div>
   );
 }

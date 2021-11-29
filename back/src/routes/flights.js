@@ -228,4 +228,13 @@ router.get("/search", async function (req, res, next) {
   }
 });
 
+router.get("/Seats", async (req, res) => {
+  const flightSeats = await duffel.seatMaps.get({
+    offer_id: " ",
+  });
+  console.log(flightSeats);
+  return res.send(flightSeats.data);
+});
+
+
 module.exports = router;

@@ -154,7 +154,7 @@ export default function SearchBar() {
       history.push("/offers")
     }
 
-    setTimeout(redir, 5000);
+    setTimeout(redir, 8000);
   }
   ////////////////////////////////////////////
 
