@@ -1,7 +1,7 @@
-import styles from "./OfferPage.module.scss";
-import info from "./OfferJson";
+// import styles from "./OfferPage.module.scss";
+// import info from "./OfferJson";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 type transfers = {
   id?: string;

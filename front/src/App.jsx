@@ -1,7 +1,7 @@
 import { Switch, Route } from "react-router";
 import "./App.css";
 import "./firebaseConfig";
-// import Footer from "./components/Footer/Footer";
+import Footer from "./components/Footer/Footer";
 // import Navbar from "./components/Navbar/Navbar";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import Home from "./pages/Home/Home";
@@ -18,18 +18,14 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route
-            exact
-            path="/popular-destination/:id"
-            component={PopularDestination}
-        />
+        <Route exact path="/popular-destination/:id" component={PopularDestination} />
         <Route exact path="/about-us" component={AboutUs}/>
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={RegisterPage} />
         <Route exact path="/reset" component={Reset} />
         <Route exact path="/user" component={UserProfile} />
       </Switch>
-      {/* <Footer/> */}
+      <Footer/>
     </div>
   );
 }
