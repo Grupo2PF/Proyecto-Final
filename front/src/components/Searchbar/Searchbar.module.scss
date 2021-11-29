@@ -17,12 +17,12 @@
   border-radius  : 15px;
 
   h3 {
-    padding-top     : 1rem;
-    font-size       : 1.2rem;
-    // font-weight  : $medium-font;
-    font-family     : $titles-font;
-    color           : $black;
-    border-bottom   : solid 2px $main-color;
+    padding-top        : 1rem;
+    font-size          : 1.5rem;
+    font-weight        : $regular-font;
+    // font-family     : $titles-font;
+    color              : $black;
+    border-bottom      : solid 2px $main-color;
   }
 
   label {
@@ -105,6 +105,26 @@
 
   }
 
+
+  .labelDisableD {
+    opacity: 0.4;
+  }
+
+  .inputBoxDisabled {
+    height        : 7vh;
+    border-radius : 5px;
+    width         : 100%;
+    border        : 1px solid #505050;
+    display       : flex;
+    align-items   : center;
+    flex-direction: row;
+    color         : $lightgray;
+    padding-left  : 0.3rem;
+    opacity       : 0.4;
+  }
+
+
+
   .icon {
     color        : $lightgray;
     // height    : 70%;
@@ -135,13 +155,57 @@
 
 
   .selects {
-    height             : 40%;
-    // background-color: lightgreen;
-    width              : 80%;
-    display            : flex;
+    height                   : 40%;
+    // background-color      : lightgreen;
+    width                    : 80%;
+    display                  : flex;
     // align-items: center;
-    justify-content    : center;
+    justify-content          : center;
     // padding: 1rem 0;
+    // position           : relative;
+
+    .ulBox {
+      width    : 100%;
+      // height: 10vh;
+      height   : auto;
+
+      // background-color: blue;
+      ul {
+        background-color      : white;
+        list-style            : none;
+        position              : absolute;
+        // background-color   : red;
+        width                 : 72%;
+
+        li {
+          display            : flex;
+          border-radius      : 2px;
+          border             : solid 1px $lightgray;
+          flex-direction     : column;
+          justify-content    : center;
+          // height          : 20%;
+          // border: solid 1px $main-color;
+
+          :hover {
+            box-shadow: 0px 0px 5px $main-color;
+          }
+        }
+
+        button {
+          transition: 0.1s;
+          width     : 100%;
+          padding   : 0.5rem 0.2rem;
+          text-align: start;
+
+          background-color: rgba(128, 128, 128, 0.1);
+
+          border: none;
+
+        }
+      }
+    }
+
+
   }
 
   .botonBox {
@@ -200,6 +264,20 @@
 
 
     .selects {
+
+
+
+
+      .ulBox {
+        // width: 40%;
+
+        ul {
+          width: 65%;
+
+
+        }
+      }
+
       .inputBox {
 
         select {
@@ -240,28 +318,26 @@
 
 
     height: 40vh;
-    width : 60vw;
+    width : 90vw;
 
     .titleBox {
       // width : 100%;
-      height         : 10%;
+      height         : 20%;
       display        : flex;
       justify-content: center;
 
-      h3 {
-        // padding: 3rem 0 0 0;
-      }
+
     }
 
     label {
       // font-weight: $regular-font;
-      font-size: 1.2rem;
+      font-size: 1rem;
     }
 
 
 
     form {
-      // width: 100%;
+      width          : 95%;
       flex-direction : row;
       flex-wrap      : wrap;
       justify-content: flex-start;
@@ -270,20 +346,35 @@
     }
 
     input {
-      font-size: 1.5rem;
+      font-size: 1rem;
     }
 
     .selects {
 
-      width : 30%;
-      height: initial;
-      margin: 0 0.4rem;
+      width    : 15%;
+      // height: initial;
+      margin   : 0 0.4rem;
+
+      .ulBox {
+        ul {
+          width: 30%;
+        }
+      }
+
+
+
+
 
       .inputBox {
-        height: initial;
+        height: 5vh;
+
+        .icon {
+          margin-right: 0.3rem;
+        }
 
         select {
-          font-size: 1rem;
+          font-size   : 1rem;
+          // height   : initial;
 
         }
       }
@@ -293,23 +384,31 @@
 
 
     .dataBox {
-      width : 64%;
-      height: initial;
+      width             : 34%;
+      height            : initial;
+      // justify-content: center;
 
       .selectsData {
+        margin-left : 1rem;
+        margin-right: 0rem;
+
         input {
-          font-size: 1.1rem;
-          height   : 0%;
+
+          font-size: 0.8rem;
+          height   : 5vh;
+
         }
 
-        width : 45%;
+        width : 35%;
       }
     }
 
 
     .botonBox {
       .boton {
-        width: 20%;
+        height : 10vh;
+        width  : 10%;
+        padding: 0 0.5rem;
       }
     }
 
@@ -335,6 +434,17 @@
         width: 20%;
       }
     }
+
+
+
+    .selects {
+      .ulBox {
+        ul {
+          width: 25%;
+        }
+      }
+    }
+
   }
 
 
@@ -342,4 +452,25 @@
 
 
 
+}
+
+.ErrorBox {
+  position: fixed;
+
+  height          : 100vh;
+  width           : 100vw;
+  background-color: rgba(0, 0, 0, 0.6);
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+z-index: 3000;
+
+  .errorr {
+    display         : flex;
+  justify-content : center;
+  align-items     : center;
+    background-color: white;
+    height          : 50%;
+    width           : 50%;
+  }
 }

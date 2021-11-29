@@ -1,6 +1,5 @@
 import admin from '../firebase-service';
 
-
 export const createUser = async (req, res) => {
     const {
         email,

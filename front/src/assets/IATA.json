@@ -2236,7 +2236,7 @@
     {	"iata"	:	"EYR"	,	"airport"	:	"Yerington Municipal Airport[1] (FAA: O43)"	,	"city"	:	"Yerington, Nevada, United States"	}	,
     {	"iata"	:	"EYS"	,	"airport"	:	"Eliye Springs Airport"	,	"city"	:	"Eliye Springs, Kenya"	}	,
     {	"iata"	:	"EYW"	,	"airport"	:	"Key West International Airport"	,	"city"	:	"Key West, Florida, United States"	}	,
-    {	"iata"	:	"EZE"	,	"airport"	:	"Ministro Pistarini International Airport"	,	"city"	:	"Buenos Aires, Argentina"	}	,
+    {	"iata"	:	"EZE"	,	"airport"	:	"Aeropuerto Internacional Ezeiza, Ministro Pistarini "	,	"city"	:	"Buenos Aires, Argentina"	}	,
     {	"iata"	:	"EZS"	,	"airport"	:	"Elazığ Airport"	,	"city"	:	"Elazığ, Turkey"	}	,
     {	"iata"	:	"EZV"	,	"airport"	:	"Beryozovo Airport[1]"	,	"city"	:	"Beryozovo, Khanty-Mansi Autonomous Okrug, Russia"	}	,
     {	"iata"	:	"FAA"	,	"airport"	:	"Faranah Airport"	,	"city"	:	"Faranah, Guinea"	}	,
