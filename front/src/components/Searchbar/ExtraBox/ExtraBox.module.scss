@@ -2,29 +2,35 @@
 
 
 .extraBoxx {
-    height             : 56%;
-    width              : 100%;
-    background-color   : white;
-    padding            : 5px;
-    position           : absolute;
-    left               : 0;
-    top                : 20vh;
-    // box-shadow      : 0px 0px 10px black;
-    border-left        : 1px solid #686868;
-    border-right       : 1px solid #686868;
-
-    border-radius  : 5px;
-    display        : flex;
-    flex-direction : row;
-    align-items    : center;
-    justify-content: space-evenly;
+    // height             : 56%;
+    // width              : 100%;
+    padding               : 5px;
+    // position           : absolute;
+    // left               : 0;
+    // top                : 20vh;
+    background-color      : $main-color;
+    border-radius         : 5px;
+    display               : flex;
+    flex-direction        : row;
+    align-items           : center;
+    justify-content       : space-evenly;
+    border                : none;
 
     .box {
         // height: 30%;
+        border-radius: 5px;
 
-        div {
-            border-radius: 2px;
+
+        label {
+            background-color: $main-color;
+
+        }
+
+        select {
+            // background-color: $white;
+
             border       : 1px solid #505050;
+            border-radius: 5px;
 
 
         }
@@ -33,21 +39,31 @@
 
 
     .counterBox {
-        // background-color   : deeppink;
+        background-color   : white;
         padding            : 5px;
         width              : 80%;
         height             : 70%;
         display            : flex;
         justify-content    : space-evenly;
         // flex-direction  : column;
+        border             : 1px solid #505050;
+        border-radius      : 5px;
+
+
+
+        color: black;
+
 
         .counterBoxx {
             // background-color: red;
-            // padding: 10px;
-            height: 100%;
+            height: 10vh;
 
             width: 100%;
 
+            label {
+                text-shadow: 1px 1px 1px lightgray;
+                color      : $black;
+            }
 
             .counter {
 
@@ -55,21 +71,23 @@
                 flex-direction     : row;
                 align-items        : center;
                 justify-content    : space-between;
-                // background-color: forestgreen;
+                // background-color: $white;
                 border             : 1px solid grey;
                 height             : 50%;
+                border-radius      : 5px;
 
                 :hover {
                     background-color: rgba(128, 128, 128, 0.1);
                 }
 
                 button {
-                    background   : none;
+                    // color        : $main-color;
                     border-radius: 5px;
                     width        : 30%;
                     border       : none;
                     border-radius: 0px;
                     transition   : 0.2s;
+                    background   : none;
 
                 }
 
@@ -86,59 +104,56 @@
     //1024
 
 
-    div {
 
-        .extraBoxx {
-            // background-color   : blue;
-            top                   : 45vh;
-            height                : 18%;
-            width                 : 75%;
-            margin                : 0 20vw 0 5vw;
-            display               : flex;
-            flex-direction        : row;
-            // justify-content    : center;
+    .extraBoxx {
+        // background-color      : blue;
+        // top                   : 45vh;
+        // height                : 18%;
+        // width                 : 75%;
+        // margin                : 0 20vw 0 5vw;
+        display               : flex;
+        flex-direction        : column;
+        // justify-content    : center;
+
+        .box {
+            // background-color: blue;
             border                : none;
-
-            .box {
-                // background-color: blue;
-                background-color: white;
-                width           : 20%;
-                height          : 100%;
-                justify-content : center;
-            }
+            // background-color   : white;
+            // width           : 20%;
+            // height          : 100%;
+            justify-content       : center;
+        }
 
 
 
-            .counterBox {
+        .counterBox {
 
-                width               : initial;
-                flex-direction      : row;
-                width               : 50%;
-                align-items         : center;
-                // height           : 100%;
+            width                  : initial;
+            // flex-direction      : row;
+            width                  : 60%;
+            align-items            : center;
+            // height           : 100%;
 
-                // background-color: green;
+            // background-color: green;
 
-                .counterBoxx {
-                    // background-color: red;
-                    // padding: 10px;
-                    height: 100%;
-
-                    width: 30%;
-
-
-                }
-
-
-            }
-
-
-
-
-            .counter {
+            .counterBoxx {
+                // background-color: red;
+                // padding: 10px;
                 height: 100%;
+
+                // width: 30%;
+
+
             }
+
+
+        }
+
+
+
+
+        .counter {
+            height: 100%;
         }
     }
-
 }
