@@ -1,10 +1,11 @@
 import styles from "./UserProfile.module.scss";
 import { useHistory } from "react-router-dom";
-import Navbar from "../../components/Navbar/Navbar";
+// import Navbar from "../../components/Navbar/Navbar";
 import {useEffect, useState} from "react";
 import {auth, db, logout} from "../../firebaseConfig";
 import {useAuthState} from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
+import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 
 
 export default function UserProfile(documentPath) {
@@ -33,7 +34,7 @@ export default function UserProfile(documentPath) {
     email: "ruben5@ruben.com",
     name: "Rubencito",
     lastName: "Salamanca",
-    phone: "8888888",
+    phone: "123456789",
     address: "Avenida siempre viva",
     password: "zxczxc",
     photoURL: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
@@ -71,7 +72,8 @@ export default function UserProfile(documentPath) {
 
   return (
     <div className={styles.pageContainer} >
-      <Navbar />
+      <GoHomeButton/>
+      {/* <Navbar /> */}
       {usuario.map((dato) => {
         return (
           <div className={styles.userProfileContainer} key={dato.id}>
