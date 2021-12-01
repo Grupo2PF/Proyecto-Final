@@ -154,7 +154,7 @@ export default function SearchBar() {
       history.push("/offers")
     }
 
-    setTimeout(redir, 5000);
+    setTimeout(redir, 8000);
   }
   ////////////////////////////////////////////
 
@@ -171,121 +171,121 @@ export default function SearchBar() {
 
 
   return (
-    <div className={styles.searchBarContainer}>
+      <div className={styles.searchBarContainer}>
 
-      {error ? <Errorr setError={setError} /> : false}
+        {error ? <Errorr setError={setError} /> : false}
 
-      <div className={styles.titleBox}>
+        <div className={styles.titleBox}>
 
-        <h3> Encuentra las mejores ofertas </h3>
-      </div>
-      <form>
-
-
-
-
-
-
-        <div className={styles.selects}>
-          <label> Origen </label>
-          <div className={styles.inputBox}>
-            <FontAwesomeIcon className={styles.icon} icon={faPlaneDeparture} />
-            <input name='originCity' value={value.originCity} type="text" onChange={e => combo(e)} autoComplete='off' />
-          </div>
-
-
-
-
-
-          <div className={styles.ulBox}>
-
-            < ul role="listbox">
-              {value.originCity.length > 2 ? filterOptional.map((d: any) =>
-                <li > <button name={d} onClick={e => handleSelectCountry(e)} >{d}</button></li>
-              )
-                : false}
-            </ul>
-          </div>
-
+          <h3> Encuentra las mejores ofertas </h3>
         </div>
-
-
-
-
-
-        <div className={styles.selects}>
-          <label> Destino </label>
-          <div className={styles.inputBox}>
-            <FontAwesomeIcon className={styles.icon} icon={faPlaneArrival} />
-
-            <input type="text" name="destinyCity" value={value.destinyCity} onChange={e => comboBack(e)} autoComplete='off' />
-          </div>
-
-
-          <div className={styles.ulBox}>
-
-            < ul role="listbox">
-              {value.destinyCity.length > 2 ? filterOptionalBack.map((d: any) =>
-                <li > <button name={d} onClick={e => handleSelectCountryBack(e)} >{d}</button></li>
-              )
-                : false}
-            </ul>
-          </div>
-
-        </div>
+        <form>
 
 
 
 
 
 
-        <div className={styles.selects}>
-          <label> Vuelos </label>
-
-          <div className={styles.inputBox}>
-            <FontAwesomeIcon className={styles.icon} icon={faPlane} />
-
-            <select name="journeyType" onChange={(e) => handleChangeJourney(e)}>
-              <option value='false' > Solo ida </option>
-              <option value='true' > Ida y vuelta </option>
-            </select>
-          </div>
-        </div>
+          <div className={styles.selects}>
+            <label> Origen </label>
+            <div className={styles.inputBox}>
+              <FontAwesomeIcon className={styles.icon} icon={faPlaneDeparture} />
+              <input name='originCity' value={value.originCity} type="text" onChange={e => combo(e)} autoComplete='off' />
+            </div>
 
 
 
-        <div className={styles.dataBox}>
 
 
-          <div className={styles.selectsData}>
-            <label> Ida </label>
-            <input
-              className={styles.inputBox}
-              type="date"
-              placeholder=""
-              name="departureDate"
-              onChange={handleChange}
-            />
+            <div className={styles.ulBox}>
+
+              < ul role="listbox">
+                {value.originCity.length > 2 ? filterOptional.map((d: any) =>
+                        <li > <button name={d} onClick={e => handleSelectCountry(e)} >{d}</button></li>
+                    )
+                    : false}
+              </ul>
+            </div>
+
           </div>
 
 
 
 
-          <div className={styles.selectsData}>
-            <label className={value.journeyType ? styles.label : styles.labelDisableD} > Vuelta </label>
-            <input
-              disabled={!value.journeyType}
-              className={value.journeyType ? styles.inputBox : styles.inputBoxDisabled}
-              type="date"
-              placeholder=""
-              name="returnDate"
-              onChange={handleChange}
-            />
+
+          <div className={styles.selects}>
+            <label> Destino </label>
+            <div className={styles.inputBox}>
+              <FontAwesomeIcon className={styles.icon} icon={faPlaneArrival} />
+
+              <input type="text" name="destinyCity" value={value.destinyCity} onChange={e => comboBack(e)} autoComplete='off' />
+            </div>
+
+
+            <div className={styles.ulBox}>
+
+              < ul role="listbox">
+                {value.destinyCity.length > 2 ? filterOptionalBack.map((d: any) =>
+                        <li > <button name={d} onClick={e => handleSelectCountryBack(e)} >{d}</button></li>
+                    )
+                    : false}
+              </ul>
+            </div>
+
           </div>
 
-        </div>
 
-        {/*    <div className={styles.selects}>
+
+
+
+
+          <div className={styles.selects}>
+            <label> Vuelos </label>
+
+            <div className={styles.inputBox}>
+              <FontAwesomeIcon className={styles.icon} icon={faPlane} />
+
+              <select name="journeyType" onChange={(e) => handleChangeJourney(e)}>
+                <option value='false' > Solo ida </option>
+                <option value='true' > Ida y vuelta </option>
+              </select>
+            </div>
+          </div>
+
+
+
+          <div className={styles.dataBox}>
+
+
+            <div className={styles.selectsData}>
+              <label> Ida </label>
+              <input
+                  className={styles.inputBox}
+                  type="date"
+                  placeholder=""
+                  name="departureDate"
+                  onChange={handleChange}
+              />
+            </div>
+
+
+
+
+            <div className={styles.selectsData}>
+              <label className={value.journeyType ? styles.label : styles.labelDisableD} > Vuelta </label>
+              <input
+                  disabled={!value.journeyType}
+                  className={value.journeyType ? styles.inputBox : styles.inputBoxDisabled}
+                  type="date"
+                  placeholder=""
+                  name="returnDate"
+                  onChange={handleChange}
+              />
+            </div>
+
+          </div>
+
+          {/*    <div className={styles.selects}>
           <label> Cantidad de pasajeros </label>
           <select className={styles.passengers}>
             <option> 1 </option>
@@ -296,7 +296,7 @@ export default function SearchBar() {
           </select>
         </div> */}
 
-        {/*    <div className={styles.selects}>
+          {/*    <div className={styles.selects}>
           <label> Clase </label>
           <div className={styles.inputBox}>
 
@@ -308,32 +308,32 @@ export default function SearchBar() {
             </select>
           </div>
         </div> */}
-        <div className={styles.extraBox}>
+          <div className={styles.extraBox}>
 
-          <button onClick={e => handleExtraBox(e)}>
-            <div className={styles.divA}>
-              <FontAwesomeIcon icon={faMale} />{value.adult}
-            </div>
+            <button onClick={e => handleExtraBox(e)}>
+              <div className={styles.divA}>
+                <FontAwesomeIcon icon={faMale} />{value.adult}
+              </div>
 
-            <div className={styles.divA}>
-              <FontAwesomeIcon icon={faChild} />{value.kid}
-            </div>
+              <div className={styles.divA}>
+                <FontAwesomeIcon icon={faChild} />{value.kid}
+              </div>
 
-            <div className={styles.divA}>
-              <FontAwesomeIcon icon={faBaby} />{value.baby}
-            </div>
-          </button>
-          {extraBox ? <ExtraBox handleChange={handleChange} setValue={setValue} value={value} /> : false}
-        </div>
+              <div className={styles.divA}>
+                <FontAwesomeIcon icon={faBaby} />{value.baby}
+              </div>
+            </button>
+            {extraBox ? <ExtraBox handleChange={handleChange} setValue={setValue} value={value} /> : false}
+          </div>
 
-        <div className={styles.botonBox}>
-          <button className={styles.boton} onClick={handleClick}>Buscar
-            <FontAwesomeIcon className={styles.iconSearch} icon={faSearch} />
-          </button>
-        </div>
-      </form>
+          <div className={styles.botonBox}>
+            <button className={styles.boton} onClick={handleClick}>Buscar
+              <FontAwesomeIcon className={styles.iconSearch} icon={faSearch} />
+            </button>
+          </div>
+        </form>
 
-    </div>
+      </div>
   );
 }
 
@@ -343,14 +343,14 @@ export default function SearchBar() {
 const Errorr: FC<Props> = ({ setError }) => {
 
   return (
-    <div className={styles.ErrorBox}>
-      <div className={styles.errorr}>
-        <h2>Debes ingresar Origen y Destinos validos</h2>
-        <p>Si das Click en autocompletar no deberia dar problemas !</p>
-        <button onClick={() => setError(false)}>Aceptar</button>
-      </div>
+      <div className={styles.ErrorBox}>
+        <div className={styles.errorr}>
+          <h2>Debes ingresar Origen y Destinos validos</h2>
+          <p>Si das Click en autocompletar no deberia dar problemas !</p>
+          <button onClick={() => setError(false)}>Aceptar</button>
+        </div>
 
-    </div>
+      </div>
 
   )
 }

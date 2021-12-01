@@ -15,18 +15,17 @@ import React from "react";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import Navbar from "./components/Navbar/Navbar";
 
-
 function App() {
   return (
     <div>
       <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
-        {/* <Route
+        <Route
             exact
             path="/popular-destination/:id"
             component={PopularDestination}
-        /> */}
+        />
         <Route exact path="/about-us" component={AboutUs}/>
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={RegisterPage} />
