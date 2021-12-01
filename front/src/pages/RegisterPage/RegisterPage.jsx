@@ -1,4 +1,4 @@
-import {ChangeEvent, useEffect, useState} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FcGoogle } from "react-icons/fc";
@@ -6,8 +6,14 @@ import { FaEnvelope, FaUserAlt } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import styles from "./RegisterPage.module.scss";
 import regex from "../../helpers/regex";
-import 'firebase/auth';
-import {auth, db, registerWithEmailAndPassword, signInWithGoogle} from "../../firebaseConfig";
+import "firebase/auth";
+import {
+  auth,
+  db,
+  registerWithEmailAndPassword,
+  signInWithGoogle,
+} from "../../firebaseConfig";
+import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 
 export default function RegisterPage() {
   const [input, setInput] = useState({
@@ -114,7 +120,7 @@ export default function RegisterPage() {
   const newUser = async (data) => {
     await registerWithEmailAndPassword(input.email, input.password)
       .then(() => {
-        db.collection("users").doc().set(data)
+        db.collection("users").doc().set(data);
         resetForm();
         history.push("/");
         alert("Usuario registrado con exito");
@@ -122,24 +128,20 @@ export default function RegisterPage() {
       .catch((error) => {
         alert(error.message);
       });
-    console.log("nuevo usuario registrado")
-  }
-
-
+    console.log("nuevo usuario registrado");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    newUser(input).then(r =>
-      console.log(r)
-    );
+    newUser(input).then((r) => console.log(r));
     if (validateForm()) {
       resetForm();
     }
   };
 
-
   return (
     <section className={styles.loginPage}>
+      <GoHomeButton />
 
       <div className={styles.loginPageContent}>
         <Link to="/">
@@ -320,10 +322,10 @@ export default function RegisterPage() {
           <button type="submit">Registrarse</button>
         </form>
 
-              <button className={styles.googleBtn} onClick={signInWithGoogle}>
-                <FcGoogle />
-                Continuar con Google
-              </button>
+        <button className={styles.googleBtn} onClick={signInWithGoogle}>
+          <FcGoogle />
+          Continuar con Google
+        </button>
         <Link to="/login">¿Ya tienes una cuenta? Inicia sesión</Link>
       </div>
     </section>
