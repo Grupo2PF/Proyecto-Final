@@ -3,6 +3,7 @@ import styles from "./OfferPage.module.scss";
 import { useSelector } from "react-redux";
 // import { useState } from "react";
 import OfferCard from "../../components/OfferCard/OfferCard";
+import { RiH2 } from "react-icons/ri";
 // import { useEffect } from "react";
 
 type transfers = {
@@ -73,28 +74,32 @@ export default function OfferPage(): JSX.Element {
   return (
     <section className={styles.divContainer}>
       <header>
-        <h2>
-          {response.origin.airport ? response.origin.airport : "Origen"}{" "}
-        </h2>
-        <h2>
-          {response.destination.airport
-            ? response.destination.airport
-            : "Destino"}{" "}
-        </h2>
-      </header>
 
-      {/* {response.offers.length ?  */}
-      {response.offers.map((item: any) => (
-        <OfferCard
-          offers={item}
-          mode={response.mode}
-          originCity={response.origin.city}
-          destinationCity={response.destination.city}
-          originAirport={response.origin.airport}
-          destinationAirport={response.destination.airport}
-        />
-      ))}
-      {/* :false } */}
+        {response ? <h2>{response.origin.airport} </h2> : <h2>Nada de nada </h2>}
+
+
+        {response
+          ? <h2>{response.destination.airport}</h2>
+          : <h2>Nada de nada </h2>}
+
+      </header>
+      <h3>Holaaso?</h3>
+      {response ?
+        response.offers.map((item: any) => (
+          <OfferCard
+            offers={item.id}
+            currency={item.currency}
+            price={item.price}
+            transfers={item.transfers}
+            mode={response.mode}
+            originCity={response.origin.city}
+            destinationCity={response.destination.city}
+            originAirport={response.origin.airport}
+            destinationAirport={response.destination.airport}
+          />
+        ))
+
+        : <h2>No detecta el response</h2>}
     </section>
   );
 }

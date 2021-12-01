@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Back } from "../../pages/OfferPage/OfferPage";
 import styles from "./OfferCard.module.scss"
 
-export default function OfferCard(props:any ): JSX.Element {
+export default function OfferCard(props: any): JSX.Element {
   const [clicked, setClicked] = useState(false);
 
   let modo: string = "";
-  var oneWay: JSX.Element = <></>;
-  var idaVuelta: JSX.Element = <></>;
+  // var oneWay: JSX.Element = <></>;
+  // var idaVuelta: JSX.Element = <></>;
 
 
   const handleClick = (index: any) => {
@@ -15,97 +15,99 @@ export default function OfferCard(props:any ): JSX.Element {
       return setClicked(true);
     }
   };
+  //   if (props.mode === "oneway") {
+  //     modo = "Solo Ida";
 
-//   if (props.mode === "oneway") {
-//     modo = "Solo Ida";
-    var oneWay: JSX.Element = (
-      <div>
-    
-          <div  className={styles.cardContainer}>
+  // console.log(props)
+  console.log('viendo props.item')
+  console.log(props.offers)
 
-            <div className={styles.cardPrice}> {`${props.item.currency} ${props.item.price}`} </div>
+  return (
 
-            <div className={styles.cardInfo} >
-            <p> {modo} </p>
-            <h2>
-              {props.originCity ? props.originCity : props.originAirport} - {props.destinationCity ? props.destinationCity :  props.destinationAirport}
-            </h2>
-            
-            {props.item.transfers.length === 1 ? ( <p> Vuelo directo </p> ) : ( <p> Tiene Escalas </p> )}
+    <div className={styles.idaVueltaContainer}>
 
-            </div>
- 
-         
-            
+      {props.offers ?
+        <div>
+          {props.mode === "oneway" ?/*  <h2>aca va el oneway</h2> */
+            <div className={styles.cardContainer}>
 
-              {props.item.transfers.map((escala: any) => (
+              <div className={styles.cardPrice}> {`${props.currency} ${props.price}`} </div>
+
+              <div className={styles.cardInfo} >
+                <p> {modo} </p>
+                <h2>
+                  {props.originCity ? props.originCity : props.originAirport} - {props.destinationCity ? props.destinationCity : props.destinationAirport}
+                </h2>
+
+                {/* {props.offers.transfers.length === 1 ? (<p> Vuelo directo </p>) : (<p> Tiene Escalas </p>)} */}
+
+              </div>
+
+
+
+
+              {props.transfers ? props.transfers.map((escala: any) => (
                 <div className={styles.cardTransfers}>
                   <p> {escala.origin} - {escala.destination} </p>
                   <p> {escala.departure} - {escala.arrive} </p>
                   <p> Aerolinea: {escala.airline}</p>
                 </div>
-              ))}
+              )) : <h2>No renderiza las transfers</h2>}
 
 
-        </div>
+            </div>
+            :
+            <h2>Aca va el ioda y vuelta</h2>
+            /*<div>
 
-      </div>
-    );
-//   } else {
+              <div>
+                <p> {`${props.item.currency} ${props.item.price}`}</p>
 
-//     modo = "Ida y Vuelta";
-    var idaVuelta: JSX.Element = (
+                <h2>Escalas/transbordos IDA</h2>
+                {props.item.departure.transfers.map((item: any) => (
+                  <div>
+                    <p>
+                      {props.originCity ? props.originCity : props.originAirport} - {props.destinationCity ? props.destinationCity : props.destinationAirport}
+                    </p>
 
-          <div>
+                    <p>Salida: {item.departure}</p>
+                    <p>Llegada: {item.arrive}</p>
+                    <p>Aerolinea: {item.airline}</p>
+                    <p>Vuelo Nro: {item.flightNumber}</p>
 
-            <div>
-              <p> {`${props.item.currency} ${props.item.price}`}</p>
+                  </div>
+                ))}
+              </div>
 
-              <h2>Escalas/transbordos IDA</h2>
-              {props.item.departure.transfers.map((item: any) => (
+              <h2>Escalas/transbordos VUELTA</h2>
+              {props.item.return.transfers.map((item: any) => (
                 <div>
                   <p>
-                  {props.originCity ? props.originCity : props.originAirport} - {props.destinationCity ? props.destinationCity :  props.destinationAirport}
+                    {item.origin} - {item.destination}
                   </p>
-
                   <p>Salida: {item.departure}</p>
                   <p>Llegada: {item.arrive}</p>
                   <p>Aerolinea: {item.airline}</p>
                   <p>Vuelo Nro: {item.flightNumber}</p>
-              
+                  <br />
                 </div>
               ))}
-            </div>
+            </div>*/
 
-            <h2>Escalas/transbordos VUELTA</h2>
-            {props.item.return.transfers.map((item: any) => (
-              <div>
-                <p>
-                  {item.origin} - {item.destination}
-                </p>
-                <p>Salida: {item.departure}</p>
-                <p>Llegada: {item.arrive}</p>
-                <p>Aerolinea: {item.airline}</p>
-                <p>Vuelo Nro: {item.flightNumber}</p>
-                <br />
-              </div>
-            ))}
-          </div>
-    );
-// }
+          }
 
 
 
 
-return (
 
-<div className={styles.idaVueltaContainer}>
-        {props.mode === "oneway" ? (
-          <div className={styles.idaContainer}> {oneWay} </div>
-        ) : (
-          <div className={styles.vueltaContainer}>{idaVuelta} </div>
-        )}
-      </div>
-  
+
+        </div> : <h2>No renderiza ninguno de los dos </h2>}
+
+
+
+
+
+    </div>
   )
+
 }
