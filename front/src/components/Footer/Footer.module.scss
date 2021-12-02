@@ -8,6 +8,8 @@
     font-family: $content-font;
     font-size: 1.1rem;
     font-weight: $medium-font;
+    position:static;
+    bottom: 0;
 
     &Content {
         display: flex;

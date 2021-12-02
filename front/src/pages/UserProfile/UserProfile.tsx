@@ -1,25 +1,45 @@
-// import React, { FC } from 'react'
 import datos from "./us";
 import styles from "./UserProfile.module.scss";
-import firebase from 'firebase/app';
 import { useHistory } from "react-router-dom";
+import Navbar from "../../components/Navbar/Navbar";
+import {useCallback, useEffect, useState} from "react";
+import {auth, db, logout} from "../../firebaseConfig";
+import {useAuthState} from "react-firebase-hooks/auth";
 
 
 export default function UserProfile(): JSX.Element {
 
+  const [user, loading, error] = useAuthState(auth);
+  const [name, setName] = useState("");
   const history = useHistory();
 
-  function logout() {
-    firebase.auth().signOut().then(function () {
-      history.push("/");
-    }).catch(function (error) {
-      console.log(error);
-    });
-  }
+  const fetchUserName = async () => {
+    try {
+      const query = await db
+          .collection("users")
+          .where("uid", "==", user?.uid)
+          .get();
+      const data = await query.docs[0].data();
+      setName(data.name);
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while fetching user data");
+    }
+  };
+
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return history.replace("/");
+    fetchUserName().then(r =>
+      console.log(r)
+    );
+  }, [user, loading, history, fetchUserName]);
+
 
 
   return (
     <div className={styles.pageContainer}>
+      <Navbar />
       {datos.map((dato): JSX.Element => {
         return (
           <div className={styles.userProfileContainer}>
@@ -27,7 +47,7 @@ export default function UserProfile(): JSX.Element {
             <div className={styles.imgAndNameContainer}>
               <img src={dato.img} alt="Sin imagen" />
               <h1>
-                {dato.name} {dato.apellido}
+                {name}
               </h1>
             </div>
             {/* Contendor de tarjetas de opciones */}
@@ -37,7 +57,7 @@ export default function UserProfile(): JSX.Element {
                 <div className={styles.cardOptions}>
                   <h3>Dni: {dato.dni}</h3>
                   <h3>Fecha de nacimiento: {dato.bDate}</h3>
-                  <h3>Mail: {dato.email}</h3>
+                  <h3>Mail: {user?.email}</h3>
                   <h3>Nº de Teléfono: {dato.phone}</h3>
                 </div>
               </div>
@@ -66,7 +86,7 @@ export default function UserProfile(): JSX.Element {
               </div>
 
               <div className={styles.button}>
-                <button className={styles.btn1} onClick={logout}>Cerrar sesión</button>
+                <button className={styles.btn1} onClick={logout} >Cerrar sesión</button>
                 <button className={styles.btn}>Eliminar cuenta</button>
               </div>
 

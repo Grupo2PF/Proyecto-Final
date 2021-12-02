@@ -5,7 +5,7 @@ import styles from "./Searchbar.module.scss";
 import json from '../../assets/IATA.json';
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouseUser, faMapMarkerAlt, faPlane, faPlaneArrival, faPlaneDeparture, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faBaby, faChild, faHouseUser, faMale, faMapMarkerAlt, faPlane, faPlaneArrival, faPlaneDeparture, faSearch } from "@fortawesome/free-solid-svg-icons";
 import ExtraBox from "./ExtraBox/ExtraBox";
 import { useHistory } from "react-router-dom";
 
@@ -16,6 +16,8 @@ export default function SearchBar() {
 
   const history = useHistory();
   const dispatch = useDispatch();
+
+
   const [error, setError] = useState(false)
   const [extraBox, setExtraBox] = useState(false)
   const [filterOptional, setFilterOptional] = useState([])
@@ -154,7 +156,7 @@ export default function SearchBar() {
       history.push("/offers")
     }
 
-    setTimeout(redir, 5000);
+    setTimeout(redir, 8000);
   }
   ////////////////////////////////////////////
 
@@ -165,10 +167,13 @@ export default function SearchBar() {
   }
 
 
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1;
+  var yyyy = today.getFullYear();
 
 
-
-
+  console.log(dd, mm, yyyy)
 
   return (
     <div className={styles.searchBarContainer}>
@@ -181,111 +186,114 @@ export default function SearchBar() {
       </div>
       <form>
 
+        <div className={styles.allInputsBox}>
 
 
 
 
 
-        <div className={styles.selects}>
-          <label> Origen </label>
-          <div className={styles.inputBox}>
-            <FontAwesomeIcon className={styles.icon} icon={faPlaneDeparture} />
-            <input name='originCity' value={value.originCity} type="text" onChange={e => combo(e)} autoComplete='off' />
+          <div className={styles.selects}>
+            <label> Origen </label>
+            <div className={styles.inputBox}>
+              <FontAwesomeIcon className={styles.icon} icon={faPlaneDeparture} />
+              <input placeholder='Ciudad de origen' name='originCity' value={value.originCity} type="text" onChange={e => combo(e)} autoComplete='off' />
+            </div>
+
+
+
+
+
+            <div className={styles.ulBox}>
+
+              < ul role="listbox">
+                {value.originCity.length > 2 ? filterOptional.map((d: any) =>
+                  <li > <button name={d} onClick={e => handleSelectCountry(e)} >{d}</button></li>
+                )
+                  : false}
+              </ul>
+            </div>
+
           </div>
 
 
 
 
 
-          <div className={styles.ulBox}>
+          <div className={styles.selects}>
+            <label> Destino </label>
+            <div className={styles.inputBox}>
+              <FontAwesomeIcon className={styles.icon} icon={faPlaneArrival} />
 
-            < ul role="listbox">
-              {value.originCity.length > 2 ? filterOptional.map((d: any) =>
-                <li > <button name={d} onClick={e => handleSelectCountry(e)} >{d}</button></li>
-              )
-                : false}
-            </ul>
-          </div>
-
-        </div>
+              <input placeholder='Ciudad de destino' type="text" name="destinyCity" value={value.destinyCity} onChange={e => comboBack(e)} autoComplete='off' />
+            </div>
 
 
+            <div className={styles.ulBox}>
 
+              < ul role="listbox">
+                {value.destinyCity.length > 2 ? filterOptionalBack.map((d: any) =>
+                  <li > <button name={d} onClick={e => handleSelectCountryBack(e)} >{d}</button></li>
+                )
+                  : false}
+              </ul>
+            </div>
 
-
-        <div className={styles.selects}>
-          <label> Destino </label>
-          <div className={styles.inputBox}>
-            <FontAwesomeIcon className={styles.icon} icon={faPlaneArrival} />
-
-            <input type="text" name="destinyCity" value={value.destinyCity} onChange={e => comboBack(e)} autoComplete='off' />
-          </div>
-
-
-          <div className={styles.ulBox}>
-
-            < ul role="listbox">
-              {value.destinyCity.length > 2 ? filterOptionalBack.map((d: any) =>
-                <li > <button name={d} onClick={e => handleSelectCountryBack(e)} >{d}</button></li>
-              )
-                : false}
-            </ul>
-          </div>
-
-        </div>
-
-
-
-
-
-
-        <div className={styles.selects}>
-          <label> Vuelos </label>
-
-          <div className={styles.inputBox}>
-            <FontAwesomeIcon className={styles.icon} icon={faPlane} />
-
-            <select name="journeyType" onChange={(e) => handleChangeJourney(e)}>
-              <option value='false' > Solo ida </option>
-              <option value='true' > Ida y vuelta </option>
-            </select>
-          </div>
-        </div>
-
-
-
-        <div className={styles.dataBox}>
-
-
-          <div className={styles.selectsData}>
-            <label> Ida </label>
-            <input
-              className={styles.inputBox}
-              type="date"
-              placeholder=""
-              name="departureDate"
-              onChange={handleChange}
-            />
           </div>
 
 
 
 
-          <div className={styles.selectsData}>
-            <label className={value.journeyType ? styles.label : styles.labelDisableD} > Vuelta </label>
-            <input
-              disabled={!value.journeyType}
-              className={value.journeyType ? styles.inputBox : styles.inputBoxDisabled}
-              type="date"
-              placeholder=""
-              name="returnDate"
-              onChange={handleChange}
-            />
+
+
+          <div className={styles.selects}>
+            <label> Vuelos </label>
+
+            <div className={styles.inputBox}>
+              <FontAwesomeIcon className={styles.icon} icon={faPlane} />
+
+              <select name="journeyType" onChange={(e) => handleChangeJourney(e)}>
+                <option value='false' > Solo ida </option>
+                <option value='true' > Ida y vuelta </option>
+              </select>
+            </div>
           </div>
 
-        </div>
 
-        {/*    <div className={styles.selects}>
+
+          <div className={styles.dataBox}>
+
+
+            <div className={styles.selectsData}>
+              <label> Ida </label>
+              <input
+                className={styles.inputBox}
+                type="date"
+                min={`${yyyy}-${mm}-${dd}`}
+                placeholder=""
+                name="departureDate"
+                onChange={handleChange}
+              />
+            </div>
+
+
+
+
+            <div className={styles.selectsData}>
+              <label className={value.journeyType ? styles.label : styles.labelDisableD} > Vuelta </label>
+              <input
+                disabled={value.departureDate.length === 0}
+                className={value.journeyType ? styles.inputBox : styles.inputBoxDisabled}
+                type="date"
+                min={value.departureDate}
+                onChange={handleChange}
+                name="returnDate"
+
+              />
+            </div>
+
+          </div>
+
+          {/*    <div className={styles.selects}>
           <label> Cantidad de pasajeros </label>
           <select className={styles.passengers}>
             <option> 1 </option>
@@ -296,7 +304,7 @@ export default function SearchBar() {
           </select>
         </div> */}
 
-        {/*    <div className={styles.selects}>
+          {/*    <div className={styles.selects}>
           <label> Clase </label>
           <div className={styles.inputBox}>
 
@@ -308,10 +316,11 @@ export default function SearchBar() {
             </select>
           </div>
         </div> */}
-        <div>
 
-          {extraBox ? <ExtraBox handleChange={handleChange} setValue={setValue} value={value}/> : false}
-          <button onClick={e => handleExtraBox(e)}>Hola ke hace</button>
+
+
+          <ExtraBox handleChange={handleChange} setValue={setValue} value={value} />
+
         </div>
 
         <div className={styles.botonBox}>
