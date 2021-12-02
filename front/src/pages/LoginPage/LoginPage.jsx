@@ -86,7 +86,7 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push("/");
+    history.push("/user");
     if (validateForm()) {
       resetForm();
     }

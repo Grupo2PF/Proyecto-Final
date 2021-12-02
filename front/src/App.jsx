@@ -14,6 +14,7 @@ import Reset from "./pages/ResetPass/ResetPass";
 import React from "react";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
+import Footer from "./components/Footer/Footer";
 // import Navbar from "./components/Navbar/Navbar";
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
         <Route exact path="/user/update" component={UpdateUserProfile} />
         <Route exact path="/offers" component={OfferPage} />
       </Switch>
-        {/* <Footer/> */}
+        <Footer/>
     </div>
   );
 }
