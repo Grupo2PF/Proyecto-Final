@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import styles from "./OfferCard.module.scss";
+import {useDispatch} from "react-redux";
+import { getSeats} from "../../redux/actions/";
 
 export default function OfferCardI(props: any): JSX.Element {
   const [clicked, setClicked] = useState(false);
+  const dispatch = useDispatch()
 
   const handleClick = (e: any) => {
     if (!clicked) {
@@ -12,6 +15,13 @@ export default function OfferCardI(props: any): JSX.Element {
       return setClicked(false);
     }
   };
+
+  const handleBuy = (e: any) => {
+    const id= props.offers
+    dispatch(getSeats(id));
+  }
+  
+  
 
   return (
     <div className={styles.cardContainer}>
@@ -22,7 +32,7 @@ export default function OfferCardI(props: any): JSX.Element {
           {props.destinationCity ? props.destinationCity : props.destinationAirport}
           <button onClick={(e) => {handleClick(e);}}> <AiOutlineExclamationCircle size={20}/> </button>
           </h2>
-          <p className={styles.cardPrice}> {`${props.currency} ${props.price}`} </p>
+          <button onClick={handleBuy} className={styles.cardPrice}>{`${props.currency} ${props.price}`} </button>
       </div>
 
       {clicked

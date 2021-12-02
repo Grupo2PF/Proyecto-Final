@@ -1,27 +1,33 @@
 import React, { useEffect, useState, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFlight } from "../../redux/actions";
+import { getFlight, setLoading } from "../../redux/actions";
 import styles from "./Searchbar.module.scss";
-import json from '../../assets/IATA.json';
+import json from "../../assets/IATA.json";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBaby, faChild, faHouseUser, faMale, faMapMarkerAlt, faPlane, faPlaneArrival, faPlaneDeparture, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBaby,
+  faChild,
+  faHouseUser,
+  faMale,
+  faMapMarkerAlt,
+  faPlane,
+  faPlaneArrival,
+  faPlaneDeparture,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import ExtraBox from "./ExtraBox/ExtraBox";
 import { useHistory } from "react-router-dom";
 
-
-
 export default function SearchBar() {
-
-
   const history = useHistory();
   const dispatch = useDispatch();
 
-
-  const [error, setError] = useState(false)
-  const [extraBox, setExtraBox] = useState(false)
-  const [filterOptional, setFilterOptional] = useState([])
-  const [filterOptionalBack, setFilterOptionalBack] = useState([])
+  const loading: boolean = useSelector((state: any) => state.loading);
+  const [error, setError] = useState(false);
+  const [extraBox, setExtraBox] = useState(false);
+  const [filterOptional, setFilterOptional] = useState([]);
+  const [filterOptionalBack, setFilterOptionalBack] = useState([]);
 
   const [value, setValue] = useState({
     originCity: "",
@@ -32,69 +38,72 @@ export default function SearchBar() {
     class: "Economy",
     baby: 0,
     kid: 0,
-    adult: 1
+    adult: 1,
   });
-
-
 
   ///////// Logica autocompletado /////////
   function handleChangeOrigen(e: any) {
     e.preventDefault();
     setValue({
       ...value,
-      originCity: e.target.value
+      originCity: e.target.value,
     });
   }
   function handleChangeBack(e: any) {
     e.preventDefault();
     setValue({
       ...value,
-      destinyCity: e.target.value
+      destinyCity: e.target.value,
     });
-
   }
 
   function filterCompleted() {
-    const cities: any = json.filter(d => d.city.toLowerCase().includes(value.originCity.toLowerCase()) || d.airport.toLowerCase().includes(value.originCity.toLowerCase()));
-    const airports: any = cities.map((d: any) => d.airport)
-    setFilterOptional(airports.slice(0, 5))
-
+    const cities: any = json.filter(
+      (d) =>
+        d.city.toLowerCase().includes(value.originCity.toLowerCase()) ||
+        d.airport.toLowerCase().includes(value.originCity.toLowerCase())
+    );
+    const airports: any = cities.map((d: any) => d.airport);
+    setFilterOptional(airports.slice(0, 5));
   }
   function filterCompletedBack() {
-    const citiesB: any = json.filter(d => d.city.toLowerCase().includes(value.destinyCity.toLowerCase()));
-    const airportsB: any = citiesB.map((d: any) => d.airport)
-    setFilterOptionalBack(airportsB.slice(0, 5))
-
+    const citiesB: any = json.filter((d) =>
+      d.city.toLowerCase().includes(value.destinyCity.toLowerCase())
+    );
+    const airportsB: any = citiesB.map((d: any) => d.airport);
+    setFilterOptionalBack(airportsB.slice(0, 5));
   }
 
   function combo(e: any) {
-    handleChangeOrigen(e)
-    if (value.originCity.length > 2) { filterCompleted() }
+    handleChangeOrigen(e);
+    if (value.originCity.length > 2) {
+      filterCompleted();
+    }
   }
   function comboBack(e: any) {
-    handleChangeBack(e)
-    if (value.destinyCity.length > 2) { filterCompletedBack() }
+    handleChangeBack(e);
+    if (value.destinyCity.length > 2) {
+      filterCompletedBack();
+    }
   }
 
   function handleSelectCountry(e: any) {
-    e.preventDefault()
+    e.preventDefault();
     setValue({
       ...value,
       originCity: e.target.name,
     });
-    setFilterOptional([])
+    setFilterOptional([]);
   }
   function handleSelectCountryBack(e: any) {
-    e.preventDefault()
+    e.preventDefault();
     setValue({
       ...value,
       destinyCity: e.target.name,
     });
-    setFilterOptionalBack([])
+    setFilterOptionalBack([]);
   }
   ////////////////////////////////////////////
-
-
 
   ///////// Logica Selects ///////
   function handleChange(e: any) {
@@ -105,35 +114,36 @@ export default function SearchBar() {
   }
   ////////////////////////////////////////////
 
-
   ///////// Click JourneyType (logica para que llegue booleano al value object) /////////
   function handleChangeJourney(e: any) {
-    e.preventDefault()
-    const val: string = e.target.value
+    e.preventDefault();
+    const val: string = e.target.value;
 
-    if (val === 'true') {
+    if (val === "true") {
       setValue({
         ...value,
-        journeyType: true
-      })
-    } else if (val === 'false') {
+        journeyType: true,
+      });
+    } else if (val === "false") {
       setValue({
         ...value,
-        journeyType: false
-      })
+        journeyType: false,
+      });
     }
   }
   ////////////////////////////////////////////
 
-
   ///////// Click enviar formulario /////////
   function handleClick(e: any) {
     e.preventDefault();
-    const cities: any = json.filter(d => d.airport.toLowerCase().includes(value.originCity.toLowerCase()));
-    const citiesBack: any = json.filter(d => d.airport.toLowerCase().includes(value.destinyCity.toLowerCase()));
+    const cities: any = json.filter((d) =>
+      d.airport.toLowerCase().includes(value.originCity.toLowerCase())
+    );
+    const citiesBack: any = json.filter((d) =>
+      d.airport.toLowerCase().includes(value.destinyCity.toLowerCase())
+    );
 
     if (cities.length === 1 && citiesBack.length === 1) {
-
       // const origin: any = json.filter(data => data.airport === value.originCity)
       // const back: any = json.filter(data => data.airport === value.destinyCity)
 
@@ -146,104 +156,112 @@ export default function SearchBar() {
         class: value.class,
         baby: value.baby,
         kid: value.kid,
-        adult: value.adult
-      }
-      console.log(toSend)
+        adult: value.adult,
+      };
+      dispatch(setLoading(!loading));
       dispatch(getFlight(toSend));
-    } else { setError(true) }
-
-    const redir = () => {
-      history.push("/offers")
+    } else {
+      setError(true);
     }
 
-    setTimeout(redir, 8000);
+    const redir = () => {
+      history.push("/offers");
+    };
+
+    setTimeout(redir, 0);
   }
   ////////////////////////////////////////////
 
-
   function handleExtraBox(e: any) {
-    e.preventDefault()
-    setExtraBox(!extraBox)
+    e.preventDefault();
+    setExtraBox(!extraBox);
   }
-
 
   var today = new Date();
   var dd = today.getDate();
   var mm = today.getMonth() + 1;
   var yyyy = today.getFullYear();
 
-
-  console.log(dd, mm, yyyy)
+  console.log(dd, mm, yyyy);
 
   return (
     <div className={styles.searchBarContainer}>
-
       {error ? <Errorr setError={setError} /> : false}
 
       <div className={styles.titleBox}>
-
         <h3> Encuentra las mejores ofertas </h3>
       </div>
       <form>
-
         <div className={styles.allInputsBox}>
-
-
-
-
-
           <div className={styles.selects}>
             <label> Origen </label>
             <div className={styles.inputBox}>
-              <FontAwesomeIcon className={styles.icon} icon={faPlaneDeparture} />
-              <input placeholder='Ciudad de origen' name='originCity' value={value.originCity} type="text" onChange={e => combo(e)} autoComplete='off' />
+              <FontAwesomeIcon
+                className={styles.icon}
+                icon={faPlaneDeparture}
+              />
+              <input
+                placeholder="Ciudad de origen"
+                name="originCity"
+                value={value.originCity}
+                type="text"
+                onChange={(e) => combo(e)}
+                autoComplete="off"
+              />
             </div>
 
-
-
-
-
             <div className={styles.ulBox}>
-
-              < ul role="listbox">
-                {value.originCity.length > 2 ? filterOptional.map((d: any) =>
-                  <li > <button name={d} onClick={e => handleSelectCountry(e)} >{d}</button></li>
-                )
+              <ul role="listbox">
+                {value.originCity.length > 2
+                  ? filterOptional.map((d: any) => (
+                      <li>
+                        {" "}
+                        <button
+                          name={d}
+                          onClick={(e) => handleSelectCountry(e)}
+                        >
+                          {d}
+                        </button>
+                      </li>
+                    ))
                   : false}
               </ul>
             </div>
-
           </div>
-
-
-
-
 
           <div className={styles.selects}>
             <label> Destino </label>
             <div className={styles.inputBox}>
               <FontAwesomeIcon className={styles.icon} icon={faPlaneArrival} />
 
-              <input placeholder='Ciudad de destino' type="text" name="destinyCity" value={value.destinyCity} onChange={e => comboBack(e)} autoComplete='off' />
+              <input
+                placeholder="Ciudad de destino"
+                type="text"
+                name="destinyCity"
+                value={value.destinyCity}
+                onChange={(e) => comboBack(e)}
+                autoComplete="off"
+              />
             </div>
 
-
             <div className={styles.ulBox}>
-
-              < ul role="listbox">
-                {value.destinyCity.length > 2 ? filterOptionalBack.map((d: any) =>
-                  <li > <button name={d} onClick={e => handleSelectCountryBack(e)} >{d}</button></li>
-                )
+              <ul role="listbox">
+                {value.destinyCity.length > 2
+                  ? filterOptionalBack.map((d: any) => (
+                      <li>
+                        {" "}
+                        <button
+                          name={d}
+                          onClick={(e) => handleSelectCountryBack(e)}
+                        >
+                          {d}
+                        </button>
+                      </li>
+                    ))
                   : false}
               </ul>
             </div>
-
           </div>
-
-
-
-
-
 
           <div className={styles.selects}>
             <label> Vuelos </label>
@@ -251,18 +269,17 @@ export default function SearchBar() {
             <div className={styles.inputBox}>
               <FontAwesomeIcon className={styles.icon} icon={faPlane} />
 
-              <select name="journeyType" onChange={(e) => handleChangeJourney(e)}>
-                <option value='false' > Solo ida </option>
-                <option value='true' > Ida y vuelta </option>
+              <select
+                name="journeyType"
+                onChange={(e) => handleChangeJourney(e)}
+              >
+                <option value="false"> Solo ida </option>
+                <option value="true"> Ida y vuelta </option>
               </select>
             </div>
           </div>
 
-
-
           <div className={styles.dataBox}>
-
-
             <div className={styles.selectsData}>
               <label> Ida </label>
               <input
@@ -275,22 +292,26 @@ export default function SearchBar() {
               />
             </div>
 
-
-
-
             <div className={styles.selectsData}>
-              <label className={value.journeyType ? styles.label : styles.labelDisableD} > Vuelta </label>
+              <label
+                className={
+                  value.journeyType ? styles.label : styles.labelDisableD
+                }
+              >
+                {" "}
+                Vuelta{" "}
+              </label>
               <input
                 disabled={value.departureDate.length === 0}
-                className={value.journeyType ? styles.inputBox : styles.inputBoxDisabled}
+                className={
+                  value.journeyType ? styles.inputBox : styles.inputBoxDisabled
+                }
                 type="date"
                 min={value.departureDate}
                 onChange={handleChange}
                 name="returnDate"
-
               />
             </div>
-
           </div>
 
           {/*    <div className={styles.selects}>
@@ -317,28 +338,25 @@ export default function SearchBar() {
           </div>
         </div> */}
 
-
-
-          <ExtraBox handleChange={handleChange} setValue={setValue} value={value} />
-
+          <ExtraBox
+            handleChange={handleChange}
+            setValue={setValue}
+            value={value}
+          />
         </div>
 
         <div className={styles.botonBox}>
-          <button className={styles.boton} onClick={handleClick}>Buscar
+          <button className={styles.boton} onClick={handleClick}>
+            Buscar
             <FontAwesomeIcon className={styles.iconSearch} icon={faSearch} />
           </button>
         </div>
       </form>
-
     </div>
   );
 }
 
-
-
-
 const Errorr: FC<Props> = ({ setError }) => {
-
   return (
     <div className={styles.ErrorBox}>
       <div className={styles.errorr}>
@@ -346,11 +364,9 @@ const Errorr: FC<Props> = ({ setError }) => {
         <p>Si das Click en autocompletar no deberia dar problemas !</p>
         <button onClick={() => setError(false)}>Aceptar</button>
       </div>
-
     </div>
-
-  )
-}
+  );
+};
 type Props = {
-  setError: any
-}
+  setError: any;
+};
