@@ -9,6 +9,7 @@ import UserProfile from "./pages/UserProfile/UserProfile";
 import PopularDestination from "./pages/PopularDestination/PopularDestination";
 import OfferPage from "./pages/OfferPage/OfferPage";
 
+
 function App() {
   return (
     <div>
@@ -21,7 +22,7 @@ function App() {
         <Route exact path="/offers" component={OfferPage} />
 
       </Switch>
-      {/* <Footer/> */}
+      <Footer/>
     </div>
   );
 }
