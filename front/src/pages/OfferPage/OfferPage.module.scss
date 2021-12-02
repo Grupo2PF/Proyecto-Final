@@ -2,54 +2,24 @@
 
 .divContainer {
   margin-top: 4.9rem;
-  background-color: aqua;
+  background-color: $white;
+  // background-repeat: no-repeat;
+  // background-attachment: fixed;
+  // background-size: cover;
+  // background-position: center;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  // width: 100vw;
   padding: 1rem;
   align-items: center;
   gap: 2rem;
   header {
     padding: 1rem 0;
-    background-color: red;
-    align-items: center;
+    background-color: $white;
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
-    width: 15rem;
+    width: 90%;
   }
 }
 
-.card {
-  &Container {
-    background-color: $white;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column-reverse;
-    margin: 2rem 0;
-    
-    top: 30%;
-  }
-  &Price {
-    display: flex;
-    background-color: pink;
-    flex-direction: column;
-    text-align: center;
-  }
-  &Transfers {
-    background-color: rgb(104, 43, 43);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  &Info {
-    background-color: aqua;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    text-align: center;
-    cursor: pointer;
-  }
-}

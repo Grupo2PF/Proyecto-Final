@@ -1,0 +1,67 @@
+@import "../../scss/variables";
+.card {
+  &Container {
+    background-color: $white  ;
+    width: 90%;
+    border: 1px solid $main-color;
+    max-width: $notebook-width;
+    border-radius: 10px ;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    button{
+        border: 0;
+        background-color: transparent;
+    }
+    h2{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+  }
+  &Info {
+    width: 80%;
+    background-color: $white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 1rem;
+  }
+  &Price {
+    width: 100%;
+    display: flex;
+    background-color: $main-color;
+    justify-content: center;
+    padding: 0.5rem 0.8rem; 
+  }
+  &Transfers {
+    margin: 0.5rem 0;
+    width: 90%;
+    background-color: rgb(218, 233, 233);
+    border: 1px solid $main-color;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+  }
+
+}
+
+@media screen and (min-width: $tablet-width){
+  .card{
+      &Container{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+      &Info{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      &Price{
+          width: 40%;
+      }
+  }
+}
