@@ -87,7 +87,7 @@ function Counter({ value, setValue, name }) {
         }
 
         if (name === 'Bebes') {
-            if (value.baby < 5) {
+            if (value.baby < value.adult) {
                 setValue({
                     ...value,
                     baby: value.baby + 1
@@ -97,10 +97,15 @@ function Counter({ value, setValue, name }) {
 
         if (name === 'Adultos') {
             if (value.adult < 5) {
+
+
+
+
                 setValue({
                     ...value,
                     adult: value.adult + 1
                 })
+
             }
 
         }
@@ -148,12 +153,20 @@ function Counter({ value, setValue, name }) {
 
         if (name === 'Adultos') {
             if (value.adult > 1) {
-                setValue({
-                    ...value,
-                    adult: value.adult - 1
-                })
-            }
+                if (value.baby >= value.adult) {
+                    setValue({
+                        ...value,
+                        baby: value.baby - 1,
+                        adult: value.adult - 1,
+                    })
 
+                } else {
+                    setValue({
+                        ...value,
+                        adult: value.adult - 1
+                    })
+                }
+            }
         }
 
 
