@@ -127,7 +127,7 @@ router.get("/search", async function (req, res, next) {
         }
       );
 
-      res.send(offerRequestRoundtrip);
+      // res.send(offerRequestRoundtrip);
   
       const flightResults = {
         mode: mode,
