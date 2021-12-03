@@ -5,6 +5,8 @@ import OfferCardIV from "../../components/OfferCard/OfferCardIV";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
+import Navbar from "../../components/Navbar/Navbar";
+
 
 export default function OfferPage(): JSX.Element {
   const response: any = useSelector((state: any) => state.allFlight);
@@ -27,6 +29,7 @@ export default function OfferPage(): JSX.Element {
     if (response.mode) {
       return (
         <section className={styles.divContainer}>
+          <Navbar/>
           <header>
             {console.log(response)}
             <h2>

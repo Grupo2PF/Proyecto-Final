@@ -32,14 +32,16 @@ export default function OfferCardI(props: any): JSX.Element {
           {props.destinationCity ? props.destinationCity : props.destinationAirport}
           <button onClick={(e) => {handleClick(e);}}> <AiOutlineExclamationCircle size={20}/> </button>
           </h2>
-          <button onClick={handleBuy} className={styles.cardPrice}>{`${props.currency} ${props.price}`} </button>
+          <div className={styles.cardPrice}>
+          <button onClick={handleBuy} >{`${props.currency} ${props.price}`} </button>
+          </div>
       </div>
 
       {clicked
         ? props.transfers.map((escala: any) => (
             <div className={styles.cardTransfers}>
               <p> {escala.origin} - {escala.destination} </p>
-              <p>Salida: {escala.departure} - Llegada: {escala.arrive}</p>
+              <p> Salida: {escala.departure} - Llegada: {escala.arrive}</p>
               <p> Aerolinea: {escala.airline}</p>
             </div>
           ))
