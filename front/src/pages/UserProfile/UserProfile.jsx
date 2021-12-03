@@ -21,9 +21,7 @@ export default function UserProfile(documentPath) {
             docs.push({...doc.data(), id: doc.id});
           })
         const filtrado = docs.filter(doc => doc.email === user.email);
-          console.log(filtrado);
         setUsuario(filtrado);
-        console.log(docs);
       });
   };
 
@@ -33,7 +31,7 @@ export default function UserProfile(documentPath) {
         db.collection('users').doc(usuario[0].id).delete().then(r =>
           console.log("Document successfully deleted!")
         ).catch(e =>
-            console.log(usuario[0].uid),
+            console.log(e),
         )
       firebase.auth().currentUser
         .delete().then(() => {

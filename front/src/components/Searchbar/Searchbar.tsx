@@ -107,7 +107,6 @@ export default function SearchBar() {
     });
     setFilterOptionalBack([]);
   }
-  ////////////////////////////////////////////
 
   ///////// Logica Selects ///////
   function handleChange(e: any) {
@@ -116,7 +115,6 @@ export default function SearchBar() {
       [e.target.name]: e.target.value,
     });
   }
-  ////////////////////////////////////////////
 
   ///////// Click JourneyType (logica para que llegue booleano al value object) /////////
   function handleChangeJourney(e: any) {
@@ -135,7 +133,7 @@ export default function SearchBar() {
       });
     }
   }
-  ////////////////////////////////////////////
+
 
   ///////// Click enviar formulario /////////
   function handleClick(e: any) {
@@ -249,9 +247,7 @@ export default function SearchBar() {
           msjErrorTitle={msjError.title}
           msjErrorP={msjError.p}
         />
-      ) : (
-        false
-      )}
+      ) : false}
 
       <div className={styles.titleBox}>
         <h3> Encuentra las mejores ofertas </h3>

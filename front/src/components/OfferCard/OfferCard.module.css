@@ -1,22 +1,35 @@
 .cardContainer {
   background-color: #ffffff;
   width: 90%;
-  border: 1px solid #3884FE;
   max-width: 1024px;
   border-radius: 10px;
   display: flex;
-  align-items: center;
+  box-shadow: 0px 0px 5px #000000;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
 }
 .cardContainer button {
+  display: flex;
+  justify-content: center;
+  text-align: center;
   border: 0;
   background-color: transparent;
 }
+.cardContainer button :hover {
+  cursor: pointer;
+}
 .cardContainer h2 {
-  display: flex;
-  justify-content: center;
   align-items: center;
+  border-bottom: #3884FE solid 1px;
+}
+.cardNumTransfers {
+  width: 10rem;
+  justify-content: space-around;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  font-weight: 500;
 }
 .cardInfo {
   width: 80%;
@@ -30,18 +43,32 @@
 .cardPrice {
   width: 100%;
   display: flex;
+  border: 1px solid #3884FE;
+  border-radius: 10px;
   background-color: #3884FE;
   justify-content: center;
+  text-align: center;
   padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
+.cardPrice button {
+  color: #ffffff;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
 .cardTransfers {
   margin: 0.5rem 0;
   width: 90%;
-  background-color: #dae9e9;
+  background-color: #ffffff;
   border: 1px solid #3884FE;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
+  font-weight: 500;
+  padding: 1rem 0.5rem;
 }
 
 @media screen and (min-width: 768px) {
