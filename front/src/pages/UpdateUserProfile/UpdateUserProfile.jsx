@@ -6,6 +6,7 @@ import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import {
   FaBirthdayCake,
   FaEnvelope,
+  FaFileUpload,
   FaHome,
   FaPassport,
   FaPhone,
@@ -153,7 +154,7 @@ export default function UpdateUserProfile() {
           title: "Datos actualizados",
           icon: "success",
           button: "Ok",
-        }).then(r => history.push("/user"));
+        }).then((r) => history.push("/user"));
       })
       .catch((e) => console.log(e));
   };
@@ -275,14 +276,19 @@ export default function UpdateUserProfile() {
               }}
               placeholder="https://foto-de-perfil.jpg"
             />
+          </div>
+            <progress value={value.uploadValue} max="100" />
+          <button className={styles.inputFile}>
+            <FaFileUpload />
+            Cargar imagen
             <input
+              className={styles.inputFileBtn}
               type="file"
               id="photoURL"
               name="photoURL"
               onChange={handleUpload}
             />
-            <progress value={value.uploadValue} max="100" />
-          </div>
+          </button>
           {/* --------- Phone ------------ */}
           <div className={styles.updatePageFormInput}>
             <FaPhone
