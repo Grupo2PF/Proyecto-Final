@@ -1,0 +1,63 @@
+.cardContainer {
+  background-color: #ffffff;
+  width: 90%;
+  border: 1px solid #3884FE;
+  max-width: 1024px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cardContainer button {
+  border: 0;
+  background-color: transparent;
+}
+.cardContainer h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cardInfo {
+  width: 80%;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 1rem;
+}
+.cardPrice {
+  width: 100%;
+  display: flex;
+  background-color: #3884FE;
+  justify-content: center;
+  padding: 0.5rem 0.8rem;
+}
+.cardTransfers {
+  margin: 0.5rem 0;
+  width: 90%;
+  background-color: #dae9e9;
+  border: 1px solid #3884FE;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 768px) {
+  .cardContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  .cardInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .cardPrice {
+    width: 40%;
+  }
+}
+
+/*# sourceMappingURL=OfferCard.module.css.map */
