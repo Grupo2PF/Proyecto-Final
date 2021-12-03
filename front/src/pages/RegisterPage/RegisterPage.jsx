@@ -14,6 +14,7 @@ import {
   signInWithGoogle,
 } from "../../firebaseConfig";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
+import swal from "sweetalert";
 
 export default function RegisterPage() {
   const [input, setInput] = useState({
@@ -130,11 +131,15 @@ export default function RegisterPage() {
           address: "",
           password: input.password,
           confirmPassword: input.confirmPassword,
-          photoURL: "https://st.depositphotos.com/2101611/3925/v/600/depositphotos_39258143-stock-illustration-businessman-avatar-profile-picture.jpg",
+          photoURL:
+            "https://st.depositphotos.com/2101611/3925/v/600/depositphotos_39258143-stock-illustration-businessman-avatar-profile-picture.jpg",
         });
         resetForm();
-        history.push("/");
-        alert("Usuario registrado con exito");
+        swal({
+          title: "Usuario registrado con exito!",
+          icon: "success",
+          button: "Ok",
+        }).then((r) => history.push("/"));
       })
       .catch((error) => {
         alert(error.message);
@@ -290,7 +295,7 @@ export default function RegisterPage() {
             />
             {inputError.password && (
               <span className={styles.loginFormInputErrorMessage}>
-                Ingrese una contraseña entre 4 y 12 caracteres
+                Ingrese una contraseña entre 6 y 12 caracteres
               </span>
             )}
           </div>
