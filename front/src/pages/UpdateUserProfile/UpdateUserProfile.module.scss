@@ -191,3 +191,31 @@
 
     }
 }
+
+.inputFile {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    padding: 1rem;
+    position: relative;
+    top: unset;
+    left: unset;
+    height: auto;
+    width: 100%;
+    overflow: visible;
+
+    &Btn {
+        background-color: #ff0000;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+}
+progress{
+    width: 100%;
+}
