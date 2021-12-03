@@ -13,14 +13,13 @@ import Reset from "./pages/ResetPass/ResetPass";
 import React from "react";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
-import Footer from "./components/Footer/Footer";
-// import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 
 
 function App() {
   return (
     <div>
-      {/* <Navbar /> */}
+      
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/popular-destination/:id" component={PopularDestination} />
