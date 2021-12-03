@@ -30,6 +30,7 @@ export function getFlight(payload: any) {
 }
 
   export function setLoading(payload: boolean) {
+    console.log(payload);
     return async function (dispatch: any) {
       return dispatch({
         type: SET_LOADING,
@@ -38,13 +39,13 @@ export function getFlight(payload: any) {
     }
   }
 
-
-
-
     export function getSeats(payload: any) {
       return async function (dispatch: any) {
         try { 
+          console.log(payload);
           const info = await axios.get(`http://localhost:3001/${payload}/seats`);
+          console.log("respuesta de la api");
+          console.log(info.data);
           return dispatch({
             type: GET_SEATS,
             payload: info.data,
