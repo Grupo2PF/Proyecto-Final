@@ -147,7 +147,7 @@ export default function SearchBar() {
       d.airport.toLowerCase().includes(value.destinyCity.toLowerCase())
     );
 
-    if (cities.length === 1 && citiesBack.length === 1) {
+    if (cities.length !== 0 && citiesBack.length !== 0) {
       // const origin: any = json.filter(data => data.airport === value.originCity)
       // const back: any = json.filter(data => data.airport === value.destinyCity)
 
@@ -162,6 +162,8 @@ export default function SearchBar() {
         kid: value.kid,
         adult: value.adult,
       };
+
+      console.log(cities);
 
       if (value.journeyType === false) {
         if (value.departureDate) {
@@ -197,6 +199,7 @@ export default function SearchBar() {
       // console.log(toSend)
       // dispatch(getFlight(toSend));
     } else {
+      console.log(cities)
       setMsjError({
         title: "Ingrese un origen y destino valido",
         p: "Puedes usar el autocompletar para buscar lugares especificos",
