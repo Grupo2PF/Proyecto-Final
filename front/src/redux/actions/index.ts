@@ -5,9 +5,9 @@ export function getFlight(payload: any) {
 
   return async function (dispatch: any) {
     try {
-      if (payload.returnDate !== "") {
+      if (payload.journeyType === true) {
         const json = await axios.get(
-          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&rDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=economy`
+          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&rDate=${payload.returnDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=economy`
         );
 
         return dispatch({
