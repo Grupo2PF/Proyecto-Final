@@ -26,7 +26,7 @@ export default function OfferCardIV(props: any): JSX.Element {
             <h2>
                 {props.originCity ? props.originCity : props.originAirport} -
                 {props.destinationCity ? props.destinationCity : props.destinationAirport}
-                <button onClick={(e) => { handleClick(e) }}> <AiOutlineExclamationCircle size={20}/> </button>
+                <button onClick={(e) => { handleClick(e) }}> <AiOutlineExclamationCircle size={25}/> </button>
             </h2>
             <div className={styles.cardPrice}>
             <button onClick={handleBuy} >{`${props.currency} ${props.price}`} </button>
