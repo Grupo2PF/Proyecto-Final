@@ -147,7 +147,7 @@ export default function SearchBar() {
       d.airport.toLowerCase().includes(value.destinyCity.toLowerCase())
     );
 
-    if (cities.length === 1 && citiesBack.length === 1) {
+    if (cities.length !== 0 && citiesBack.length !== 0) {
       // const origin: any = json.filter(data => data.airport === value.originCity)
       // const back: any = json.filter(data => data.airport === value.destinyCity)
 
