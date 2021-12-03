@@ -1,0 +1,78 @@
+@import "../../scss/variables";
+.card {
+  &Container {
+    background-color: $white;
+    width: 90%;
+    border: 1px solid $main-color;
+    max-width: $notebook-width;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    button {
+      :hover {
+        cursor: pointer;
+      }
+      border: 0;
+      background-color: transparent;
+    }
+    h2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  &Info {
+    width: 80%;
+    background-color: $white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 1rem;
+  }
+  &Price {
+    width: 100%;
+    display: flex;
+    border: 1px solid $main-color;
+    border-radius: 10px;
+    background-color: $white;
+    justify-content: center;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    button {
+      width: 100%;
+      cursor: pointer;
+    }
+  }
+  &Transfers {
+    margin: 0.5rem 0;
+    width: 90%;
+    background-color: $white;
+    border: 1px solid $main-color;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    font-weight: $medium-font;
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media screen and (min-width: $tablet-width) {
+  .card {
+    &Container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+    }
+    &Info {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    &Price {
+      width: 40%;
+    }
+  }
+}

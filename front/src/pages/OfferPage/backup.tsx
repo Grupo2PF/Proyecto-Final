@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 export default function OfferPage(Back:object): JSX.Element {
 
     const response = useSelector((state: any) => state.allFlight);
-    console.log(response);
     
     
     // const info1 = Array < Back > ();

@@ -1,1 +1,26 @@
 @import "../../scss/variables";
+
+.divContainer {
+  margin-top: 4.9rem;
+  background-color: $white;
+  // background-repeat: no-repeat;
+  // background-attachment: fixed;
+  // background-size: cover;
+  // background-position: center;
+  display: flex;
+  flex-direction: column;
+  // width: 100vw;
+  min-height: 75vh;
+  padding: 1rem;
+  align-items: center;
+  gap: 2rem;
+  header {
+    padding: 1rem 0;
+    background-color: $white;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+  }
+}
+

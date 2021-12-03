@@ -120,7 +120,18 @@ export default function RegisterPage() {
   const newUser = async (data) => {
     await registerWithEmailAndPassword(input.email, input.password)
       .then(() => {
-        db.collection("users").doc().set(data);
+        db.collection("users").doc().set({
+          dni: "",
+          bDate: "",
+          email: input.email,
+          name: input.name,
+          lastName: input.lastName,
+          phone: "",
+          address: "",
+          password: input.password,
+          confirmPassword: input.confirmPassword,
+          photoURL: "https://st.depositphotos.com/2101611/3925/v/600/depositphotos_39258143-stock-illustration-businessman-avatar-profile-picture.jpg",
+        });
         resetForm();
         history.push("/");
         alert("Usuario registrado con exito");
