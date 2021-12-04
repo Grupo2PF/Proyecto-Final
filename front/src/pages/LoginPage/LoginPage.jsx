@@ -86,7 +86,7 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    history.push("/user");
     if (validateForm()) {
       resetForm();
     }
@@ -94,7 +94,7 @@ export default function LoginPage() {
 
   return (
       <section className={styles.loginPage}>
-      {/* <GoHomeButton />*/}
+      <GoHomeButton />
 
         <div className={styles.loginPageContent}>
           <Link to="/">
@@ -175,7 +175,7 @@ export default function LoginPage() {
                 className="login__btn"
                 onClick={() => signInWithEmailAndPassword(email, password)}
             >
-              Login
+              Iniciar sesión
             </button>
           </form>
           <Link className={styles.userLink} to="/user"/>

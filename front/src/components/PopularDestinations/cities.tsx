@@ -92,7 +92,7 @@ const cities = (): Array<City> => {
         "París es la capital de Francia y una de las ciudades más visitadas de Europa -y del mundo-, tiene más de una razón para ser recorrida. Quizás se deba a que ofrece la maravillosa Torre Eiffel, a su interminable red de metro, o sus paseos por el Río Sena, por su idioma o por la gran cantidad de historia en cada paso y rincón. O tal vez porque París es un lugar al que no podemos dejar de ir al menos una vez en la vida.",
       placesOfInterest: [
         "Si quieres visitar un rincón verde que te permita conocer el estilo de los jardines florentinos del siglo XVII, tienes que visitar los Jardines de Luxemburgo.",
-        "Si quieres conocer la historia de París, puedes visitar el Museo de la Guerra de la Independencia, el Museo de la Guerra de la Segunda Guerra Mundial, el Museo de la Guerra de la Segunda Guerra Mundial y el Museo de la Guerra de la Segunda Guerra Mundial",
+        "Si quieres conocer la historia de París, puedes visitar el Museo de la Guerra de la Independencia o el Museo de la Segunda Guerra Mundial",
         "Paris es conocida mundialmente por su arte, sin lugar a dudas, si te gusta el arte puedes recorrer sus numerosos museos tales como el Louvre, El centro de Georges Pompidou, el museo Orsay o el Musée de L'orangerie",
       ],
       images: [paris1, paris2, paris3],
