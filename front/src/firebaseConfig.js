@@ -2,6 +2,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore"
 import "firebase/auth"
+import "firebase/storage"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -26,6 +27,7 @@ export { db, auth };*/
 const app = firebase.initializeApp(firebaseConfig);
 const auth = app.auth();
 const db = app.firestore();
+const storage = app.storage();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 const signInWithGoogle = async () => {
@@ -59,16 +61,10 @@ const signInWithEmailAndPassword = async (email, password) => {
 };
 
 
-const registerWithEmailAndPassword = async (name, email, password) => {
+const registerWithEmailAndPassword = async (email, password) => {
     try {
-        const res = await auth.createUserWithEmailAndPassword(email, password);
-        const user = res.user;
-        await db.collection("users").add({
-            uid: user.uid,
-            name,
-            authProvider: "local",
-            email,
-        });
+        await auth.createUserWithEmailAndPassword(email, password);
+
     } catch (err) {
         console.error(err);
         alert(err.message);
@@ -90,6 +86,7 @@ export const firestore = firebase.firestore();
 export {
     auth,
     db,
+    storage,
     signInWithGoogle,
     signInWithEmailAndPassword,
     registerWithEmailAndPassword,

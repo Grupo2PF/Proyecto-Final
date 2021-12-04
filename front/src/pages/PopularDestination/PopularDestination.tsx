@@ -47,7 +47,6 @@ export default function PopularDestination() {
           <h1>No se encontro la ciudad</h1>
         )}
       </section>
-      <Footer />
     </>
   );
 }

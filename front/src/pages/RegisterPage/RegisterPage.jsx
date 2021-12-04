@@ -1,4 +1,4 @@
-import {ChangeEvent, useEffect, useState} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FcGoogle } from "react-icons/fc";
@@ -6,9 +6,15 @@ import { FaEnvelope, FaUserAlt } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import styles from "./RegisterPage.module.scss";
 import regex from "../../helpers/regex";
-import 'firebase/auth';
-import {auth, firestore, signInWithGoogle} from "../../firebaseConfig";
-import {useAuthState} from "react-firebase-hooks/auth";
+import "firebase/auth";
+import {
+  auth,
+  db,
+  registerWithEmailAndPassword,
+  signInWithGoogle,
+} from "../../firebaseConfig";
+import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
+import swal from "sweetalert";
 
 export default function RegisterPage() {
   const [input, setInput] = useState({
@@ -110,78 +116,48 @@ export default function RegisterPage() {
     });
   };
 
+  const history = useHistory();
+
+  const newUser = async (data) => {
+    await registerWithEmailAndPassword(input.email, input.password)
+      .then(() => {
+        db.collection("users").doc().set({
+          dni: "",
+          bDate: "",
+          email: input.email,
+          name: input.name,
+          lastName: input.lastName,
+          phone: "",
+          address: "",
+          password: input.password,
+          confirmPassword: input.confirmPassword,
+          photoURL:
+            "https://st.depositphotos.com/2101611/3925/v/600/depositphotos_39258143-stock-illustration-businessman-avatar-profile-picture.jpg",
+        });
+        resetForm();
+        swal({
+          title: "Usuario registrado con exito!",
+          icon: "success",
+          button: "Ok",
+        }).then((r) => history.push("/"));
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+    console.log("nuevo usuario registrado");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    newUser(input).then((r) => console.log(r));
     if (validateForm()) {
       resetForm();
     }
   };
 
-  /*-----------------------------------createUserWithEmailAndPassword---------------------------------------*/
-  const generateUserDocument = async (user, additionalData) => {
-    if (!user) return;
-
-    const userRef = firestore.doc(`users/${user.uid}`);
-    const snapshot = await userRef.get();
-
-    if (!snapshot.exists) {
-      const { email, displayName, photoURL } = user;
-      try {
-        await userRef.set({
-          displayName,
-          email,
-          photoURL,
-          ...additionalData
-        });
-      } catch (error) {
-        console.error("Error creating user document", error);
-      }
-    }
-    return getUserDocument(user.uid);
-  };
-
-  const getUserDocument = async uid => {
-    if (!uid) return null;
-    try {
-      const userDocument = await firestore.doc(`users/${uid}`).get();
-
-      return {
-        uid,
-        ...userDocument.data()
-      };
-    } catch (error) {
-      console.error("Error fetching user", error);
-    }
-  };
-  const [user, loading, error] = useAuthState(auth);
-  const [displayName, setDisplayName] = useState("");
-
-  const createUserWithEmailAndPasswordHandler = async (event, email, password) => {
-    event.preventDefault();
-    try{
-      const {user} = await auth.createUserWithEmailAndPassword(email, password);
-      await generateUserDocument(user, {displayName});
-      setDisplayName("");
-    }
-    catch(error){
-      setInputError('Error Signing up with email and password');
-    }
-  };
-  const history = useHistory();
-    useEffect(() => {
-      if (loading)
-        return;
-      if (user)
-        history.push("/user");
-    }
- , [loading, user]);
-
-  /*-----------------------------------createUserWithEmailAndPassword---------------------------------------*/
-
-
   return (
     <section className={styles.loginPage}>
+      <GoHomeButton />
 
       <div className={styles.loginPageContent}>
         <Link to="/">
@@ -319,7 +295,7 @@ export default function RegisterPage() {
             />
             {inputError.password && (
               <span className={styles.loginFormInputErrorMessage}>
-                Ingrese una contraseña entre 4 y 12 caracteres
+                Ingrese una contraseña entre 6 y 12 caracteres
               </span>
             )}
           </div>
@@ -359,13 +335,13 @@ export default function RegisterPage() {
             )}
           </div>
 
-          <button onClick={event => createUserWithEmailAndPasswordHandler(event, input.email, input.password)} type="submit">Registrarse</button>
+          <button type="submit">Registrarse</button>
         </form>
 
-              <button className={styles.googleBtn} onClick={signInWithGoogle}>
-                <FcGoogle />
-                Continuar con Google
-              </button>
+        <button className={styles.googleBtn} onClick={signInWithGoogle}>
+          <FcGoogle />
+          Continuar con Google
+        </button>
         <Link to="/login">¿Ya tienes una cuenta? Inicia sesión</Link>
       </div>
     </section>

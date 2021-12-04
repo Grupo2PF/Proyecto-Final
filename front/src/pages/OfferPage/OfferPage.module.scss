@@ -1,25 +1,63 @@
 @import "../../scss/variables";
 
+.heroBanner {
+  height: 90vh;
+  min-height: 30rem;
+  background-color: #eee;
+  background-image: url("../../assets/planes/plane-1.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: left;
+  background-attachment: fixed;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  h1 {
+        color: white;
+        font-size: 3rem;
+        max-width: 40rem;
+        text-align: center;
+        width: 90%;
+        z-index: 10;
+      }
+}
+
 .divContainer {
   margin-top: 4.9rem;
   background-color: $white;
-  // background-repeat: no-repeat;
-  // background-attachment: fixed;
-  // background-size: cover;
-  // background-position: center;
   display: flex;
   flex-direction: column;
-  // width: 100vw;
-  padding: 1rem;
   align-items: center;
   gap: 2rem;
-  header {
-    padding: 1rem 0;
-    background-color: $white;
-    align-items: flex-start;
-    display: flex;
-    flex-direction: column;
-    width: 90%;
+  width: 100%;
+  h2 {
+    border-bottom: $main-color solid 2px;
+    font-size: 2rem;
+    padding-bottom: 0.5rem;
+    text-align: center;
+    width: auto;
+    margin: 2.5rem auto;
   }
 }
 
+.offersCards {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  align-items: center;
+  // margin: 4rem 0;
+  max-width: 50rem;
+  width: 90%;
+}

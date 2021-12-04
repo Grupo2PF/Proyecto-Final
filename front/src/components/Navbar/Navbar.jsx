@@ -4,32 +4,21 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import {auth, db, logout} from "../../firebaseConfig";
+import {useEffect, useState} from "react";
+
 
 export default function Navbar() {
+  const [user, setUser] = useState(null);
 
-  const loggedOutLinks = document.querySelectorAll('.logged-out');
-  const loggedInLinks = document.querySelectorAll('.logged-in');
-
-  const setupUI = (user) => {
-    if (user) {
-      loggedInLinks.forEach(item => item.style.display = 'block');
-      loggedOutLinks.forEach(item => item.style.display = 'none');
-    } else {
-      loggedInLinks.forEach(item => item.style.display = 'none');
-      loggedOutLinks.forEach(item => item.style.display = 'block');
-    }
-  };
-
-  auth.onAuthStateChanged(user => {
-    if (user){
-      db.collection('users').get().then(snapshot => {
-            setupUI(user);
-      });
-    }else{
-      setupUI();
-    }
-  });
-
+  useEffect(async ()=> {
+    await auth.onAuthStateChanged(currentUser => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
+    });
+  }, []);
 
   return (
     <div className={styles.navBar}>
@@ -38,19 +27,30 @@ export default function Navbar() {
           <img src={logo} alt="" />
         </Link>
         <div className={styles.user}>
-          <Link class="logged-out" className={styles.userLink} to="/login" >
-            <FontAwesomeIcon icon={faUserCircle} size="2x" />
-            <span className="logged-out">Iniciar Sesión</span>
-          </Link>
-          <Link class="logged-out" className={styles.userLink} to="/register" >
-            <span className="logged-out">Registrarse</span>
-          </Link>
-          <Link className={styles.userLink}  to="/user">
-            <span className="logged-in">Cuenta</span>
-          </Link>
-          <Link className={styles.userLink}  to="/">
-            <span className="logged-in" onClick={logout}>Cerrar Sesión</span>
-          </Link>
+          {
+            auth.currentUser ?
+              <div className={styles.user}>
+                <FontAwesomeIcon icon={faUserCircle} />
+                <Link className={styles.userLink}  to="/user">
+                  <span>Perfil</span>
+                </Link>
+                <Link className={styles.userLink}  to="/">
+                  <span onClick={logout}>Cerrar Sesión</span>
+                </Link>
+              </div>
+
+              :
+
+              <div className={styles.user}>
+                <Link className={styles.userLink} to="/login" >
+                  <FontAwesomeIcon icon={faUserCircle} size="2x" />
+                  <span>Iniciar Sesión</span>
+                </Link>
+                <Link className={styles.userLink} to="/register" >
+                  <span>Registrarse</span>
+                </Link>
+              </div>
+          }
         </div>
       </nav>
     </div>
