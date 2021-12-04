@@ -167,7 +167,7 @@ export default function SearchBar() {
         if (value.departureDate) {
           console.log("Se envia para buscar solo ida");
           console.log(toSend);
-          dispatch(setLoading(!loading));
+          dispatch(setLoading(true));
           dispatch(getFlight(toSend));
           sendpack();
         } else {
@@ -182,7 +182,7 @@ export default function SearchBar() {
         if (value.returnDate) {
           console.log("Se envia para ida y vuelta");
           console.log(toSend);
-          dispatch(setLoading(!loading));
+          dispatch(setLoading(true));
           dispatch(getFlight(toSend));
           sendpack();
         } else {
