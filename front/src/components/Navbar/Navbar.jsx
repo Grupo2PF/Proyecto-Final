@@ -43,7 +43,6 @@ export default function Navbar() {
 
               <div className={styles.user}>
                 <Link className={styles.userLink} to="/login" >
-                  <FontAwesomeIcon icon={faUserCircle} size="2x" />
                   <span>Iniciar Sesión</span>
                 </Link>
                 <Link className={styles.userLink} to="/register" >

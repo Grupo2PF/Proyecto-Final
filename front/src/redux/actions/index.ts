@@ -4,6 +4,7 @@ import { GET_FLIGHT, GET_SEATS, SET_LOADING } from "../actionTypes";
 export function getFlight(payload: any) {
 
   return async function (dispatch: any) {
+
     try {
       if (payload.journeyType === true) {
         const json = await axios.get(

@@ -89,51 +89,65 @@ export default function UpdateUserProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    swal({
+      title: "Are you sure?",
+      // text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        }).then(r => console.log(r));
+      } else {
+        swal("Your imaginary file is safe!").then(r => console.log(r));
+      }
+    });
   };
 
   const [user, loading, error] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
-  const [value, setValue] = useState({ uploadValue: 0, picture: null });
+  const [value, setValue] = useState({uploadValue: 0, picture: null})
 
   const history = useHistory();
 
   const handleUpload = (e) => {
-    const image = e.target.files[0];
-    const storageRef = storage.ref(`/imageProfile/${image.name}`);
-    const task = storageRef.put(image);
+      const image = e.target.files[0];
+      const storageRef = storage.ref(`/imageProfile/${image.name}`);
+      const task = storageRef.put(image);
 
-    task.on(
-      "state_changed",
-      (snapshot) => {
-        const percentage =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(percentage);
-        setValue({ uploadValue: percentage, picture: image });
-      },
-      (error) => {
-        console.log(error.message);
-      },
-      () => {
-        setValue({
-          uploadValue: 100,
-          picture: task.snapshot.ref.fullPath,
-        });
-        task.snapshot.ref.getDownloadURL().then((url) => {
-          setInput({ ...input, photoURL: url });
-        });
-      }
-    );
-  };
+      task.on('state_changed',
+          snapshot => {
+              const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log(percentage);
+              setValue({uploadValue: percentage, picture: image})
+          },
+          error => {
+              console.log(error.message);
+          },
+          () => {
+              setValue({
+                  uploadValue: 100,
+                  picture: task.snapshot.ref.fullPath
+              });
+              task.snapshot.ref.getDownloadURL().then(url => {
+                  setInput({...input, photoURL: url})
+              })
+          }
+      )
+  }
 
-  const getUser = () => {
-    db.collection("users").onSnapshot((querySnapshot) => {
-      const docs = [];
-      querySnapshot.forEach((doc) => {
-        docs.push({ ...doc.data(), id: doc.id });
+    const getUser = () => { db.collection("users").onSnapshot((querySnapshot) => {
+
+    const docs = [];
+      querySnapshot.forEach(doc => {
+        docs.push({...doc.data(), id: doc.id});
       });
-      const filtrado = docs.filter((doc) => doc.email === user.email);
+      const filtrado = docs.filter(doc => doc.email === user.email);
       setUsuario(filtrado);
       console.log(usuario);
+
     });
   };
 
@@ -162,7 +176,7 @@ export default function UpdateUserProfile() {
   useEffect(() => {
     if (loading) return;
     if (!user) return history.replace("/");
-    getUser();
+    getUser()
   }, [user, loading, history]);
 
   return (
