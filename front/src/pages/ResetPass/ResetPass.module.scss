@@ -78,6 +78,23 @@
                 color: #ff0000
             }
         }
+
+        &Error {
+            color: #ff0000;
+
+            &:focus {
+                border-bottom-color: #ff0000 !important;
+
+            }
+        }
+
+        &ErrorMessage {
+            display: inline-block;
+            color: #ff0000;
+            padding-top: 5px;
+            text-align: center;
+            width: 100%;
+        }
     }
 
     &Button {
