@@ -1,27 +1,37 @@
 import styles from "./OfferPage.module.scss";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import OfferCardI from "../../components/OfferCard/OfferCardI";
 import OfferCardIV from "../../components/OfferCard/OfferCardIV";
 import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import Navbar from "../../components/Navbar/Navbar";
+import { getFlightUrl, resetState } from "../../redux/actions";
 // import HeroBanner from "../../components/HeroBanner/HeroBanner";
+import Maps from "../../components/map/map"
 
 export default function OfferPage(): JSX.Element {
   const response: any = useSelector((state: any) => state.allFlight);
   const cargando: any = useSelector((state: any) => state.loading);
-  const history = useHistory();
+  const dispatch = useDispatch();
+  const location = useLocation();
+
 
   useEffect(() => {
     setTimeout(() => {
       if (cargando) {
         <LoadingScreen />;
       } else {
-        history.push("/");
+        dispatch(getFlightUrl(location.search));
       }
     }, 3000);
   }, []);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetState());
+    };
+  }, [location]);
 
   const render = () => {
     if (response.mode) {
@@ -36,6 +46,7 @@ export default function OfferPage(): JSX.Element {
               {response.destination.city ? response.destination.city : response.destination.airport}
             </h1>
           </header>
+          <Maps/>
 
           <h2>Ofertas disponibles</h2>
 
@@ -71,6 +82,8 @@ export default function OfferPage(): JSX.Element {
           </section>
         </section>
       );
+    }else {
+      return <div><p>No hay vuelos</p></div>;
     }
   };
 
@@ -78,5 +91,5 @@ export default function OfferPage(): JSX.Element {
     return <LoadingScreen />;
   };
 
-  return <div>{response.mode ? render() : loading()}</div>;
+  return <div>{response? render() : loading()}</div>;
 }
