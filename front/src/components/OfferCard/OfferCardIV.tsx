@@ -113,7 +113,7 @@ export default function OfferCardIV(props: any): JSX.Element {
                     </div>
                   </div>
                 ))
-              : false}
+              :false}
 
             <div className={styles.offersCardDetail}>
               {clicked ? (
