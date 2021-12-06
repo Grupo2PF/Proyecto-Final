@@ -5,6 +5,7 @@ import {auth, db, logout} from "../../firebaseConfig";
 import {useAuthState} from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
+import swal from "sweetalert";
 
 
 export default function UserProfile(documentPath) {
@@ -21,28 +22,31 @@ export default function UserProfile(documentPath) {
             docs.push({...doc.data(), id: doc.id});
           })
         const filtrado = docs.filter(doc => doc.email === user.email);
-          console.log(filtrado);
         setUsuario(filtrado);
-        console.log(docs);
       });
   };
 
-  const userDelete = () => {
-    if(window.confirm("¿Estás seguro de que quieres eliminar tu cuenta?"))
-      {
-        db.collection('users').doc(usuario[0].id).delete().then(r =>
-          console.log("Document successfully deleted!")
-        ).catch(e =>
-            console.log(usuario[0].uid),
-        )
-      firebase.auth().currentUser
-        .delete().then(() => {
-          history.push("/");
-          alert("El usuario ha eliminado");
-        }).catch((error) => {
-          alert("Error al eliminar usuario");
-      })
-    }
+  const userDelete = (e) => {
+      e.preventDefault();
+      swal({
+          title: "Estas Seguro?",
+          text: "Si confirmas la cuenta sera borrada y no se podrá recuperar.",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+      }).then((isConfirm) => {
+          if (isConfirm) {
+              swal("Exito!", "La cuenta ah sido borrada!", "success")
+              db.collection('users').doc(usuario[0].id).delete().then(r =>
+              firebase.auth().currentUser.delete()
+              .catch(function (error) {
+                  swal("Error!", "No se pudo borrar la cuenta!", "error")
+                })
+              );
+          } else {
+              swal("Cancelado", "Su Cuenta no fue borrada", "error");
+          }
+      });
   };
 
   useEffect(() => {
@@ -110,7 +114,7 @@ export default function UserProfile(documentPath) {
                 <Link to="/user/update">
                 <button className={styles.btn1} >Actualizar Cuenta</button>
                 </Link>
-                <button className={styles.btn} onClick={userDelete}>Eliminar cuenta</button>
+                <button className={styles.btn} type="submit" onClick={(e) => userDelete(e)}>Eliminar cuenta</button>
               </div>
             </div>
           </div>

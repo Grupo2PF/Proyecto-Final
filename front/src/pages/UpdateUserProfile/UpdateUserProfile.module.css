@@ -159,4 +159,36 @@
   color: #ffffff;
 }
 
+.inputFile {
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  position: relative;
+  transition: all 0.3s;
+  top: unset;
+  left: unset;
+  height: auto;
+  width: 100%;
+  overflow: visible;
+}
+.inputFileBtn {
+  cursor: pointer;
+  background-color: #ff0000;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+progress {
+  width: 100%;
+}
+
 /*# sourceMappingURL=UpdateUserProfile.module.css.map */

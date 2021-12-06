@@ -30,9 +30,11 @@ const db = app.firestore();
 const storage = app.storage();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
+
 const signInWithGoogle = async () => {
     try {
         const res = await auth.signInWithPopup(googleProvider);
+        googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
         const user = res.user;
         const query = await db
             .collection("users")
@@ -70,6 +72,7 @@ const registerWithEmailAndPassword = async (email, password) => {
         alert(err.message);
     }
 };
+
 const sendPasswordResetEmail = async (email) => {
     try {
         await auth.sendPasswordResetEmail(email);
@@ -79,9 +82,11 @@ const sendPasswordResetEmail = async (email) => {
         alert(err.message);
     }
 };
+
 const logout = () => {
     auth.signOut().then(r => console.log("logged out"));
 };
+
 export const firestore = firebase.firestore();
 export {
     auth,

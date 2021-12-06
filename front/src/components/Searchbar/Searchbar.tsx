@@ -107,7 +107,6 @@ export default function SearchBar() {
     });
     setFilterOptionalBack([]);
   }
-  ////////////////////////////////////////////
 
   ///////// Logica Selects ///////
   function handleChange(e: any) {
@@ -116,7 +115,6 @@ export default function SearchBar() {
       [e.target.name]: e.target.value,
     });
   }
-  ////////////////////////////////////////////
 
   ///////// Click JourneyType (logica para que llegue booleano al value object) /////////
   function handleChangeJourney(e: any) {
@@ -135,7 +133,7 @@ export default function SearchBar() {
       });
     }
   }
-  ////////////////////////////////////////////
+
 
   ///////// Click enviar formulario /////////
   function handleClick(e: any) {
@@ -162,6 +160,8 @@ export default function SearchBar() {
         kid: value.kid,
         adult: value.adult,
       };
+
+      console.log(cities);
 
       if (value.journeyType === false) {
         if (value.departureDate) {
@@ -197,6 +197,7 @@ export default function SearchBar() {
       // console.log(toSend)
       // dispatch(getFlight(toSend));
     } else {
+      console.log(cities)
       setMsjError({
         title: "Ingrese un origen y destino valido",
         p: "Puedes usar el autocompletar para buscar lugares especificos",
@@ -246,9 +247,7 @@ export default function SearchBar() {
           msjErrorTitle={msjError.title}
           msjErrorP={msjError.p}
         />
-      ) : (
-        false
-      )}
+      ) : false}
 
       <div className={styles.titleBox}>
         <h3> Encuentra las mejores ofertas </h3>

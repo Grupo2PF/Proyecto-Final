@@ -1,5 +1,3 @@
-@import "../../scss/variables";
-
 .heroBanner {
   height: 90vh;
   min-height: 30rem;
@@ -14,42 +12,41 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  h1 {
-        color: white;
-        font-size: 3rem;
-        max-width: 40rem;
-        text-align: center;
-        width: 90%;
-        z-index: 10;
-      }
+}
+.heroBanner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.heroBanner h1 {
+  color: white;
+  font-size: 3rem;
+  max-width: 40rem;
+  text-align: center;
+  width: 90%;
+  z-index: 10;
 }
 
 .divContainer {
   margin-top: 4.9rem;
-  background-color: $white;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
   width: 100%;
-  h2 {
-    border-bottom: $main-color solid 2px;
-    font-size: 2rem;
-    padding-bottom: 0.5rem;
-    text-align: center;
-    width: auto;
-    margin: 2.5rem auto;
-  }
+}
+.divContainer h2 {
+  border-bottom: #3884FE solid 2px;
+  font-size: 2rem;
+  padding-bottom: 0.5rem;
+  text-align: center;
+  width: auto;
+  margin: 2.5rem auto;
 }
 
 .offersCards {
@@ -57,7 +54,8 @@
   flex-direction: column;
   gap: 4rem;
   align-items: center;
-  // margin: 4rem 0;
   max-width: 50rem;
   width: 90%;
 }
+
+/*# sourceMappingURL=OfferPage.module.css.map */
