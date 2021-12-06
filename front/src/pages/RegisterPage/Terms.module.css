@@ -1,4 +1,4 @@
-.resetPage {
+.termsPage {
   background-color: #3884FE;
   background-image: url("../../assets/planes/plane-3.webp");
   background-repeat: no-repeat;
@@ -7,11 +7,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 30rem;
-  height: 100vh;
+  min-height: 35rem;
+  height: 180vh;
   position: relative;
 }
-.resetPage::after {
+.termsPage::after {
   content: "";
   position: absolute;
   top: 0;
@@ -20,27 +20,37 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.resetContent {
+.termsContent {
   background-color: #ffffff;
   border-radius: 1rem;
   display: flex;
+  margin-top: 2rem;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
   padding: 3rem 3rem 4rem;
   width: 90%;
-  max-width: 30rem;
+  max-width: 95rem;
   position: relative;
   z-index: 10;
 }
-.resetLogo {
-  width: 9rem;
+.termsLogo {
+  width: 11rem;
 }
-.resetInput {
+.termsTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.termsInput {
   position: relative;
   width: 100%;
 }
-.resetInput input {
+.termsInput input {
   border: none;
   border-bottom: 1px solid #828282;
   outline: none;
@@ -48,13 +58,13 @@
   padding-left: 3rem;
   width: 100%;
 }
-.resetInput input::placeholder {
+.termsInput input::placeholder {
   color: #b1b1b1;
 }
-.resetInput input:focus {
+.termsInput input:focus {
   border-bottom-color: #3884FE;
 }
-.resetInputIcon {
+.termsInputIcon {
   color: #b1b1b1;
   font-size: 25px;
   position: absolute;
@@ -62,24 +72,24 @@
   left: 0.5rem;
   transition: all 0.5s;
 }
-.resetInputIconError {
+.termsInputIconError {
   top: 10%;
   color: #ff0000;
 }
-.resetInputError {
+.termsInputError {
   color: #ff0000;
 }
-.resetInputError:focus {
+.termsInputError:focus {
   border-bottom-color: #ff0000 !important;
 }
-.resetInputErrorMessage {
+.termsInputErrorMessage {
   display: inline-block;
   color: #ff0000;
   padding-top: 5px;
   text-align: center;
   width: 100%;
 }
-.resetButton {
+.termsButton {
   background-color: #3884FE;
   color: #ffffff;
   border: 1px solid #3884FE;
@@ -96,23 +106,23 @@
   gap: 0.5rem;
   transition: all 0.5s;
 }
-.resetButton:hover {
+.termsButton:hover {
   background-color: #5194fe;
 }
-.resetButton:active {
+.termsButton:active {
   background-color: #1f74fe;
 }
-.resetRegister {
+.termsRegister {
   font-weight: 500;
   color: #4d4d4d;
   text-decoration: none;
   transition: color 0.5s;
 }
-.resetRegister:hover {
+.termsRegister:hover {
   color: #3884FE;
 }
-.resetRegister:active {
+.termsRegister:active {
   color: #4d4d4d;
 }
 
-/*# sourceMappingURL=ResetPass.module.css.map */
+/*# sourceMappingURL=Terms.module.css.map */

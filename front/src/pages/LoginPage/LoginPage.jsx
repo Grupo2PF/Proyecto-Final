@@ -59,48 +59,36 @@ export default function LoginPage() {
           await auth.signInWithEmailAndPassword(email, password);
           swal("Success!", "You have successfully logged in!", "success");
         } catch (err) {
-          swal("Error!", err.message, "error");
+          if (err.code === "auth/user-not-found") {
+            swal({
+              title: "Error!",
+              text: "Usuario no Encontrado!",
+              icon: "error",
+              button: "Continue",
+            });
+          }
+          else if (err.code === "auth/wrong-password") {
+            swal({
+              title: "Error!",
+              text: "Contraseña Incorrecta!",
+              icon: "error",
+              button: "Continue",
+            });
+          }
+          else if (err.code === "auth/invalid-email") {
+            swal({
+              title: "Error!",
+              text: "El Email no es Valido!",
+              icon: "error",
+              button: "Continue",
+            });
+          }else{
+            console.log(err);
+            swal("Error!", err.message, "error");
+          }
         }
       };
-
       signInWithEmailAndPassword(email, password);
-      // try {
-      //   signInWithEmailAndPassword(email, password);
-
-      //   swal({
-      //     title: "Success!",
-      //     text: "You have successfully logged in!",
-      //     icon: "success",
-      //     button: "Continue",
-      //   });
-      // } catch (error) {
-      //   console.log(error);
-      //   if (error.code === "auth/user-not-found") {
-      //     swal({
-      //       title: "Error!",
-      //       text: "User not found!",
-      //       icon: "error",
-      //       button: "Continue",
-      //     });
-      //   }
-      //   if (error.code === "auth/wrong-password") {
-      //     swal({
-      //       title: "Error!",
-      //       text: "Wrong password!",
-      //       icon: "error",
-      //       button: "Continue",
-      //     });
-      //   }
-
-      //   if (error.code === "auth/invalid-email") {
-      //     swal({
-      //       title: "Error!",
-      //       text: "Invalid email!",
-      //       icon: "error",
-      //       button: "Continue",
-      //     });
-      //   }
-      // }
     }
   };
 
