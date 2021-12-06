@@ -4,8 +4,8 @@ import styles from "./UpdateUserProfile.module.scss";
 import regex from "../../helpers/regex";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import {
-  FaBirthdayCake,
-  FaEnvelope,
+  // FaBirthdayCake,
+  // FaEnvelope,
   FaFileUpload,
   FaHome,
   FaPassport,
@@ -17,92 +17,63 @@ import swal from "sweetalert";
 import { Link, useHistory } from "react-router-dom";
 import { auth, db, storage } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
+import {
+  adressValidation,
+  // dateValidation,
+  dniValidation,
+  lastNameValidation,
+  nameValidation,
+  phoneValidation,
+  photoURLValidation,
+  validateForm,
+} from "./validations";
 
 export default function UpdateUserProfile() {
   const [input, setInput] = useState({
-    dni: "",
-    bDate: "",
-    email: "",
     name: "",
     lastName: "",
-    phone: "",
-    address: "",
-    password: "",
-    confirmPassword: "",
     photoURL: "",
+    phone: "",
+    dni: "",
+    address: "",
+    // bDate: "",
   });
 
   const [inputError, setInputError] = useState({
-    dni: false,
-    bDate: false,
-    email: false,
-    name: false,
-    lastName: false,
-    phone: false,
-    address: false,
-    password: false,
-    confirmPassword: false,
-    photoURL: false,
+    name: [false, ""],
+    lastName: [false, ""],
+    photoURL: [false, ""],
+    phone: [false, ""],
+    dni: [false, ""],
+    address: [false, ""],
+    // bDate: [false, ""],
   });
 
-  const onKeyUpValidation = ({ id, value }) => {
-    switch (id) {
-      case "name":
-        if (regex.name.test(value.trim())) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      case "lastName":
-        if (regex.lastName.test(value.trim())) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      case "email":
-        if (regex.email.test(value.trim())) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      case "password":
-        if (regex.password.test(value.trim())) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      case "confirmPassword":
-        if (
-          regex.confirmPassword.test(value.trim()) &&
-          value === input.password
-        ) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      default:
-        break;
-    }
+  const resetForm = () => {
+    setInput({
+      name: "",
+      lastName: "",
+      photoURL: "",
+      phone: "",
+      dni: "",
+      address: "",
+      // bDate: "",
+    });
+    setInputError({
+      name: [false, ""],
+      lastName: [false, ""],
+      photoURL: [false, ""],
+      phone: [false, ""],
+      dni: [false, ""],
+      address: [false, ""],
+      // bDate: [false, ""],
+    });
   };
 
   const handleInputChange = (e) => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    swal({
-      title: "Are you sure?",
-      // text: "Once deleted, you will not be able to recover this imaginary file!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        swal("Poof! Your imaginary file has been deleted!", {
-          icon: "success",
-        }).then(r => console.log(r));
-      } else {
-        swal("Your imaginary file is safe!").then(r => console.log(r));
-      }
     });
   };
 
@@ -156,7 +127,7 @@ export default function UpdateUserProfile() {
       .doc(usuario[0].id)
       .update({
         dni: input.dni,
-        bDate: input.bDate,
+        // bDate: input.bDate,
         name: input.name,
         lastName: input.lastName,
         phone: input.phone,
@@ -171,6 +142,15 @@ export default function UpdateUserProfile() {
         }).then((r) => history.push("/user"));
       })
       .catch((e) => console.log(e));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (validateForm(input, inputError, setInputError)) {
+      resetForm();
+      updateUser();
+    }
   };
 
   useEffect(() => {
@@ -193,7 +173,7 @@ export default function UpdateUserProfile() {
           <div className={styles.updatePageFormInput}>
             <FaUserAlt
               className={
-                inputError.name
+                inputError.name[0]
                   ? styles.updatePageFormInputIcon +
                     " " +
                     styles.updatePageFormInputIconError
@@ -202,24 +182,22 @@ export default function UpdateUserProfile() {
             />
             <label htmlFor="name">Nombre</label>
             <input
-              required
+              // required
               autoComplete="off"
-              className={inputError.name ? styles.updatePageFormInputError : ""}
+              className={
+                inputError.name[0] ? styles.updatePageFormInputError : ""
+              }
               type="text"
               id="name"
               name="name"
               value={input.name}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              onKeyUp={(e) => nameValidation(e, inputError, setInputError)}
               placeholder="Ingrese su nombre"
             />
-            {inputError.name && (
+            {inputError.name[0] && (
               <span className={styles.updatePageFormInputErrorMessage}>
-                Ingrese un nombre entre 3 y 40 caracteres
+                {inputError.name[1]}
               </span>
             )}
           </div>
@@ -228,7 +206,7 @@ export default function UpdateUserProfile() {
           <div className={styles.updatePageFormInput}>
             <FaUserAlt
               className={
-                inputError.lastName
+                inputError.lastName[0]
                   ? styles.updatePageFormInputIcon +
                     " " +
                     styles.updatePageFormInputIconError
@@ -237,10 +215,10 @@ export default function UpdateUserProfile() {
             />
             <label htmlFor="lastName">Apellido</label>
             <input
-              required
+              // required
               autoComplete="off"
               className={
-                inputError.lastName ? styles.updatePageFormInputError : ""
+                inputError.lastName[0] ? styles.updatePageFormInputError : ""
               }
               type="text"
               id="lastName"
@@ -248,23 +226,20 @@ export default function UpdateUserProfile() {
               placeholder="Ingrese su apellido"
               value={input.lastName}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              onKeyUp={(e) => lastNameValidation(e, inputError, setInputError)}
             />
-            {inputError.lastName && (
+            {inputError.lastName[0] && (
               <span className={styles.updatePageFormInputErrorMessage}>
-                Ingrese un apellido entre 3 y 40 caracteres
+                {inputError.lastName[1]}
               </span>
             )}
           </div>
+
           {/* --------- Foto de perfil ------------ */}
           <div className={styles.updatePageFormInput}>
             <FaPhotoVideo
               className={
-                inputError.photoURL
+                inputError.photoURL[0]
                   ? styles.updatePageFormInputIcon +
                     " " +
                     styles.updatePageFormInputIconError
@@ -273,41 +248,40 @@ export default function UpdateUserProfile() {
             />
             <label htmlFor="photoURL">Foto de perfil</label>
             <input
-              required
+              // required
               autoComplete="off"
               className={
-                inputError.photoURL ? styles.updatePageFormInputError : ""
+                inputError.photoURL[0] ? styles.updatePageFormInputError : ""
               }
               type="text"
               id="photoURL"
+              disabled
               name="photoURL"
               value={input.photoURL}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              // onKeyUp={(e) => photoURLValidation(e, inputError, setInputError)}
               placeholder="https://foto-de-perfil.jpg"
             />
           </div>
-            <progress value={value.uploadValue} max="100" />
-          <button className={styles.inputFile}>
+          <progress value={value.uploadValue} max="100" />
+          <button type="button" className={styles.inputFile}>
             <FaFileUpload />
             Cargar imagen
             <input
               className={styles.inputFileBtn}
               type="file"
+              accept="image/*"
               id="photoURL"
               name="photoURL"
               onChange={handleUpload}
             />
           </button>
+
           {/* --------- Phone ------------ */}
           <div className={styles.updatePageFormInput}>
             <FaPhone
               className={
-                inputError.phone
+                inputError.phone[0]
                   ? styles.updatePageFormInputIcon +
                     " " +
                     styles.updatePageFormInputIconError
@@ -316,34 +290,31 @@ export default function UpdateUserProfile() {
             />
             <label htmlFor="phone">Número de teléfono</label>
             <input
-              required
+              // required
               autoComplete="off"
               className={
-                inputError.phone ? styles.updatePageFormInputError : ""
+                inputError.phone[0] ? styles.updatePageFormInputError : ""
               }
               type="phone"
               id="phone"
               name="phone"
               value={input.phone}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              onKeyUp={(e) => phoneValidation(e, inputError, setInputError)}
               placeholder="Ingrese su número de teléfono"
             />
-            {inputError.phone && (
+            {inputError.phone[0] && (
               <span className={styles.updatePageFormInputErrorMessage}>
-                Ingrese un número celular entre 8 y 9 dígitos
+                {inputError.phone[1]}
               </span>
             )}
           </div>
+
           {/* --------- DNI ------------ */}
           <div className={styles.updatePageFormInput}>
             <FaPassport
               className={
-                inputError.dni
+                inputError.dni[0]
                   ? styles.updatePageFormInputIcon +
                     " " +
                     styles.updatePageFormInputIconError
@@ -352,32 +323,31 @@ export default function UpdateUserProfile() {
             />
             <label htmlFor="dni">DNI</label>
             <input
-              required
+              // required
               autoComplete="off"
-              className={inputError.dni ? styles.updatePageFormInputError : ""}
+              className={
+                inputError.dni[0] ? styles.updatePageFormInputError : ""
+              }
               type="dni"
               id="dni"
               name="dni"
               value={input.dni}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              onKeyUp={(e) => dniValidation(e, inputError, setInputError)}
               placeholder="Ingrese su DNI"
             />
-            {inputError.dni && (
+            {inputError.dni[0] && (
               <span className={styles.updatePageFormInputErrorMessage}>
-                Ingrese un dni entre 6 y 12 caracteres
+                {inputError.dni[1]}
               </span>
             )}
           </div>
+
           {/* --------- Dirección ------------ */}
           <div className={styles.updatePageFormInput}>
             <FaHome
               className={
-                inputError.address
+                inputError.address[0]
                   ? styles.updatePageFormInputIcon +
                     " " +
                     styles.updatePageFormInputIconError
@@ -386,34 +356,31 @@ export default function UpdateUserProfile() {
             />
             <label htmlFor="address">Dirección</label>
             <input
-              required
+              // required
               autoComplete="off"
               className={
-                inputError.address ? styles.updatePageFormInputError : ""
+                inputError.address[0] ? styles.updatePageFormInputError : ""
               }
               type="text"
               id="address"
               name="address"
               value={input.address}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              onKeyUp={(e) => adressValidation(e, inputError, setInputError)}
               placeholder="Ingrese su dirección"
             />
-            {inputError.address && (
+            {inputError.address[0] && (
               <span className={styles.updatePageFormInputErrorMessage}>
-                Ingrese una dirección entre 6 y 40 caracteres
+                {inputError.address[1]}
               </span>
             )}
           </div>
-          {/* --------- Birthday date ------------ */}
+
+          {/* --------- Birthday date ------------
           <div className={styles.updatePageFormInput}>
             <FaBirthdayCake
               className={
-                inputError.bDate
+                inputError.bDate[0]
                   ? styles.updatePageFormInputIcon +
                     " " +
                     styles.updatePageFormInputIconError
@@ -422,35 +389,31 @@ export default function UpdateUserProfile() {
             />
             <label htmlFor="bDate">Fecha de nacimiento</label>
             <input
-              required
+              // required
               autoComplete="off"
               className={
-                inputError.bDate ? styles.updatePageFormInputError : ""
+                inputError.bDate[0] ? styles.updatePageFormInputError : ""
               }
               type="date"
               id="bDate"
               name="bDate"
               value={input.bDate}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              onKeyUp={(e) => dateValidation(e, inputError, setInputError)}
             />
-            {inputError.bDate && (
+            {inputError.bDate[0] && (
               <span className={styles.updatePageFormInputErrorMessage}>
-                Ingrese una fecha de nacimiento valida
+                {inputError.bDate[1]}
               </span>
             )}
-          </div>
+          </div> */}
+
+          {/* Buttons */}
           <div className={styles.updatePageButtonsContainer}>
             <Link to="/user">
               <button type="submit">Cancelar</button>
             </Link>
-            <button type="submit" onClick={updateUser}>
-              Actualizar perfil
-            </button>
+            <button type="submit">Actualizar perfil</button>
           </div>
         </form>
       </div>

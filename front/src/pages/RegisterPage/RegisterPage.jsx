@@ -5,7 +5,6 @@ import { FcGoogle } from "react-icons/fc";
 import { FaEnvelope, FaUserAlt } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import styles from "./RegisterPage.module.scss";
-import regex from "../../helpers/regex";
 import "firebase/auth";
 import {
   auth,
@@ -15,6 +14,14 @@ import {
 } from "../../firebaseConfig";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import swal from "sweetalert";
+import {
+  confirmPasswordValidation,
+  emailValidation,
+  lastNameValidation,
+  nameValidation,
+  passwordValidation,
+  validateForm,
+} from "./validations";
 
 export default function RegisterPage() {
   const [input, setInput] = useState({
@@ -26,77 +33,18 @@ export default function RegisterPage() {
   });
 
   const [inputError, setInputError] = useState({
-    name: false,
-    lastName: false,
-    email: false,
-    password: false,
-    confirmPassword: false,
+    name: [false, ""],
+    lastName: [false, ""],
+    email: [false, ""],
+    password: [false, ""],
+    confirmPassword: [false, ""],
   });
-
-  const onKeyUpValidation = ({ id, value }) => {
-    switch (id) {
-      case "name":
-        if (regex.name.test(value.trim())) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      case "lastName":
-        if (regex.lastName.test(value.trim())) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      case "email":
-        if (regex.email.test(value.trim())) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      case "password":
-        if (regex.password.test(value.trim())) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      case "confirmPassword":
-        if (
-          regex.confirmPassword.test(value.trim()) &&
-          value === input.password
-        ) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      default:
-        break;
-    }
-  };
 
   const handleInputChange = (e) => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const validateForm = () => {
-    let isValid = false;
-    const { name, lastName, email, password, confirmPassword } = input;
-
-    if (
-      name === "" ||
-      lastName === "" ||
-      email === "" ||
-      password === "" ||
-      confirmPassword === "" ||
-      confirmPassword !== password
-    ) {
-      setInputError({
-        name: name === "" ? true : false,
-        lastName: lastName === "" ? true : false,
-        email: email === "" ? true : false,
-        password: password === "" ? true : false,
-        confirmPassword:
-          confirmPassword === "" || confirmPassword !== password ? true : false,
-      });
-    } else isValid = true;
-    return isValid;
   };
 
   const resetForm = () => {
@@ -108,11 +56,11 @@ export default function RegisterPage() {
       confirmPassword: "",
     });
     setInputError({
-      name: false,
-      lastName: false,
-      email: false,
-      password: false,
-      confirmPassword: false,
+      name: [false, ""],
+      lastName: [false, ""],
+      email: [false, ""],
+      password: [false, ""],
+      confirmPassword: [false, ""],
     });
   };
 
@@ -142,16 +90,22 @@ export default function RegisterPage() {
         }).then((r) => history.push("/"));
       })
       .catch((error) => {
-        alert(error.message);
+        swal({
+          title: "Error al registrar usuario",
+          text: error.message,
+          icon: "error",
+          button: "Ok",
+        });
       });
     console.log("nuevo usuario registrado");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    newUser(input).then((r) => console.log(r));
-    if (validateForm()) {
+
+    if (validateForm(input, inputError, setInputError)) {
       resetForm();
+      newUser(input).then((r) => console.log(r));
     }
   };
 
@@ -169,7 +123,7 @@ export default function RegisterPage() {
           <div className={styles.loginFormInput}>
             <FaUserAlt
               className={
-                inputError.name
+                inputError.name[0]
                   ? styles.loginFormInputIcon +
                     " " +
                     styles.loginFormInputIconError
@@ -179,22 +133,18 @@ export default function RegisterPage() {
             <label htmlFor="name">Nombre</label>
             <input
               autoComplete="off"
-              className={inputError.name ? styles.loginFormInputError : ""}
+              className={inputError.name[0] ? styles.loginFormInputError : ""}
               type="text"
               id="name"
               name="name"
               value={input.name}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              onKeyUp={(e) => nameValidation(e, inputError, setInputError)}
               placeholder="Ingrese su nombre"
             />
-            {inputError.name && (
+            {inputError.name[0] && (
               <span className={styles.loginFormInputErrorMessage}>
-                Ingrese un nombre entre 3 y 40 caracteres
+                {inputError.name[1]}
               </span>
             )}
           </div>
@@ -203,7 +153,7 @@ export default function RegisterPage() {
           <div className={styles.loginFormInput}>
             <FaUserAlt
               className={
-                inputError.lastName
+                inputError.lastName[0]
                   ? styles.loginFormInputIcon +
                     " " +
                     styles.loginFormInputIconError
@@ -213,22 +163,20 @@ export default function RegisterPage() {
             <label htmlFor="last-name">Apellido</label>
             <input
               autoComplete="off"
-              className={inputError.lastName ? styles.loginFormInputError : ""}
+              className={
+                inputError.lastName[0] ? styles.loginFormInputError : ""
+              }
               type="text"
               id="lastName"
               name="lastName"
               placeholder="Ingrese su apellido"
               value={input.lastName}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              onKeyUp={(e) => lastNameValidation(e, inputError, setInputError)}
             />
-            {inputError.lastName && (
+            {inputError.lastName[0] && (
               <span className={styles.loginFormInputErrorMessage}>
-                Ingrese un apellido entre 3 y 40 caracteres
+                {inputError.lastName[1]}
               </span>
             )}
           </div>
@@ -237,7 +185,7 @@ export default function RegisterPage() {
           <div className={styles.loginFormInput}>
             <FaEnvelope
               className={
-                inputError.email
+                inputError.email[0]
                   ? styles.loginFormInputIcon +
                     " " +
                     styles.loginFormInputIconError
@@ -246,23 +194,19 @@ export default function RegisterPage() {
             />
             <label htmlFor="email">Email</label>
             <input
-              autoComplete="on"
-              className={inputError.email ? styles.loginFormInputError : ""}
-              type="email"
+              // autoComplete="on"
+              className={inputError.email[0] ? styles.loginFormInputError : ""}
+              type="text"
               id="email"
               name="email"
               value={input.email}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
-              placeholder="correo@example.com"
+              onKeyUp={(e) => emailValidation(e, inputError, setInputError)}
+              placeholder="correo10.sky@edev.com"
             />
-            {inputError.email && (
+            {inputError.email[0] && (
               <span className={styles.loginFormInputErrorMessage}>
-                Ingrese un email válido ej: correo@example.com
+                {inputError.email[1]}
               </span>
             )}
           </div>
@@ -271,7 +215,7 @@ export default function RegisterPage() {
           <div className={styles.loginFormInput}>
             <RiLockPasswordFill
               className={
-                inputError.password
+                inputError.password[0]
                   ? styles.loginFormInputIcon +
                     " " +
                     styles.loginFormInputIconError
@@ -280,22 +224,20 @@ export default function RegisterPage() {
             />
             <label htmlFor="password">Password</label>
             <input
-              className={inputError.password ? styles.loginFormInputError : ""}
+              className={
+                inputError.password[0] ? styles.loginFormInputError : ""
+              }
               type="password"
               placeholder="contraseña"
               id="password"
               name="password"
               value={input.password}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              onKeyUp={(e) => passwordValidation(e, inputError, setInputError)}
             />
-            {inputError.password && (
+            {inputError.password[0] && (
               <span className={styles.loginFormInputErrorMessage}>
-                Ingrese una contraseña entre 6 y 12 caracteres
+                {inputError.password[1]}
               </span>
             )}
           </div>
@@ -304,7 +246,7 @@ export default function RegisterPage() {
           <div className={styles.loginFormInput}>
             <RiLockPasswordFill
               className={
-                inputError.confirmPassword
+                inputError.confirmPassword[0]
                   ? styles.loginFormInputIcon +
                     " " +
                     styles.loginFormInputIconError
@@ -314,7 +256,7 @@ export default function RegisterPage() {
             <label htmlFor="confirmPassword">Password</label>
             <input
               className={
-                inputError.confirmPassword ? styles.loginFormInputError : ""
+                inputError.confirmPassword[0] ? styles.loginFormInputError : ""
               }
               type="password"
               placeholder="confirme la contraseña"
@@ -322,15 +264,18 @@ export default function RegisterPage() {
               name="confirmPassword"
               value={input.confirmPassword}
               onChange={handleInputChange}
-              onKeyUp={(e) => {
-                const id = e.currentTarget.id;
-                const value = e.currentTarget.value;
-                onKeyUpValidation({ id, value });
-              }}
+              onKeyUp={(e) =>
+                confirmPasswordValidation(
+                  e,
+                  inputError,
+                  setInputError,
+                  input.password
+                )
+              }
             />
-            {inputError.confirmPassword && (
+            {inputError.confirmPassword[0] && (
               <span className={styles.loginFormInputErrorMessage}>
-                Debe coincidir con la contraseña
+                {inputError.confirmPassword[1]}
               </span>
             )}
           </div>
