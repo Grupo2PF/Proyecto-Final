@@ -178,7 +178,7 @@ router.get("/search", async function (req, res, next) {
         var lngD = offerRequestRoundtrip.data.slices[0].destination.airports[0].longitude
       }
       // res.send(offerRequestRoundtrip);
-  
+   
       const flightResults = {
         mode: mode,
         class: cabin,
