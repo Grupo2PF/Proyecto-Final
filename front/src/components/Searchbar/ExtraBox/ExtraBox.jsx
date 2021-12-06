@@ -29,7 +29,7 @@ function ExtraBox({ value, setValue, handleChange }) {
           {changeIconClass()}
           <select name="class" onChange={handleChange}>
             <option value="economy">Economy</option>
-            <option value="premium-economy"> Premium-economy</option>
+            <option value="premium_economy"> Premium-economy</option>
             <option value="first"> First </option>
             <option value="business"> Business </option>
           </select>
