@@ -1,26 +1,29 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {Link, useHistory} from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FcGoogle } from "react-icons/fc";
 import { FaEnvelope } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import styles from "./LoginPage.module.scss";
-import regex from "../../helpers/regex";
-import 'firebase/auth';
+import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import {auth, signInWithEmailAndPassword, signInWithGoogle} from "../../firebaseConfig";
+import {
+  auth,
+  signInWithEmailAndPassword,
+  signInWithGoogle,
+} from "../../firebaseConfig";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
-
+import {
+  emailValidation,
+  passwordValidation,
+  validateForm,
+} from "./validations";
+import swal from "sweetalert";
 
 export default function LoginPage() {
-  const [input, setInput] = useState({
-    email: "",
-    password: "",
-  });
-
   const [inputError, setInputError] = useState({
-    email: false,
-    password: false,
+    email: [false, ""],
+    password: [false, ""],
   });
 
   const [email, setEmail] = useState("");
@@ -36,156 +39,165 @@ export default function LoginPage() {
     if (user) history.replace("/");
   }, [user, loading]);
 
-  const onKeyUpValidation = ({ id, value }) => {
-    switch (id) {
-      case "email":
-        if (regex.email.test(value.trim())) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      case "password":
-        if (regex.password.test(value.trim())) {
-          setInputError({ ...inputError, [id]: false });
-        } else setInputError({ ...inputError, [id]: true });
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleInputChange = (e) => {
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const validateForm = () =>{
-    let isValid = false;
-    const { email, password } = input;
-
-    if (email === "" || password === "") {
-      setInputError({
-        email: email === "",
-        password: password === "",
-      });
-    } else isValid = true;
-    return isValid;
-  };
-
   const resetForm = () => {
-    setInput({
-      email: "",
-      password: "",
-    });
+    setEmail("");
+    setPassword("");
     setInputError({
-      email: false,
-      password: false,
+      email: [false, ""],
+      password: [false, ""],
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push("/user");
-    if (validateForm()) {
+
+    if (validateForm(email, password, setInputError)) {
       resetForm();
+
+      const signInWithEmailAndPassword = async (email, password) => {
+        try {
+          await auth.signInWithEmailAndPassword(email, password);
+          swal("Success!", "You have successfully logged in!", "success");
+        } catch (err) {
+          swal("Error!", err.message, "error");
+        }
+      };
+
+      signInWithEmailAndPassword(email, password);
+      // try {
+      //   signInWithEmailAndPassword(email, password);
+
+      //   swal({
+      //     title: "Success!",
+      //     text: "You have successfully logged in!",
+      //     icon: "success",
+      //     button: "Continue",
+      //   });
+      // } catch (error) {
+      //   console.log(error);
+      //   if (error.code === "auth/user-not-found") {
+      //     swal({
+      //       title: "Error!",
+      //       text: "User not found!",
+      //       icon: "error",
+      //       button: "Continue",
+      //     });
+      //   }
+      //   if (error.code === "auth/wrong-password") {
+      //     swal({
+      //       title: "Error!",
+      //       text: "Wrong password!",
+      //       icon: "error",
+      //       button: "Continue",
+      //     });
+      //   }
+
+      //   if (error.code === "auth/invalid-email") {
+      //     swal({
+      //       title: "Error!",
+      //       text: "Invalid email!",
+      //       icon: "error",
+      //       button: "Continue",
+      //     });
+      //   }
+      // }
     }
   };
 
   return (
-      <section className={styles.loginPage}>
+    <section className={styles.loginPage}>
       <GoHomeButton />
 
-        <div className={styles.loginPageContent}>
-          <Link to="/">
-            <img src={logo} alt="Dev-Sky logo" />
-          </Link>
+      <div className={styles.loginPageContent}>
+        {/* Logo */}
+        <Link to="/">
+          <img src={logo} alt="Dev-Sky logo" />
+        </Link>
 
-          <form className={styles.loginForm} onSubmit={(e) => handleSubmit(e)}>
-            {/* --------- Email ---------- */}
-            <div className={styles.loginFormInput}>
-              <FaEnvelope
-                  className={
-                    inputError.email
-                        ? styles.loginFormInputIcon +
-                        " " +
-                        styles.loginFormInputIconError
-                        : styles.loginFormInputIcon
-                  }
-              />
-              <label htmlFor="email">Email</label>
-              <input
-                  autoComplete="on"
-                  className={inputError.email ? styles.loginFormInputError : ""}
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onKeyUp={(e) => {
-                    const id = e.currentTarget.id;
-                    const value = e.currentTarget.value;
-                    onKeyUpValidation({ id, value });
-                  }}
-                  placeholder="correo@example.com"
-              />
-              {inputError.email && (
-                  <span className={styles.loginFormInputErrorMessage}>
-                Ingrese un email válido ej: correo@example.com
+        <form className={styles.loginForm} onSubmit={(e) => handleSubmit(e)}>
+          {/* --------- Email ---------- */}
+          <div className={styles.loginFormInput}>
+            <FaEnvelope
+              className={
+                inputError.email[0]
+                  ? styles.loginFormInputIcon +
+                    " " +
+                    styles.loginFormInputIconError
+                  : styles.loginFormInputIcon
+              }
+            />
+            <label htmlFor="email">Email</label>
+            <input
+              autoComplete="off"
+              className={inputError.email[0] ? styles.loginFormInputError : ""}
+              type="text"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyUp={(e) => emailValidation(e, inputError, setInputError)}
+              placeholder="correo10.sky@example.com"
+            />
+            {inputError.email[0] && (
+              <span className={styles.loginFormInputErrorMessage}>
+                {inputError.email[1]}
               </span>
-              )}
-            </div>
+            )}
+          </div>
 
-            {/* --------- Password ------------ */}
-            <div className={styles.loginFormInput}>
-              <RiLockPasswordFill
-                  className={
-                    inputError.password
-                        ? styles.loginFormInputIcon +
-                        " " +
-                        styles.loginFormInputIconError
-                        : styles.loginFormInputIcon
-                  }
-              />
-              <label htmlFor="password">Password</label>
-              <input
-                  className={inputError.password ? styles.loginFormInputError : ""}
-                  type="password"
-                  placeholder="contraseña"
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onKeyUp={(e) => {
-                    const id = e.currentTarget.id;
-                    const value = e.currentTarget.value;
-                    onKeyUpValidation({ id, value });
-                  }}
-              />
-              {inputError.password && (
-                  <span className={styles.loginFormInputErrorMessage}>
-                Ingrese una contraseña entre 4 y 12 caracteres
+          {/* --------- Password ------------ */}
+          <div className={styles.loginFormInput}>
+            <RiLockPasswordFill
+              className={
+                inputError.password[0]
+                  ? styles.loginFormInputIcon +
+                    " " +
+                    styles.loginFormInputIconError
+                  : styles.loginFormInputIcon
+              }
+            />
+            <label htmlFor="password">Password</label>
+            <input
+              className={
+                inputError.password[0] ? styles.loginFormInputError : ""
+              }
+              type="password"
+              placeholder="contraseña"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyUp={(e) => passwordValidation(e, inputError, setInputError)}
+            />
+            {inputError.password[0] && (
+              <span className={styles.loginFormInputErrorMessage}>
+                {inputError.password[1]}
               </span>
-              )}
-            </div>
+            )}
+          </div>
 
-            <Link to="/reset">¿Olvidaste tu contraseña?</Link>
+          {/* Link para reestablecer contraseña */}
+          <Link to="/reset">¿Olvidaste tu contraseña?</Link>
 
-            <button
-                className="login__btn"
-                onClick={() => signInWithEmailAndPassword(email, password)}
-            >
-              Iniciar sesión
-            </button>
-          </form>
-          <Link className={styles.userLink} to="/user"/>
+          {/* Iniciar sesión con correo */}
+          <button
+            type="submit"
+            className="login__btn"
+            // onClick={() => signInWithEmailAndPassword(email, password)}
+          >
+            Iniciar sesión
+          </button>
+        </form>
 
-          <button className={styles.googleBtn} onClick={signInWithGoogle}>
-            <FcGoogle />
-            Iniciar Sesión con Google</button>
+        {/* Iniciar sesión con Google */}
+        <button className={styles.googleBtn} onClick={signInWithGoogle}>
+          <FcGoogle />
+          Iniciar Sesión con Google
+        </button>
 
-          <Link to="/register">¿No tienes cuenta? Registrate</Link>
-        </div>
-      </section>
+        {/* Link de registro */}
+        <Link to="/register">¿No tienes cuenta? Registrate</Link>
+      </div>
+    </section>
   );
 }

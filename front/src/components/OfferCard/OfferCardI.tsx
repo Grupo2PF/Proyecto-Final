@@ -47,7 +47,7 @@ export default function OfferCardI(props: any): JSX.Element {
 
             {/* Tipo de vuelo */}
             <div className={styles.offersCardType}>
-              {props.transfers.length === 1 ? <p> <IoMdAirplane/> Vuelo directo </p> : <p> <BsArrowLeftRight /> Tiene {props.transfers.length} escalas</p> }
+              {props.transfers.length === 1 ? <p> <IoMdAirplane/> Vuelo directo </p> : <p> <BsArrowLeftRight /> Tiene {props.transfers.length-1} escalas</p> }
             </div>
 
             {/* Buttons */}
@@ -80,16 +80,16 @@ export default function OfferCardI(props: any): JSX.Element {
               ? props.transfers.map((escala: any) => (
                 <div className={styles.offersCardTransfers}>
                   <div>
-                    <p> <FaPlaneDeparture /> {escala.origin} </p>
-                    <p> <FaPlaneArrival /> {escala.destination} </p>
+                    <p> <FaPlaneDeparture /> <span className={styles.sp} >{escala.origin}</span> </p>
+                    <p> <FaPlaneArrival /> <span className={styles.sp} >{escala.destination}</span> </p>
                   </div>
                   <div>
-                    <p>  <BsCalendarDateFill/> Salida: {escala.departure} </p>
-                    <p> <BsCalendarDate/> Llegada: {escala.arrive} </p>
+                    <p>  <BsCalendarDateFill/> <span> Salida: </span> {escala.departure.slice(0, 10)}{" "}{escala.departure.slice(11, 19)} </p>
+                    <p> <BsCalendarDate/> <span>Llegada:</span> {escala.arrive.slice(0, 10)}{" "}{escala.arrive.slice(11, 19)} </p>
                   </div>
                   <div>
-                    <p> <GiCommercialAirplane />Aerolinea: {escala.airline}</p>
-                    <p> <AiOutlineFieldNumber/>Vuelo Nro: {escala.flightNumber}</p>
+                    <p> <GiCommercialAirplane /> <span>Aerolinea:</span> {escala.airline}</p>
+                    <p> <AiOutlineFieldNumber/><span>Vuelo Nro:</span> {escala.flightNumber}</p>
                   </div>
                   </div>
                 ))

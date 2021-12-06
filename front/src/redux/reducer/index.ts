@@ -1,7 +1,7 @@
-import { GET_FLIGHT, GET_SEATS, SET_LOADING } from "../actionTypes";
+import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET } from "../actionTypes";
 
 const initialState: any = {
-  allFlight: {},
+  allFlight: undefined,
   allSeats: {},
   loading: false,
 };
@@ -27,6 +27,15 @@ export default function rootReducer(state = initialState, action: Action) {
       return {
         ...state,
         loading: action.payload,
+      };
+      case GET_FLIGHT_URL:
+      return {
+        ...state,
+        allFlight: action.payload,
+      };
+      case RESET:
+      return {
+        initialState,
       };
     default:
       return state;
