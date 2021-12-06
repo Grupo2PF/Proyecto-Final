@@ -7,8 +7,14 @@ import styles from "./ResetPass.module.scss";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FaEnvelope } from "react-icons/fa";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
+import { emailValidation, validateForm } from "./validations";
+import swal from "sweetalert";
 
 function Reset() {
+  const [inputError, setInputError] = useState({
+    email: [false, ""],
+  });
+
   const [email, setEmail] = useState("");
   const [user, loading, error] = useAuthState(auth);
   const history = useHistory();
@@ -26,19 +32,53 @@ function Reset() {
         </Link>
 
         <div className={styles.resetInput}>
-          <FaEnvelope className={styles.resetInputIcon} />
+          <FaEnvelope
+            className={
+              inputError.email[0]
+                ? styles.resetInputIcon + " " + styles.resetInputIconError
+                : styles.resetInputIcon
+            }
+          />
           <input
+            className={inputError.email[0] ? styles.resetInputError : ""}
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onKeyUp={(e) => emailValidation(e, inputError, setInputError)}
             placeholder="correo@example.com"
             required
           />
+          {inputError.email[0] && (
+            <span className={styles.resetInputErrorMessage}>
+              {inputError.email[1]}
+            </span>
+          )}
         </div>
 
         <button
           className={styles.resetButton}
-          onClick={() => sendPasswordResetEmail(email)}
+          onClick={(e) => {
+            e.preventDefault();
+
+            if (validateForm(email, setInputError)) {
+              setEmail("");
+
+              const sendPasswordResetEmail = async (email) => {
+                try {
+                  await auth.sendPasswordResetEmail(email);
+                  swal("Se ha enviado un correo de recuperación", {
+                    icon: "success",
+                  });
+                } catch (err) {
+                  swal("No se ha podido enviar el correo", {
+                    icon: "error",
+                  });
+                }
+              };
+
+              sendPasswordResetEmail(email);
+            }
+          }}
         >
           Enviar correo de restablecimiento de contraseña
         </button>

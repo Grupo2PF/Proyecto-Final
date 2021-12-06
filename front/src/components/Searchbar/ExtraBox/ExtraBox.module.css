@@ -1,0 +1,83 @@
+.extraBoxx {
+  padding: 5px;
+  background-color: #3884FE;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  border: none;
+}
+.extraBoxx .box {
+  border-radius: 5px;
+}
+.extraBoxx .box label {
+  background-color: #3884FE;
+}
+.extraBoxx .box select {
+  border: 1px solid #505050;
+  border-radius: 5px;
+}
+.extraBoxx .counterBox {
+  background-color: white;
+  padding: 5px;
+  width: 80%;
+  height: 70%;
+  display: flex;
+  justify-content: space-evenly;
+  border: 1px solid #505050;
+  border-radius: 5px;
+  color: black;
+}
+.extraBoxx .counterBox .counterBoxx {
+  height: 10vh;
+  width: 100%;
+}
+.extraBoxx .counterBox .counterBoxx label {
+  text-shadow: 1px 1px 1px lightgray;
+  color: #000000;
+}
+.extraBoxx .counterBox .counterBoxx .counter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid grey;
+  height: 50%;
+  border-radius: 5px;
+}
+.extraBoxx .counterBox .counterBoxx .counter :hover {
+  background-color: rgba(128, 128, 128, 0.1);
+}
+.extraBoxx .counterBox .counterBoxx .counter button {
+  border-radius: 5px;
+  width: 30%;
+  border: none;
+  border-radius: 0px;
+  transition: 0.2s;
+  background: none;
+}
+
+@media screen and (min-width: 1024px) {
+  .extraBoxx {
+    display: flex;
+    flex-direction: column;
+  }
+  .extraBoxx .box {
+    border: none;
+    justify-content: center;
+  }
+  .extraBoxx .counterBox {
+    width: initial;
+    width: 60%;
+    align-items: center;
+  }
+  .extraBoxx .counterBox .counterBoxx {
+    height: 100%;
+  }
+  .extraBoxx .counter {
+    height: 100%;
+  }
+}
+
+/*# sourceMappingURL=ExtraBox.module.css.map */

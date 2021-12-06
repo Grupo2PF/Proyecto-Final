@@ -31,6 +31,11 @@ export default function SearchBar() {
   const [filterOptional, setFilterOptional] = useState([]);
   const [filterOptionalBack, setFilterOptionalBack] = useState([]);
 
+  const [autocompleteVal, setAutocompleteVal] = useState({
+    originCity: false,
+    destinyCity: false,
+  });
+
   const [value, setValue] = useState({
     originCity: "",
     destinyCity: "",
@@ -80,13 +85,13 @@ export default function SearchBar() {
 
   function combo(e: any) {
     handleChangeOrigen(e);
-    if (value.originCity.length > 1) {
+    if (value.originCity.length > 0) {
       filterCompleted();
     }
   }
   function comboBack(e: any) {
     handleChangeBack(e);
-    if (value.destinyCity.length > 1) {
+    if (value.destinyCity.length > 0) {
       filterCompletedBack();
     }
   }
@@ -97,7 +102,7 @@ export default function SearchBar() {
       ...value,
       originCity: e.target.name,
     });
-    setFilterOptional([]);
+    // setFilterOptional([]);
   }
   function handleSelectCountryBack(e: any) {
     e.preventDefault();
@@ -105,9 +110,8 @@ export default function SearchBar() {
       ...value,
       destinyCity: e.target.name,
     });
-    setFilterOptionalBack([]);
+    // setFilterOptionalBack([]);
   }
-  ////////////////////////////////////////////
 
   ///////// Logica Selects ///////
   function handleChange(e: any) {
@@ -116,7 +120,6 @@ export default function SearchBar() {
       [e.target.name]: e.target.value,
     });
   }
-  ////////////////////////////////////////////
 
   ///////// Click JourneyType (logica para que llegue booleano al value object) /////////
   function handleChangeJourney(e: any) {
@@ -135,7 +138,6 @@ export default function SearchBar() {
       });
     }
   }
-  ////////////////////////////////////////////
 
   ///////// Click enviar formulario /////////
   function handleClick(e: any) {
@@ -163,11 +165,13 @@ export default function SearchBar() {
         adult: value.adult,
       };
 
+      console.log(cities);
+
       if (value.journeyType === false) {
         if (value.departureDate) {
           console.log("Se envia para buscar solo ida");
           console.log(toSend);
-          dispatch(setLoading(!loading));
+          dispatch(setLoading(true));
           dispatch(getFlight(toSend));
           sendpack();
         } else {
@@ -182,7 +186,7 @@ export default function SearchBar() {
         if (value.returnDate) {
           console.log("Se envia para ida y vuelta");
           console.log(toSend);
-          dispatch(setLoading(!loading));
+          dispatch(setLoading(true));
           dispatch(getFlight(toSend));
           sendpack();
         } else {
@@ -197,6 +201,7 @@ export default function SearchBar() {
       // console.log(toSend)
       // dispatch(getFlight(toSend));
     } else {
+      console.log(cities);
       setMsjError({
         title: "Ingrese un origen y destino valido",
         p: "Puedes usar el autocompletar para buscar lugares especificos",
@@ -205,7 +210,12 @@ export default function SearchBar() {
     }
 
     function sendpack() {
-      history.push("/offers");
+      if(value.journeyType){history.push(
+        `/offers?origin=${cities[0].iata}&destination=${citiesBack[0].iata}&dDate=${value.departureDate}&rDate=${value.returnDate}&adults=${value.adult}&childs=${value.kid}&baby=${value.baby}&cabin=${value.class}`
+      );}else{
+      history.push(
+        `/offers?origin=${cities[0].iata}&destination=${citiesBack[0].iata}&dDate=${value.departureDate}&adults=${value.adult}&childs=${value.kid}&baby=${value.baby}&cabin=${value.class}`
+      );}
     }
   }
   ////////////////////////////////////////////
@@ -237,18 +247,20 @@ export default function SearchBar() {
   };
   ////////////////////////////////////////////
 
+  function setBlur(e: any) {
+    setTimeout(() => {
+      setAutocompleteVal({ ...autocompleteVal, [e.target.name]: false });
+    }, 200);
+  }
+
   return (
     <div className={styles.searchBarContainer}>
-      {error ? (
-        <Errorr
-          error={error}
-          setError={setError}
-          msjErrorTitle={msjError.title}
-          msjErrorP={msjError.p}
-        />
-      ) : (
-        false
-      )}
+      <Errorr
+        error={error}
+        setError={setError}
+        msjErrorTitle={msjError.title}
+        msjErrorP={msjError.p}
+      />
 
       <div className={styles.titleBox}>
         <h3> Encuentra las mejores ofertas </h3>
@@ -271,26 +283,34 @@ export default function SearchBar() {
                   onChange={(e) => combo(e)}
                   autoComplete="off"
                   id="hola"
+                  onFocus={() =>
+                    setAutocompleteVal({ ...autocompleteVal, originCity: true })
+                  }
+                  onBlur={(e) => setBlur(e)}
                 />
               </div>
 
-              <div className={styles.ulBox}>
-                <ul role="listbox">
-                  {value.originCity.length > 1
-                    ? filterOptional.map((d: any) => (
-                        <li>
-                          {" "}
-                          <button
-                            name={d}
-                            onClick={(e) => handleSelectCountry(e)}
-                          >
-                            {d}
-                          </button>
-                        </li>
-                      ))
-                    : false}
-                </ul>
-              </div>
+              {autocompleteVal.originCity ? (
+                <div className={styles.ulBox}>
+                  <ul role="listbox">
+                    {value.originCity.length > 0
+                      ? filterOptional.map((d: any) => (
+                          <li>
+                            {" "}
+                            <button
+                              name={d}
+                              onClick={(e) => handleSelectCountry(e)}
+                            >
+                              {d}
+                            </button>
+                          </li>
+                        ))
+                      : false}
+                  </ul>
+                </div>
+              ) : (
+                false
+              )}
             </div>
 
             <div className={styles.selects}>
@@ -308,26 +328,37 @@ export default function SearchBar() {
                   value={value.destinyCity}
                   onChange={(e) => comboBack(e)}
                   autoComplete="off"
+                  onFocus={() =>
+                    setAutocompleteVal({
+                      ...autocompleteVal,
+                      destinyCity: true,
+                    })
+                  }
+                  onBlur={(e) => setBlur(e)}
                 />
               </div>
 
-              <div className={styles.ulBox}>
-                <ul role="listbox">
-                  {value.destinyCity.length > 1
-                    ? filterOptionalBack.map((d: any) => (
-                        <li>
-                          {" "}
-                          <button
-                            name={d}
-                            onClick={(e) => handleSelectCountryBack(e)}
-                          >
-                            {d}
-                          </button>
-                        </li>
-                      ))
-                    : false}
-                </ul>
-              </div>
+              {autocompleteVal.destinyCity ? (
+                <div className={styles.ulBox}>
+                  <ul role="listbox">
+                    {value.destinyCity.length > 0
+                      ? filterOptionalBack.map((d: any) => (
+                          <li>
+                            {" "}
+                            <button
+                              name={d}
+                              onClick={(e) => handleSelectCountryBack(e)}
+                            >
+                              {d}
+                            </button>
+                          </li>
+                        ))
+                      : false}
+                  </ul>
+                </div>
+              ) : (
+                false
+              )}
             </div>
           </div>
 
@@ -367,8 +398,7 @@ export default function SearchBar() {
                     value.journeyType ? styles.label : styles.labelDisableD
                   }
                 >
-                  {" "}
-                  Vuelta{" "}
+                  Vuelta
                 </label>
                 <input
                   disabled={isDisable()}
@@ -392,21 +422,20 @@ export default function SearchBar() {
             value={value}
           />
         </div>
-
-        <div className={styles.botonBox}>
-          <button className={styles.boton} onClick={handleClick}>
-            Buscar
-            <FontAwesomeIcon className={styles.iconSearch} icon={faSearch} />
-          </button>
-        </div>
       </form>
+      <div className={styles.botonBox}>
+        <button className={styles.boton} onClick={handleClick}>
+          Buscar
+          <FontAwesomeIcon className={styles.iconSearch} icon={faSearch} />
+        </button>
+      </div>
     </div>
   );
 }
 
 const Errorr: FC<Props> = ({ error, setError, msjErrorTitle, msjErrorP }) => {
   return (
-    <div className={styles.ErrorBox}>
+    <div className={error ? styles.ErrorBox : styles.disabled}>
       <div className={styles.errorr}>
         <FontAwesomeIcon
           className={styles.exclamation}

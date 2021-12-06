@@ -34,6 +34,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.0",
     "sass": "^1.43.4",
+    "simple-react-google-maps": "^1.1.2",
     "sweetalert": "^2.1.2",
     "typescript": "^4.5.2",
     "web-vitals": "^1.1.2"
