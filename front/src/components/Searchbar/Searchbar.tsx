@@ -210,15 +210,12 @@ export default function SearchBar() {
     }
 
     function sendpack() {
-      if (value.journeyType) {
-        history.push(
-          `/offers?origin=${cities[0].iata}&destination=${citiesBack[0].iata}&dDate=${value.departureDate}&rDate=${value.returnDate}&adults=${value.adult}&childs=${value.kid}&baby=${value.baby}&cabin=${value.class}`
-        );
-      } else {
-        history.push(
-          `/offers?origin=${cities[0].iata}&destination=${citiesBack[0].iata}&dDate=${value.departureDate}&adults=${value.adult}&childs=${value.kid}&baby=${value.baby}&cabin=${value.class}`
-        );
-      }
+      if(value.journeyType){history.push(
+        `/offers?origin=${cities[0].iata}&destination=${citiesBack[0].iata}&dDate=${value.departureDate}&rDate=${value.returnDate}&adults=${value.adult}&childs=${value.kid}&baby=${value.baby}&cabin=${value.class}`
+      );}else{
+      history.push(
+        `/offers?origin=${cities[0].iata}&destination=${citiesBack[0].iata}&dDate=${value.departureDate}&adults=${value.adult}&childs=${value.kid}&baby=${value.baby}&cabin=${value.class}`
+      );}
     }
   }
   ////////////////////////////////////////////
