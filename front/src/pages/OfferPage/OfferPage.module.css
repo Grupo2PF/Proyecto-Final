@@ -1,0 +1,20 @@
+.divContainer {
+  margin-top: 4.9rem;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  min-height: 75vh;
+  padding: 1rem;
+  align-items: center;
+  gap: 2rem;
+}
+.divContainer header {
+  padding: 1rem 0;
+  background-color: #ffffff;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+}
+
+/*# sourceMappingURL=OfferPage.module.css.map */
