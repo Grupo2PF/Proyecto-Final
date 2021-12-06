@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_FLIGHT, GET_SEATS, SET_LOADING } from "../actionTypes";
+import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET } from "../actionTypes";
 
 export function getFlight(payload: any) {
 
@@ -8,16 +8,16 @@ export function getFlight(payload: any) {
     try {
       if (payload.journeyType === true) {
         const json = await axios.get(
-          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&rDate=${payload.returnDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=economy`
+          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&rDate=${payload.returnDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
         );
 
         return dispatch({
           type: GET_FLIGHT,
           payload: (json.data)
         });
-      } else {
+      } else { console.log(payload)
         const json = await axios.get(
-          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=economy`
+          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
         );
         return dispatch({
           type: GET_FLIGHT,
@@ -29,6 +29,28 @@ export function getFlight(payload: any) {
     }
   }
 }
+
+export function getFlightUrl(payload: any) {
+  return async function (dispatch: any) {
+    
+    try {
+      const json = await axios.get(
+        `http://localhost:3001/search${payload}`
+      );
+      return dispatch({
+        type: GET_FLIGHT_URL,
+        payload: json.data,
+      });
+    } catch (err) {
+      console.log(err)
+      return dispatch({
+        type: GET_FLIGHT_URL,
+        payload: {mensaje:err}
+    })
+  }
+}
+}
+
 
   export function setLoading(payload: boolean) {
     console.log(payload);
@@ -55,4 +77,12 @@ export function getFlight(payload: any) {
           console.log(err);
         }
       };
+    }
+
+    export function resetState() {
+      return async function (dispatch: any) {
+          return dispatch({
+            type: RESET,
+          });
+        }
     }
