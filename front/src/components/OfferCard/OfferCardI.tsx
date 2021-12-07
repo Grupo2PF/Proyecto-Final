@@ -6,7 +6,7 @@ import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsArrowLeftRight, BsCalendarDateFill, BsCalendarDate } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
 import { GiCommercialAirplane } from "react-icons/gi";
-import { getSeats } from "../../redux/actions/";
+import { getSeats, sendFavs } from "../../redux/actions/";
 
 
 export default function OfferCardI(props: any): JSX.Element {
@@ -25,6 +25,19 @@ export default function OfferCardI(props: any): JSX.Element {
     const id = props.offers;
     dispatch(getSeats(id));
   };
+
+  const handleFavs = (e: any) => {
+    const info = {
+      id: props.offers,
+      origin: props.originCity,
+      destination: props.destinationCity,
+      originAirport: props.originAirport,
+      destinationAirport: props.destinationAirport,
+      escalas:props.transfers.length -1,
+      price: `${props.currency} ${props.price}`,
+    }
+    dispatch(sendFavs(info));
+  }
 
   return (
     <>
@@ -60,6 +73,7 @@ export default function OfferCardI(props: any): JSX.Element {
                 <AiOutlineExclamationCircle />
                 Ver detalles
               </button>
+              <button onClick={handleFavs}>añadir a favs</button>
               <button
                 className={styles.offersCardButtonsPrice}
                 onClick={handleBuy}
