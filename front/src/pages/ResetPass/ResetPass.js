@@ -63,9 +63,16 @@ function Reset() {
             if (validateForm(email, setInputError)) {
               setEmail("");
 
-              const sendPasswordResetEmail = async (email) => {
+              var actionCodeSettings = {
+                // After password reset, the user will be give the ability to go back
+                // to this page.
+                url: 'https://localhost:3000/login',
+                handleCodeInApp: true,
+              };
+
+              const sendPasswordResetEmail = async (email,actionCodeSettings) => {
                 try {
-                  await auth.sendPasswordResetEmail(email);
+                  await auth.sendPasswordResetEmail(email,actionCodeSettings);
                   swal("Se ha enviado un correo de recuperación", {
                     icon: "success",
                   });
@@ -76,7 +83,7 @@ function Reset() {
                 }
               };
 
-              sendPasswordResetEmail(email);
+              sendPasswordResetEmail(email,actionCodeSettings);
             }
           }}
         >
