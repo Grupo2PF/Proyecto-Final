@@ -11,7 +11,7 @@ export default function PopularDestinations(): JSX.Element {
       <div className={styles.cityCardsContainer}>
         {cities.map((city): JSX.Element => {
           return (
-            <Link key={city.id} to={`popular-destinations/${city.id}`}>
+            <Link key={city.id} to={`popular-destination/${city.id}`}>
               <CityCard name={city.name} image={city.image} />;
             </Link>
           );

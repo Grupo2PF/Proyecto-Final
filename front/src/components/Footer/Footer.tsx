@@ -7,8 +7,8 @@ export default function Footer(): JSX.Element {
   const location = useLocation();
 
   return (
-    <footer className={styles.footer}>
-      <div className={styles.footerContent}>
+    <footer className={styles.Footer}>
+      <div className={styles.FooterContent}>
         {location.pathname === "/" ? (
           <a href="#home-top">
             <img src={logo} alt="Dev-Sky Logo" />
@@ -21,7 +21,7 @@ export default function Footer(): JSX.Element {
         <p>
           &copy; 2021 Dev-Sky. <br /> Todos los derechos reservados.
         </p>
-        <Link to="/about-us">Sobre nosotros</Link>
+        <Link to="/about-us" target='_top'>Sobre nosotros</Link>
       </div>
     </footer>
   );
