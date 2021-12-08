@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET } from "../actionTypes";
+import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, SEND_FAVS } from "../actionTypes";
 
 export function getFlight(payload: any) {
 
@@ -8,16 +8,16 @@ export function getFlight(payload: any) {
     try {
       if (payload.journeyType === true) {
         const json = await axios.get(
-          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&rDate=${payload.returnDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=economy`
+          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&rDate=${payload.returnDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
         );
 
         return dispatch({
           type: GET_FLIGHT,
           payload: (json.data)
         });
-      } else {
+      } else { console.log(payload)
         const json = await axios.get(
-          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=economy`
+          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
         );
         return dispatch({
           type: GET_FLIGHT,
@@ -85,4 +85,14 @@ export function getFlightUrl(payload: any) {
             type: RESET,
           });
         }
+    }
+
+    export function sendFavs(payload: any) {
+      return async function (dispatch: any) {
+        console.log(payload)
+        const favs = await axios.post("http://localhost:3001/saveflight", payload);
+        dispatch({
+          type: SEND_FAVS,
+        });
+      }
     }

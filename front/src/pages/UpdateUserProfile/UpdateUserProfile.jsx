@@ -36,7 +36,6 @@ export default function UpdateUserProfile() {
     phone: "",
     dni: "",
     address: "",
-    // bDate: "",
   });
 
   const [inputError, setInputError] = useState({
@@ -46,7 +45,6 @@ export default function UpdateUserProfile() {
     phone: [false, ""],
     dni: [false, ""],
     address: [false, ""],
-    // bDate: [false, ""],
   });
 
   const resetForm = () => {
@@ -57,7 +55,6 @@ export default function UpdateUserProfile() {
       phone: "",
       dni: "",
       address: "",
-      // bDate: "",
     });
     setInputError({
       name: [false, ""],
@@ -66,7 +63,6 @@ export default function UpdateUserProfile() {
       phone: [false, ""],
       dni: [false, ""],
       address: [false, ""],
-      // bDate: [false, ""],
     });
   };
 
@@ -79,60 +75,61 @@ export default function UpdateUserProfile() {
 
   const [user, loading, error] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
-  const [value, setValue] = useState({uploadValue: 0, picture: null})
+  const [value, setValue] = useState({ uploadValue: 0, picture: null });
 
   const history = useHistory();
 
   const handleUpload = (e) => {
-      const image = e.target.files[0];
-      const storageRef = storage.ref(`/imageProfile/${image.name}`);
-      const task = storageRef.put(image);
+    const image = e.target.files[0];
+    const storageRef = storage.ref(`/imageProfile/${image.name}`);
+    const task = storageRef.put(image);
 
-      task.on('state_changed',
-          snapshot => {
-              const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log(percentage);
-              setValue({uploadValue: percentage, picture: image})
-          },
-          error => {
-              console.log(error.message);
-          },
-          () => {
-              setValue({
-                  uploadValue: 100,
-                  picture: task.snapshot.ref.fullPath
-              });
-              task.snapshot.ref.getDownloadURL().then(url => {
-                  setInput({...input, photoURL: url})
-              })
-          }
-      )
-  }
+    task.on(
+      "state_changed",
+      (snapshot) => {
+        const percentage =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setValue({ uploadValue: percentage, picture: image });
+      },
+      (error) => {
+        console.log(error.message);
+      },
+      () => {
+        setValue({
+          uploadValue: 100,
+          picture: task.snapshot.ref.fullPath,
+        });
+        task.snapshot.ref.getDownloadURL().then((url) => {
+          setInput({ ...input, photoURL: url });
+        });
+      }
+    );
+  };
 
-    const getUser = () => { db.collection("users").onSnapshot((querySnapshot) => {
-
-    const docs = [];
-      querySnapshot.forEach(doc => {
-        docs.push({...doc.data(), id: doc.id});
+  const getUser = () => {
+    db.collection("users").onSnapshot((querySnapshot) => {
+      const docs = [];
+      querySnapshot.forEach((doc) => {
+        docs.push({ ...doc.data(), id: doc.id });
       });
-      const filtrado = docs.filter(doc => doc.email === user.email);
+      const filtrado = docs.filter((doc) => doc.email === user.email);
       setUsuario(filtrado);
-      console.log(usuario);
-
     });
   };
 
   const updateUser = () => {
     db.collection("users")
       .doc(usuario[0].id)
-      .update({
+      .set({
         dni: input.dni,
-        // bDate: input.bDate,
         name: input.name,
         lastName: input.lastName,
         phone: input.phone,
         address: input.address,
         photoURL: input.photoURL,
+        uid: auth.currentUser.uid,
+        authProvider: auth.currentUser.providerId,
+        email: auth.currentUser.email,
       })
       .then((r) => {
         swal({
@@ -141,7 +138,21 @@ export default function UpdateUserProfile() {
           button: "Ok",
         }).then((r) => history.push("/user"));
       })
-      .catch((e) => console.log(e));
+      .catch((error) => {
+            if (error.code === "auth/user-not-found") {
+              swal({
+                title: "Usuario no encontrado",
+                icon: "error",
+                button: "Ok",
+              })
+            } else {
+              swal({
+                title: "Error al actualizar",
+                icon: "error",
+                button: "Ok",
+              })
+            }
+          });
   };
 
   const handleSubmit = (e) => {
@@ -156,7 +167,7 @@ export default function UpdateUserProfile() {
   useEffect(() => {
     if (loading) return;
     if (!user) return history.replace("/");
-    getUser()
+    getUser();
   }, [user, loading, history]);
 
   return (
@@ -375,39 +386,6 @@ export default function UpdateUserProfile() {
               </span>
             )}
           </div>
-
-          {/* --------- Birthday date ------------
-          <div className={styles.updatePageFormInput}>
-            <FaBirthdayCake
-              className={
-                inputError.bDate[0]
-                  ? styles.updatePageFormInputIcon +
-                    " " +
-                    styles.updatePageFormInputIconError
-                  : styles.updatePageFormInputIcon
-              }
-            />
-            <label htmlFor="bDate">Fecha de nacimiento</label>
-            <input
-              // required
-              autoComplete="off"
-              className={
-                inputError.bDate[0] ? styles.updatePageFormInputError : ""
-              }
-              type="date"
-              id="bDate"
-              name="bDate"
-              value={input.bDate}
-              onChange={handleInputChange}
-              onKeyUp={(e) => dateValidation(e, inputError, setInputError)}
-            />
-            {inputError.bDate[0] && (
-              <span className={styles.updatePageFormInputErrorMessage}>
-                {inputError.bDate[1]}
-              </span>
-            )}
-          </div> */}
-
           {/* Buttons */}
           <div className={styles.updatePageButtonsContainer}>
             <Link to="/user">

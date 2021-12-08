@@ -13,7 +13,7 @@ import {
 } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
 import { GiCommercialAirplane } from "react-icons/gi";
-import { getSeats } from "../../redux/actions/";
+import { getSeats, sendFavs } from "../../redux/actions/";
 
 export default function OfferCardIV(props: any): JSX.Element {
   const [clicked, setClicked] = useState(false);
@@ -31,6 +31,21 @@ export default function OfferCardIV(props: any): JSX.Element {
     const id = props.offers;
     dispatch(getSeats(id));
   };
+
+  const handleFavs = (e: any) => {
+    console.log(props)
+    const info = {
+      id: props.offers,
+      origin: props.originCity,
+      originAirport: props.originAirport,
+      destination: props.destinationCity,
+      destinationAirport: props.destinationAirport,
+      escalasIda:props.transfersD.length -1,
+      escalasVuelta:props.transfersR.length -1,
+      price: `${props.currency} ${props.price}`,
+    }
+    dispatch(sendFavs(info));
+  }
 
   return (
     <>
@@ -55,11 +70,11 @@ export default function OfferCardIV(props: any): JSX.Element {
             <div className={styles.offersCardType}>
               {props.transfersD.length === 1 ? (
                 <p>
-                  <IoMdAirplane /> Vuelo directo{" "}
+                  <IoMdAirplane /> Vuelo directo
                 </p>
               ) : (
                 <p>
-                  <BsArrowLeftRight /> Tiene {props.transfersD.length} escalas
+                  <BsArrowLeftRight /> Tiene {props.transfersD.length-1} escalas
                 </p>
               )}
             </div>
@@ -74,6 +89,7 @@ export default function OfferCardIV(props: any): JSX.Element {
                 <AiOutlineExclamationCircle />
                 Ver detalles
               </button>
+              <button onClick={handleFavs}>añadir a favs</button>
               <button
                 className={styles.offersCardButtonsPrice}
                 onClick={handleBuy}
@@ -100,40 +116,20 @@ export default function OfferCardIV(props: any): JSX.Element {
               ? props.transfersD.map((escala: any) => (
                   <div className={styles.offersCardTransfers}>
                     <div>
-                      <p>
-                        {" "}
-                        <FaPlaneDeparture /> {escala.origin}{" "}
-                      </p>
-                      <p>
-                        {" "}
-                        <FaPlaneArrival /> {escala.destination}{" "}
-                      </p>
+                      <p> <FaPlaneDeparture /> <span className={styles.sp}>{escala.origin}</span> </p>
+                      <p> <FaPlaneArrival /> <span className={styles.sp}>{escala.destination}</span> </p>
                     </div>
                     <div>
-                      <p>
-                        {" "}
-                        <BsCalendarDateFill /> Salida: {escala.departure}{" "}
-                      </p>
-                      <p>
-                        {" "}
-                        <BsCalendarDate /> Llegada: {escala.arrive}{" "}
-                      </p>
+                      <p> <BsCalendarDateFill /> <span>Salida:</span> {escala.departure.slice(0,10)}{" "}{escala.departure.slice(11,19)} </p>
+                      <p> <BsCalendarDate /> <span>Llegada:</span> {escala.arrive.slice(0,10)}{" "}{escala.arrive.slice(11,19)}</p>
                     </div>
                     <div>
-                      <p>
-                        {" "}
-                        <GiCommercialAirplane />
-                        Aerolinea: {escala.airline}
-                      </p>
-                      <p>
-                        {" "}
-                        <AiOutlineFieldNumber />
-                        Vuelo Nro: {escala.flightNumber}
-                      </p>
+                      <p> <GiCommercialAirplane /><span>Aerolinea:</span> {escala.airline}</p>
+                      <p> <AiOutlineFieldNumber /> <span>Vuelo Nro:</span> {escala.flightNumber} </p>
                     </div>
                   </div>
                 ))
-              : false}
+              :false}
 
             <div className={styles.offersCardDetail}>
               {clicked ? (
@@ -151,29 +147,16 @@ export default function OfferCardIV(props: any): JSX.Element {
                 ? props.transfersR.map((escala: any) => (
                     <div className={styles.offersCardTransfers}>
                       <div>
-                        <p>
-                          <FaPlaneDeparture /> {escala.origin}{" "}
-                        </p>
-                        <p>
-                          <FaPlaneArrival /> {escala.destination}{" "}
-                        </p>
+                        <p> <FaPlaneDeparture /> <span className={styles.sp}>{escala.origin}</span> </p>
+                        <p> <FaPlaneArrival /> <span className={styles.sp}>{escala.destination}</span> </p>
                       </div>
                       <div>
-                        <p>
-                          <BsCalendarDateFill /> Salida: {escala.departure}{" "}
-                        </p>
-                        <p>
-                          <BsCalendarDate /> Llegada: {escala.arrive}{" "}
-                        </p>
+                        <p> <BsCalendarDateFill /> <span>Salida:</span> {escala.departure.slice(0,10)}{" "}{escala.departure.slice(11,19)} </p>
+                        <p> <BsCalendarDate /> <span>Llegada:</span>{escala.arrive.slice(0,10)}{" "}{escala.arrive.slice(11,19)} </p>
                       </div>
                       <div>
-                        <p>
-                          <GiCommercialAirplane /> Aerolinea: {escala.airline}
-                        </p>
-                        <p>
-                          <AiOutlineFieldNumber /> Vuelo Nro:{" "}
-                          {escala.flightNumber}
-                        </p>
+                        <p> <GiCommercialAirplane /> <span>Aerolinea:</span> {escala.airline} </p>
+                        <p> <AiOutlineFieldNumber /> <span>Vuelo Nro:</span> {escala.flightNumber} </p>
                       </div>
                     </div>
                   ))
