@@ -27,6 +27,8 @@ export default function OfferCardI(props: any): JSX.Element {
   };
 
   const handleFavs = (e: any) => {
+    console.log("captura de cada card");
+    console.log(props)
     const info = {
       id: props.offers,
       origin: props.originCity,
