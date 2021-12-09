@@ -7,6 +7,7 @@ import { BsArrowLeftRight, BsCalendarDateFill, BsCalendarDate } from "react-icon
 import { IoMdAirplane } from "react-icons/io";
 import { GiCommercialAirplane } from "react-icons/gi";
 import { getSeats, sendFavs } from "../../redux/actions/";
+import { auth } from "../../firebaseConfig";
 
 
 export default function OfferCardI(props: any): JSX.Element {
@@ -27,16 +28,21 @@ export default function OfferCardI(props: any): JSX.Element {
   };
 
   const handleFavs = (e: any) => {
-    const info = {
-      id: props.offers,
-      origin: props.originCity,
-      destination: props.destinationCity,
-      originAirport: props.originAirport,
-      destinationAirport: props.destinationAirport,
-      escalas:props.transfers.length -1,
-      price: `${props.currency} ${props.price}`,
+    if(auth.currentUser){
+      const info = {
+        id: props.offers,
+        userId: auth.currentUser?.uid,
+        origin: props.originCity,
+        destination: props.destinationCity,
+        originAirport: props.originAirport,
+        destinationAirport: props.destinationAirport,
+        escalas:props.transfers.length -1,
+        price: `${props.currency} ${props.price}`,
+      }
+      dispatch(sendFavs(info));
+    }else{
+      alert("Iniciar sesión");
     }
-    dispatch(sendFavs(info));
   }
 
   return (

@@ -5,6 +5,7 @@ const {Router} = require('express');
 const users = require('./users.js');
 const flights = require('./flights.js');
 const seats = require('./seats.js');
+const saves = require('./saves');
 
 
 
@@ -15,5 +16,6 @@ const router = Router();
 router.use('/', users);
 router.use('/', flights);
 router.use('/', seats);
+router.use('/', saves);
 
 module.exports = router;
