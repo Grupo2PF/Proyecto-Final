@@ -1,5 +1,4 @@
 const express = require("express");
-const axios = require("axios");
 const duffel = require('../duffel');
 
 const router = express();
@@ -281,46 +280,5 @@ router.get("/search", async function (req, res, next) {
 
   }
 });
-
-router.get("/Seats/:id", async (req, res) => {
-  const { id } = req.params;
-  const flightSeats = await duffel.seatMaps.get({
-    offer_id: id,
-  });
-
-  const allSeatsInfo = {
-    seatsByFlight: flightSeats.data.map((e) => {
-      const offerSlice = {
-        id: e.id,
-        hallsAmount: e.cabins.map((e) => e.aisles),
-        rowsAmount: e.cabins.map((e) => e.rows.length),
-        columns: e.cabins.map((e) => e.rows.map((e) => e.sections.length)),
-        seatsByColumn: e.cabins.map((e) =>
-          e.rows.map((e) => e.sections.map((e) => e.elements.length))
-        ),
-        //map: e.cabins.rows.map((e) => e),
-        seatsInfo: e.cabins.map((e) =>
-          e.rows.map((e) =>
-            e.sections.map((e) =>
-              e.elements.map((e) => {
-                const boxInfo = {
-                  type: e.type,
-                  numberAndLetter: e.designator,
-                  avaliable: e.available_services ? false : true,
-                  restrictions: e.disclosures,
-                };
-                return boxInfo;
-              })
-            )
-          )
-        ),
-      };
-      return offerSlice;
-    }),
-  };
-
-  return res.send(allSeatsInfo);
-});
-
 
 module.exports = router;
