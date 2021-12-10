@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, GET_PAY } from "../actionTypes";
+import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, SEND_FAVS } from "../actionTypes";
 
 export function getFlight(payload: any) {
 
@@ -62,16 +62,6 @@ export function getFlightUrl(payload: any) {
     }
   }
 
-  export function getPay(payload: any) {
-    console.log(payload);
-    return async function (dispatch: any) {
-      return dispatch({
-        type: GET_PAY,
-        payload: payload
-      });
-    }
-  }
-
     export function getSeats(payload: any) {
       return async function (dispatch: any) {
         try { 
@@ -95,4 +85,14 @@ export function getFlightUrl(payload: any) {
             type: RESET,
           });
         }
+    }
+
+    export function sendFavs(payload: any) {
+      return async function (dispatch: any) {
+        console.log(payload)
+        const favs = await axios.post("http://localhost:3001/saveflight", payload);
+        dispatch({
+          type: SEND_FAVS,
+        });
+      }
     }
