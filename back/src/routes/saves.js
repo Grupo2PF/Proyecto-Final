@@ -56,10 +56,12 @@ router.post('/saveflight', async(req, res, next)=>{
 
 
 
-router.get('/getsaves', async(req, res, next)=>{
+router.get('/getsaves/:userId', async(req, res, next)=>{
     try{
 
-        const { userId } = req.body;
+        const { userId } = req.params;
+        console.log("usuario que llega del front")
+        console.log(userId);
 
         const data = await db.collection('saves').get();
         const saves = [];

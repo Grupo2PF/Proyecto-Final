@@ -5,13 +5,19 @@ import { Link, useHistory } from "react-router-dom";
 import { createRef, useEffect, useState } from "react";
 import { auth, db, logout } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { getFavs} from "../../redux/actions";
 import firebase from "firebase/app";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import swal from "sweetalert";
+import { useSelector, useDispatch } from "react-redux";
+import FavCard from "./favCard"
+
 
 export default function UserProfile(documentPath) {
   const [user, loading, error] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
+  const dispatch = useDispatch();
+  const favs = useSelector(state => state.favs);
 
   const history = useHistory();
 
@@ -58,6 +64,7 @@ export default function UserProfile(documentPath) {
     if (loading) return;
     if (!user) return history.replace("/");
     getUser();
+    dispatch(getFavs(user.uid));
   }, [user, loading, history]);
 
   return (
@@ -136,7 +143,7 @@ export default function UserProfile(documentPath) {
                 <div
                   className={styles.cardOptions + " " + styles.cardOptionsFavs}
                 >
-                  <h3>Favoritos Aqui</h3>
+                  <div><FavCard/></div>
                 </div>
               </div>
 
