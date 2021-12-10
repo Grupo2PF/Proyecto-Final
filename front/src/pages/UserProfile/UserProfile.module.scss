@@ -99,10 +99,40 @@
         }
       }
 
+      .cardOptionsFavs {
+        justify-content: center;
+        align-items: center;
+      }
+
+      .btnUpdateBox {
+        // background-color: red;
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        .btnLink {
+          background-color: $main-color;
+          border-radius: 3px;
+          border: 1px solid $main-color;
+          font-size: 0.8rem;
+          color: $white;
+          text-decoration: none;
+          padding: 5px;
+          // box-shadow: 0px 0px 6px black;
+          transition: 0.3s;
+        }
+
+        .btnLink:hover {
+          box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+        }
+        .btnLink:active {
+          box-shadow: 1px 1px 3px black inset;
+        }
+      }
+    }
+
       p {
         transition: 0.5s;
         display: none;
-        font: 0.8rem;
       }
     }
   }
@@ -227,7 +257,7 @@
       }
     }
   }
-}
+
 
 @media screen and(min-width: $tablet-width) {
   //1024px
