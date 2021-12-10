@@ -37,10 +37,12 @@ export default function OfferCardIV(props: any): JSX.Element {
     const info = {
       id: props.offers,
       origin: props.originCity,
-      destination: props.destinationCity,
       originAirport: props.originAirport,
+      destination: props.destinationCity,
       destinationAirport: props.destinationAirport,
-      escalas:props.transfers.length -1,
+      escalasIda:props.transfersD.length -1,
+      escalasVuelta:props.transfersR.length -1,
+      price: `${props.currency} ${props.price}`,
     }
     dispatch(sendFavs(info));
   }
@@ -165,49 +167,4 @@ export default function OfferCardIV(props: any): JSX.Element {
       </section>
     </>
   );
-  // return (
-  //   <div className={styles.cardContainer}>
-  //       <div className={styles.cardInfo}>
-  //           <h2>
-  //               {props.originCity ? props.originCity : props.originAirport} -
-  //               {props.destinationCity ? props.destinationCity : props.destinationAirport}
-  //               <button onClick={(e) => { handleClick(e) }}> <AiOutlineExclamationCircle size={25}/> </button>
-  //           </h2>
-  //           <div className={styles.cardPrice}>
-  //           <button onClick={handleBuy} >{`${props.currency} ${props.price}`} </button>
-  //           </div>
-  //       </div>
-
-  //       {clicked
-  //         ? props.transfersD.map((escala: any) => (
-  //             <div className={styles.cardTransfers}>
-  //                 <h2> Escalas IDA </h2>
-  //               <div>
-  //                 {escala.origin} - {escala.destination}
-  //               </div>
-  //               <p>Salida: {escala.departure}</p>
-  //               <p>Llegada: {escala.arrive}</p>
-  //               <p>Aerolinea: {escala.airline}</p>
-  //               <p>Vuelo Nro: {escala.flightNumber}</p>
-  //             </div>
-  //           ))
-  //         : false}
-
-  //       {clicked
-  //         ? props.transfersR.map((escala: any) => (
-  //             <div className={styles.cardTransfers}>
-  //                 <h2> Escalas VUELTA </h2>
-  //               <div>
-  //                 {escala.origin} - {escala.destination}
-  //               </div>
-  //               <p>Salida: {escala.departure}</p>
-  //               <p>Llegada: {escala.arrive}</p>
-  //               <p>Aerolinea: {escala.airline}</p>
-  //               <p>Vuelo Nro: {escala.flightNumber}</p>
-  //             </div>
-  //           ))
-  //         : false}
-
-  //   </div>
-  // )
 }

@@ -13,6 +13,8 @@ import Reset from "./pages/ResetPass/ResetPass";
 import React from "react";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
+// import Navbar from "./components/Navbar/Navbar";
+import PayPage from "./pages/PayPage/PayPage";
 
 
 
@@ -31,6 +33,7 @@ function App() {
         <Route exact path="/user/update" component={UpdateUserProfile} />
         <Route exact path="/offers" component={OfferPage} />
         <Route exact path="/terms" component={Terms} />
+        <Route exact path="/pay" component={PayPage} />
       </Switch>
         <Footer/>
     </div>

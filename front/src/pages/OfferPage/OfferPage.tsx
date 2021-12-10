@@ -22,6 +22,8 @@ export default function OfferPage(): JSX.Element {
       if (cargando) {
         <LoadingScreen />;
       } else {
+        console.log("soy location")
+        console.log(location)
         dispatch(getFlightUrl(location.search));
       }
     }, 3000);

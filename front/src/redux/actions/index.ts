@@ -8,7 +8,7 @@ export function getFlight(payload: any) {
     try {
       if (payload.journeyType === true) {
         const json = await axios.get(
-          `http://localhost:3002/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&rDate=${payload.returnDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
+          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&rDate=${payload.returnDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
         );
 
         return dispatch({
@@ -17,7 +17,7 @@ export function getFlight(payload: any) {
         });
       } else { console.log(payload)
         const json = await axios.get(
-          `http://localhost:3002/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
+          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
         );
         return dispatch({
           type: GET_FLIGHT,
@@ -35,7 +35,7 @@ export function getFlightUrl(payload: any) {
     
     try {
       const json = await axios.get(
-        `http://localhost:3002/search${payload}`
+        `http://localhost:3001/search${payload}`
       );
       return dispatch({
         type: GET_FLIGHT_URL,
@@ -66,7 +66,7 @@ export function getFlightUrl(payload: any) {
       return async function (dispatch: any) {
         try { 
           console.log(payload);
-          const info = await axios.get(`http://localhost:3002/${payload}/seats`);
+          const info = await axios.get(`http://localhost:3001/${payload}/seats`);
           console.log("respuesta de la api");
           console.log(info.data);
           return dispatch({
@@ -90,7 +90,7 @@ export function getFlightUrl(payload: any) {
     export function sendFavs(payload: any) {
       return async function (dispatch: any) {
         console.log(payload)
-        const favs = await axios.post("http://localhost:3002/saveflight", payload);
+        const favs = await axios.post("http://localhost:3001/saveflight", payload);
         dispatch({
           type: SEND_FAVS,
         });
