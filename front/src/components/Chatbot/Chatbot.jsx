@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components";
 import styles from "./chatbot.module.scss"
 import {useState} from "react";
 import { BiMessageRoundedDetail } from "react-icons/bi";
+import botImg from "../../assets/chatBot/chat_bot.jpg";
 
 export default function Chat() {
 
@@ -27,7 +28,7 @@ export default function Chat() {
   const steps = [
     {
       id: "1",
-      message: "Hola, ¿Como te llamas?",
+      message: "Hola Juan Carlos",
       trigger: "2",
       delay: false
     },
@@ -106,7 +107,7 @@ export default function Chat() {
         <ChatBot
           speechSynthesis={{ enable: true, lang: 'spanish' }}
           botDelay={3000}
-          botAvatar="https://cdn.icon-icons.com/icons2/1465/PNG/512/174manpilot2_100441.png"
+          botAvatar={botImg}
           userAvatar="https://i.pinimg.com/originals/6f/d4/90/6fd490df8567c4086c6f7444693543da.png"
           steps={steps}
         />
