@@ -13,6 +13,8 @@ import Reset from "./pages/ResetPass/ResetPass";
 import React from "react";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
+import TicketPage from "./pages/TicketPage/TicketPage";
+import OfferDetail from "./pages/OfferDetail/OfferDetail";
 
 
 
@@ -30,6 +32,8 @@ function App() {
         <Route exact path="/user" component={UserProfile} />
         <Route exact path="/user/update" component={UpdateUserProfile} />
         <Route exact path="/offers" component={OfferPage} />
+        <Route exact path="/offer-detail/:offerId" component={OfferDetail} />
+        <Route exact path="/ticket/:offerId" component={TicketPage} />
         <Route exact path="/terms" component={Terms} />
       </Switch>
         <Footer/>

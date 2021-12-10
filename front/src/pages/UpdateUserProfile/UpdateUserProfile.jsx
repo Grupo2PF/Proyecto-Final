@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import styles from "./UpdateUserProfile.module.scss";
-import regex from "../../helpers/regex";
+// import regex from "../../helpers/regex";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import {
   // FaBirthdayCake,
@@ -24,7 +24,7 @@ import {
   lastNameValidation,
   nameValidation,
   phoneValidation,
-  photoURLValidation,
+  // photoURLValidation,
   validateForm,
 } from "./validations";
 

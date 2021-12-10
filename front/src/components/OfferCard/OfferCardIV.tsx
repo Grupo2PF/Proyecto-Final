@@ -14,10 +14,12 @@ import {
 import { IoMdAirplane } from "react-icons/io";
 import { GiCommercialAirplane } from "react-icons/gi";
 import { getSeats, sendFavs } from "../../redux/actions/";
+import { Link, useLocation } from "react-router-dom";
 
 export default function OfferCardIV(props: any): JSX.Element {
   const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const handleClick = (e: any) => {
     if (!clicked) {
@@ -27,10 +29,10 @@ export default function OfferCardIV(props: any): JSX.Element {
     }
   };
 
-  const handleBuy = (e: any) => {
-    const id = props.offers;
-    dispatch(getSeats(id));
-  };
+  // const handleBuy = (e: any) => {
+  //   const id = props.offers;
+  //   dispatch(getSeats(id));
+  // };
 
   const handleFavs = (e: any) => {
     console.log(props)
@@ -90,12 +92,20 @@ export default function OfferCardIV(props: any): JSX.Element {
                 Ver detalles
               </button>
               <button onClick={handleFavs}>añadir a favs</button>
-              <button
+              <Link
+                to={{
+                  pathname: `/ticket/${props.offers}`,
+                  state: {
+                    offerId: props.offers,
+                    offerProps : props,
+                    query: `${location.search}`,
+                  },
+                }}
                 className={styles.offersCardButtonsPrice}
-                onClick={handleBuy}
+                // onClick={handleBuy}
               >
                 {`${props.currency} ${props.price}`}
-              </button>
+              </Link>
             </div>
           </div>
 
