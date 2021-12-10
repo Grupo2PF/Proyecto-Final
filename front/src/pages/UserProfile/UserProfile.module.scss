@@ -31,55 +31,101 @@
     align-items: center;
     position: relative;
     background-color: $white;
-    width: 70%;
+    width: 100%;
     flex-direction: column;
     justify-content: space-around;
-    padding: 1rem 0;
+    // padding: 1rem 0;
     height: auto;
-    margin: 8rem 0;
-    border-radius: 24px;
+    width: 100vw;
+    margin-top: 12vh;
+    // border-radius: 24px;
     z-index: 10;
+  }
 
-    .imgAndNameContainer {
+  .imgAndNameContainer {
+    width: 100%;
+    // height: 30vh;
+    display: flex;
+    flex-direction: row;
+    // align-items: center;
+    // justify-content: space-around;
+    margin-bottom: 0.5rem ;
+    // background-color: blue;
+
+    .ProfileImg {
+      img {
+        width: 9rem;
+        height: 9rem;
+        // border-radius: 50%;
+      }
+    }
+    .h1LogoutBox {
+      height: initial;
+      width: 100%;
+      flex-direction: column;
+      justify-content: center;
+      // background-color: red;
+      h1 {
+        // justify-content: center;
+        padding: 0 0.5rem;
+        font-size: 30px;
+        width: 100%;
+        height: 70%;
+        height: auto;
+        // background-color: blue;
+      }
+      .LogoutBox {
+        // width: 90%;
+        // height: 50%;
+        display: flex;
+        justify-content: flex-end;
+        // align-items: center;
+        padding: 0 0.5rem;
+        // background-color: green;
+        .btnLogout {
+          border: none;
+          background-color: transparent;
+          padding: 5px;
+
+          .icon {
+            transition: 0.1s;
+            color: $gray;
+            font-size: 2rem;
+          }
+          .icon:hover {
+            color: red;
+            filter: drop-shadow(1px 1px 2px black);
+          }
+        }
+      }
+
+      p {
+        transition: 0.5s;
+        display: none;
+        font: 0.8rem;
+      }
+    }
+  }
+
+  .cardOptionsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+
+    .card {
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-around;
-      padding: 0.5rem 0;
+      padding: 2rem 0;
+      border-top: 1px solid $gray;
+      min-height: 12rem;
 
       h1 {
-        padding: 1rem 0;
-        font-size: 30px;
-      }
-
-      img {
-        width: 9rem;
-        height: 9rem;
-        border-radius: 50%;
-      }
-    }
-
-    .cardOptionsContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 80%;
-
-      .card {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem 0;
-        border-top: 1px solid $gray;
-        min-height: 12rem;
-
-        h1 {
-          border-bottom: 1px solid $main-color;
-          margin-bottom: 1rem;
-          font-size: 25px;
-        }
+        border-bottom: 1px solid $main-color;
+        // margin-bottom: 1rem;
+        font-size: 25px;
       }
 
       .cardOptions {
@@ -87,71 +133,144 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-      }
-
-      .button {
-        display: flex;
-        flex-direction: row;
         justify-content: space-evenly;
-        align-items: center;
-        width: 100%;
-        height: auto;
-        padding: 1rem 0;
-        position: relative;
-        flex-wrap: wrap;
+        // background-color: red;
+        height: 30vh;
 
-        .btn1 {
-          width: 12rem;
-          height: 3rem;
-          background: $white;
-          color: $main-color;
-          font-size: x-large;
-          border-radius: 10px;
-          border: $main-color 1px solid;
-          flex: none;
-          order: 0;
-          flex-grow: 0;
-          margin: 0px 50px;
+        .textBox {
+          display: flex;
+          // background-color: coral;
 
-          &:hover {
-            cursor: pointer;
-            background: $lightgray;
+          h3 {
+          }
+          p {
+            margin: 0 0.5rem;
           }
         }
+      }
 
-        .btn {
-          width: 12rem;
-          height: 3rem;
+      .cardOptionsFavs {
+        justify-content: center;
+        align-items: center;
+      }
+
+      .btnUpdateBox {
+        // background-color: red;
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        .btnLink {
+          background-color: $main-color;
+          border-radius: 3px;
+          border: 1px solid $main-color;
+          font-size: 0.8rem;
           color: $white;
-          font-size: x-large;
-          background: #fe3838;
-          border-radius: 10px;
-          border: #fe3838 1px solid;
-          flex: none;
-          order: 0;
-          flex-grow: 0;
-          margin: 0px 50px;
+          text-decoration: none;
+          padding: 5px;
+          // box-shadow: 0px 0px 6px black;
+          transition: 0.3s;
+        }
 
-          &:hover {
-            cursor: pointer;
-            background: #a30b0b;
-          }
+        .btnLink:hover {
+          box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+        }
+        .btnLink:active {
+          box-shadow: 1px 1px 3px black inset;
+        }
+      }
+    }
+
+    .button {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: auto;
+      padding: 1rem 0;
+      position: relative;
+      flex-wrap: wrap;
+
+      p {
+        display: none;
+      }
+
+      .btn {
+        width: 100%;
+        height: 2rem;
+        // font-size: x-large;
+        // background: #fe3838;
+        // border-radius: 10px;
+        // border: #fe3838 1px solid;
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        // margin: 0px 50px;
+        display: flex;
+        align-items: end;
+        justify-content: end;
+        border-top: 1px solid $gray;
+
+        // background-color: red;
+        button {
+          color: #fe3838;
+          background-color: transparent;
+          border: none;
+          transition: 0.3s;
+        }
+
+        button:hover {
+          cursor: pointer;
+          // background: #a30b0b;
+          text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
         }
       }
     }
   }
-
 }
 
+@media screen and(min-width: $tablet-width) {
+  //1024px
 
-@media screen and(width: $tablet-width) {
-  .button {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: space-evenly;
-    width: 100%;
-    padding: 1rem 0;
-    position: fixed;
+  .pageContainer {
+    // background-color: red;
+
+    .imgAndNameContainer {
+      .ProfileImg {
+        img {
+          width: 15rem;
+          height: 15rem;
+        }
+      }
+      .LogoutBox {
+        height: 50%;
+        display: flex;
+        .btnLogout{
+          height: initial;
+          height: 50%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and(min-width: $tablet-width) {
+  .LogoutBox {
+    // background-color: red;
+   
+
+    .btnLogout:hover {
+      // color:green;
+      transition: 0.5s;
+      height: initial;
+      p {
+        display: flex;
+        position: absolute;
+        right: 2rem;
+        border: solid 1px gray;
+        padding: 2px;
+        border-radius: 2px;
+      }
+    }
   }
 }
