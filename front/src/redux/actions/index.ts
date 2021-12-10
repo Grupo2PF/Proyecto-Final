@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET } from "../actionTypes";
+import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, GET_PAY } from "../actionTypes";
 
 export function getFlight(payload: any) {
 
@@ -57,6 +57,16 @@ export function getFlightUrl(payload: any) {
     return async function (dispatch: any) {
       return dispatch({
         type: SET_LOADING,
+        payload: payload
+      });
+    }
+  }
+
+  export function getPay(payload: any) {
+    console.log(payload);
+    return async function (dispatch: any) {
+      return dispatch({
+        type: GET_PAY,
         payload: payload
       });
     }
