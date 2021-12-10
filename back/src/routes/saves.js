@@ -6,7 +6,7 @@ const router = express();
 
 router.post('/saveflight', async(req, res, next)=>{
 
-    const { id, origin, destination, originAirport, destinationAirport, escalas, price, userId } = req.body;
+    const { id, origin, destination, originAirport, destinationAirport, transfers, price, userId } = req.body;
     var isSaved = false;
 
     console.log(userId);
@@ -39,7 +39,7 @@ router.post('/saveflight', async(req, res, next)=>{
             destination: destination,
             originAirport: originAirport,
             destinationAirport: destinationAirport,
-            transfers: escalas,
+            transfers: transfers,
             price: price
         }
     

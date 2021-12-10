@@ -32,11 +32,12 @@ export default function OfferCardI(props: any): JSX.Element {
       const info = {
         id: props.offers,
         userId: auth.currentUser?.uid,
+        mode: props.mode,
         origin: props.originCity,
         destination: props.destinationCity,
         originAirport: props.originAirport,
         destinationAirport: props.destinationAirport,
-        escalas:props.transfers.length -1,
+        transfers: props.transfers.length -1,
         price: `${props.currency} ${props.price}`,
       }
       dispatch(sendFavs(info));
