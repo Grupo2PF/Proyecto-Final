@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, SEND_FAVS, GET_FAVS } from "../actionTypes";
+import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, SEND_FAVS, GET_FAVS, IS_AVAILABLE } from "../actionTypes";
 
 export function getFlight(payload: any) {
 
@@ -98,13 +98,26 @@ export function getFlightUrl(payload: any) {
 
     export function getFavs(payload: any) {
       return async function (dispatch: any) {
-        console.log("payload getfavs")
-        console.log(payload)
         const favs = await axios.get(`http://localhost:3001/getsaves/${payload}`);
-        console.log(favs.data)
         dispatch({
           type: GET_FAVS,
           payload: favs.data,
         });
       }
     }
+
+    export function isAvailable(payload: any) {
+      return async function (dispatch: any) {
+        try{
+        const info = await axios.get(`http://localhost:3001/isavailable/${payload}`);
+        console.log("respuesta del back is available");
+        console.log(info.data);
+        return dispatch({
+          type: IS_AVAILABLE,
+          payload: info.data,
+      })
+    } catch (err) {
+      alert("ese vuelo ya se ha modificado");
+    }
+  }
+  }

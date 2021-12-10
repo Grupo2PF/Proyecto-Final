@@ -3,9 +3,9 @@ const duffel = require('../duffel');
 
 const router = express();
 
-router.get('/isavailable', async(req, res, next)=>{
+router.get('/isavailable/:id', async(req, res, next)=>{
 
-    const { id } = req.body;
+    const { id } = req.params;
 
     try{
         const flight = await duffel.offers.get(id, {

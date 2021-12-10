@@ -6,4 +6,5 @@ export const GET_FLIGHT_URL: string = "GET_FLIGHT_URL";
 export const RESET: string = "RESET";
 export const SEND_FAVS: string = "SEND_FAVS";
 export const GET_FAVS: string = "GET_FAVS";
+export const IS_AVAILABLE: string = "IS_AVAILABLE";
 
