@@ -81,14 +81,27 @@ router.get('/getsaves', async(req, res, next)=>{
 
             if(userId === doc.data().userId){
                 const save = {
-                    flightId: doc.data().flightId,
+                    flightId: doc.data().offers,
                     userId: doc.data().userId,
-                    origin: doc.data().origin,
-                    destination: doc.data().destination,
-                    originAirport: doc.data().originAirport,
-                    destinationAirport: doc.data().destinationAirport,
-                    transfers: doc.data().transfers,
-                    price: doc.data().price
+                    mode: doc.data().mode,
+                    currency: doc.data().currency,
+                    price: doc.data().price,
+                    dDate: doc.data().dDate,
+                    cabin: doc.data().cabin,
+                    passengers: {
+                        adults: doc.data().adults,
+                        childs: doc.data().childs,
+                        baby: doc.data().baby
+                    },
+                    origin: {
+                        city: doc.data().originCity,
+                        airport: doc.data().originAirport
+                    },
+                    destination: {
+                        city: doc.data().destinationCity,
+                        airport: doc.data().destinationAirport
+                    },
+                    transfers: doc.data().transfers
                 }
                 saves.push(save);
             }
