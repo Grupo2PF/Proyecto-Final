@@ -86,23 +86,53 @@ router.get("/search", async function (req, res, next) {
         mode: mode,
         class: cabin,
         origin: {
-          city: offerRequestOneway.data.slices[0].origin.city_name,
+          city: offerRequestOneway.data.slices[0].origin.city_name || offerRequestOneway.data.slices[0].origin.name,
           airport: offerRequestOneway.data.slices[0].origin.name,
           latO: latO,
           lngO: lngO,
         },
         destination: {
-          city: offerRequestOneway.data.slices[0].destination.city_name,
+          city: offerRequestOneway.data.slices[0].destination.city_name || offerRequestOneway.data.slices[0].destination.name,
           airport: offerRequestOneway.data.slices[0].destination.name,
           latD: latD,
           lngD: lngD,
         },
         offers: []
       };
+
+      if(flightResults.origin.city === flightResults.origin.airport){
+        let i = 0;
+        while(flightResults.origin.city === flightResults.origin.airport){
+          if(offerRequestOneway.data.offers[i].slices[0].origin.iata_code === origin){
+            flightResults.origin.airport = offerRequestOneway.data.offers[i].slices[0].origin.name;
+          }
+          i++;
+        }
+      }
+
+      if(flightResults.destination.city === flightResults.destination.airport){
+        let i = 0;
+        while(flightResults.destination.city === flightResults.destination.airport){
+          if(offerRequestOneway.data.offers[i].slices[0].destination.iata_code === destination){
+            flightResults.destination.airport = offerRequestOneway.data.offers[i].slices[0].destination.name;
+          }
+          i++;
+        }
+      }
       
       for(let i = 0; i < offerRequestOneway.data.offers.length; i++){
         let flight = {
           id: offerRequestOneway.data.offers[i].id,
+          origin: {
+            city: offerRequestOneway.data.offers[i].slices[0].origin.city_name,
+            airport: offerRequestOneway.data.offers[i].slices[0].origin.name,
+            date: offerRequestOneway.data.offers[i].slices[0].segments[0].departing_at,
+          },
+          destiny: {
+            city: offerRequestOneway.data.offers[i].slices[0].destination.city_name,
+            airport: offerRequestOneway.data.offers[i].slices[0].destination.name,
+            date: offerRequestOneway.data.offers[i].slices[0].segments[0].arriving_at
+          },
           price: offerRequestOneway.data.offers[i].total_amount,
           currency: offerRequestOneway.data.offers[i].total_currency,
           airline: offerRequestOneway.data.offers[i].owner.name,
@@ -122,11 +152,12 @@ router.get("/search", async function (req, res, next) {
           flight.transfers.push(tr);
   
         });
-  
-        flightResults.offers.push(flight);
+        
+        if(offerRequestOneway.data.offers[i].slices[0].origin.iata_code === origin && offerRequestOneway.data.offers[i].slices[0].destination.iata_code === destination){
+          flightResults.offers.push(flight);
+        }
       }
 
-      // res.send(flightResults);
       res.send(flightResults);
     }
     
@@ -176,25 +207,44 @@ router.get("/search", async function (req, res, next) {
         var latD = offerRequestRoundtrip.data.slices[0].destination.airports[0].latitude
         var lngD = offerRequestRoundtrip.data.slices[0].destination.airports[0].longitude
       }
-      // res.send(offerRequestRoundtrip);
    
       const flightResults = {
         mode: mode,
         class: cabin,
         origin: {
-          city: offerRequestRoundtrip.data.slices[0].origin.city_name,
+          city: offerRequestRoundtrip.data.slices[0].origin.city_name || offerRequestRoundtrip.data.slices[0].origin.name,
           airport: offerRequestRoundtrip.data.slices[0].origin.name,
           latO: latO,
           lngO: lngO,
         },
         destination: {
-          city: offerRequestRoundtrip.data.slices[0].destination.city_name,
+          city: offerRequestRoundtrip.data.slices[0].destination.city_name || offerRequestRoundtrip.data.slices[0].destination.name,
           airport: offerRequestRoundtrip.data.slices[0].destination.name,
           latD: latD,
           lngD: lngD,
         },
         offers: []
       };
+
+      if(flightResults.origin.city === flightResults.origin.airport){
+        let i = 0;
+        while(flightResults.origin.city === flightResults.origin.airport){
+          if(offerRequestRoundtrip.data.offers[i].slices[0].origin.iata_code === origin){
+            flightResults.origin.airport = offerRequestRoundtrip.data.offers[i].slices[0].origin.name;
+          }
+          i++;
+        }
+      }
+
+      if(flightResults.destination.city === flightResults.destination.airport){
+        let i = 0;
+        while(flightResults.destination.city === flightResults.destination.airport){
+          if(offerRequestRoundtrip.data.offers[i].slices[0].destination.iata_code === destination){
+            flightResults.destination.airport = offerRequestRoundtrip.data.offers[i].slices[0].destination.name;
+          }
+          i++;
+        }
+      }
       
       for(let i = 0; i < offerRequestRoundtrip.data.offers.length; i++){
         let flight = {
@@ -258,15 +308,16 @@ router.get("/search", async function (req, res, next) {
           flight.return.transfers.push(tr);
           
         });
-        
-        flightResults.offers.push(flight);
+
+        if(offerRequestRoundtrip.data.offers[i].slices[0].origin.iata_code === origin && offerRequestRoundtrip.data.offers[i].slices[0].destination.iata_code === destination){
+          if(offerRequestRoundtrip.data.offers[i].slices[1].origin.iata_code === destination && offerRequestRoundtrip.data.offers[i].slices[1].destination.iata_code === origin){
+            flightResults.offers.push(flight);
+          }
+        }
 
       }
 
-      console.log(flightResults.offers.length);
-
       res.send(flightResults);
-
 
     }
 
