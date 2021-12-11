@@ -9,37 +9,39 @@ export default function FavCard(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
+var fav = []
 
-
-
-  useEffect(() => {;
-
-  }, [yetAvailable]);
-
+  
   const available = (e) => {
-    e.preventDefault();
-    dispatch(isAvailable(e.target.value));
-    console.log(yetAvailable)
-    if (yetAvailable.class){
-   if (window.confirm("El vuelo esta disponible, desea comprarlo?")) {
-    history.push({
-      pathname: '/pruebaprops',
-      state: {objeto: yetAvailable}
-    })
-   }}
+    e.preventDefault(); 
+    fav = favs.filter((fav) => fav.flightId === e.target.value);
+    dispatch(isAvailable(fav));
+    
   };
+  
+useEffect(() => {
+  isAvailable(fav);
+  if (yetAvailable.class){
+    if (window.confirm("El vuelo esta disponible, desea comprarlo?")) {
+     history.push({
+       pathname: '/pruebaprops',
+       state: {objeto: yetAvailable}
+     })
+    }} 
+}, [yetAvailable]);
+  
 
   return (
     <div>
       {favs?.map((fav) => {
-        console.log(fav);
+        console.log(fav)
         return (
           <div key={fav.id}>
-            {fav.origin}
-            {fav.destination}
+            {fav.origin.city}
+            {fav.destination.city}
             {`${fav.price}`}
             <button>X</button>
-            <button value={{flightId:fav.flightId, mode: fav.mode}} onClick={available}>
+            <button value={fav.flightId} onClick={available}>
               ¿Sigue disponible?
             </button>
             <button>Buscar similares</button>

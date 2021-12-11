@@ -4,7 +4,7 @@ const IATA = require('../../../IATA.json');
 
 const router = express();
 
-router.get('/isavailable/:id', async(req, res, next)=>{
+router.get('/isavailable', async(req, res, next)=>{
 
     const {
         flightId,
@@ -18,7 +18,7 @@ router.get('/isavailable/:id', async(req, res, next)=>{
         cabin,
         dDate,
         transfers
-    } = req.body;
+    } = req.query;
 
     const escalas = transfers.length;
     const psgrs = [];
