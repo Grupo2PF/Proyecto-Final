@@ -6,7 +6,7 @@ const router = express();
 
 router.post('/saveflight', async(req, res, next)=>{
 
-    const { id, origin, destination, originAirport, destinationAirport, transfers, price, userId } = req.body;
+    const { offers, originCity, destinationCity, originAirport, destinationAirport, transfers, price, userId } = req.body;
     var isSaved = false;
 
     console.log(userId);
@@ -16,7 +16,7 @@ router.post('/saveflight', async(req, res, next)=>{
         const data = await db.collection('saves').get();
     
         data.forEach(doc => {
-                if(id === doc.data().flightId){
+                if(offers === doc.data().flightId){
                     isSaved = true;
                 }   
             });
@@ -33,10 +33,10 @@ router.post('/saveflight', async(req, res, next)=>{
     }else{
 
         const save = {
-            flightId: id,
+            flightId: offers,
             userId: userId,
-            origin: origin,
-            destination: destination,
+            origin: originCity,
+            destination: destinationCity,
             originAirport: originAirport,
             destinationAirport: destinationAirport,
             transfers: transfers,

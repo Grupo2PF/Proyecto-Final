@@ -37,7 +37,8 @@ export default function rootReducer(state = initialState, action: Action) {
       };
       case RESET:
       return {
-        initialState,
+        ...state,
+        allFlight: initialState.allFlight,
       };
       case GET_FAVS:
       return {

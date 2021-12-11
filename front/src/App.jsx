@@ -15,6 +15,7 @@ import OfferPage from "./pages/OfferPage/OfferPage";
 import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
 // import Navbar from "./components/Navbar/Navbar";
 import PayPage from "./pages/PayPage/PayPage";
+import PruebaProps from "./pages/pruebaProps/pruebaProps";
 
 
 
@@ -24,6 +25,7 @@ function App() {
       
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/pruebaprops" component={PruebaProps} />
         <Route exact path="/popular-destination/:id" component={PopularDestination} />
         <Route exact path="/about-us" component={AboutUs}/>
         <Route exact path="/login" component={LoginPage} />
@@ -35,7 +37,7 @@ function App() {
         <Route exact path="/terms" component={Terms} />
         <Route exact path="/pay" component={PayPage} />
       </Switch>
-        <Footer/>
+        {/* <Footer/> */}
     </div>
   );
 }
