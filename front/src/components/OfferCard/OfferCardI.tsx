@@ -15,6 +15,7 @@ import { IoMdAirplane } from "react-icons/io";
 import { GiCommercialAirplane } from "react-icons/gi";
 import { getSeats, sendFavs } from "../../redux/actions/";
 import { Link, useLocation } from "react-router-dom";
+import { auth } from "../../firebaseConfig";
 
 export default function OfferCardI(props: any): JSX.Element {
   const [clicked, setClicked] = useState(false);
@@ -35,20 +36,24 @@ export default function OfferCardI(props: any): JSX.Element {
   };
 
   const handleFavs = (e: any) => {
-    const info = {
-      id: props.offers,
-      origin: props.originCity,
-      mode: props.mode,
-      destination: props.destinationCity,
-      originAirport: props.originAirport,
-      destinationAirport: props.destinationAirport,
-      escalas: props.transfers.length - 1,
-      price: `${props.currency} ${props.price}`,
-    };
-    console.log(info)
-    dispatch(sendFavs(info));
+    if (auth.currentUser) {
+      const info = {
+        id: props.offers,
+        userId: auth.currentUser.uid,
+        mode: props.mode,
+        origin: props.originCity,
+        destination: props.destinationCity,
+        originAirport: props.originAirport,
+        destinationAirport: props.destinationAirport,
+        escalas: props.transfers.length - 1,
+        price: `${props.currency} ${props.price}`,
+      };
+      console.log(info);
+      dispatch(sendFavs(info));
+    } else {
+      alert("Debes iniciar sesión para poder agregar a favoritos");
+    }
   };
-
   return (
     <>
       <section className={styles.offers}>

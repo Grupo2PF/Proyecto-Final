@@ -4,7 +4,7 @@ import style from './Home.module.scss'
 import PopularDestinations from "../../components/PopularDestinations/PopularDestinations";
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbar/Navbar';
-
+import Chat from "../../components/Chatbot/Chatbot"
 
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
 
             <PopularDestinations />
 
-
+            <Chat/>
         </div>
         </>
     )

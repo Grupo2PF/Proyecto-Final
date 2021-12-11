@@ -15,6 +15,8 @@ import OfferPage from "./pages/OfferPage/OfferPage";
 import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
 import TicketPage from "./pages/TicketPage/TicketPage";
 import OfferDetail from "./pages/OfferDetail/OfferDetail";
+// import Navbar from "./components/Navbar/Navbar";
+import PayPage from "./pages/PayPage/PayPage";
 
 
 
@@ -35,6 +37,7 @@ function App() {
         <Route exact path="/offer-detail/:offerId" component={OfferDetail} />
         <Route exact path="/ticket/:offerId" component={TicketPage} />
         <Route exact path="/terms" component={Terms} />
+        <Route exact path="/pay" component={PayPage} />
       </Switch>
         <Footer/>
     </div>

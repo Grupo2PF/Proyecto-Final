@@ -142,6 +142,12 @@
   color: #b1b1b1;
   font-size: 1.2rem;
 }
+.offersCardTransfers span {
+  font-weight: 700;
+}
+.offersCardTransfers .sp {
+  font-weight: 500;
+}
 
 @media screen and (max-width: 750px) {
   .offersCard {
