@@ -113,8 +113,6 @@ export function getFlightUrl(payload: any) {
         console.log(payload);
         try{
         const info = await axios.get(`http://localhost:3001/isavailable?originAirport=${payload[0].originAirport}&destinationAirport=${payload[0].destinationAirport}&dDate=${payload[0].dDate}&rDate=${payload[0].rDate}&adults=${payload[0].adults}&childs=${payload[0].childs}&baby=${payload[0].baby}&cabin=${payload[0].cabin}&flightId=${payload[0].offers}&price=${payload[0].price}&transfers=${payload[0].transfers}`);
-        console.log("respuesta del back is available");
-        console.log(info.data);
         return dispatch({
           type: IS_AVAILABLE,
           payload: info.data,

@@ -14,10 +14,23 @@ import {
 import { IoMdAirplane } from "react-icons/io";
 import { GiCommercialAirplane } from "react-icons/gi";
 import { getSeats, sendFavs } from "../../redux/actions/";
+import {auth} from "../../firebaseConfig";
+import { useLocation } from "react-router-dom";
 
 export default function OfferCardIV(props: any): JSX.Element {
   const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
+  const dataFromQuery:any = {};
+  const location = useLocation();
+
+  const getQueryData = (offerQuery:any) => {
+    return offerQuery
+      .split("&")
+      .map((word:any) => word.replace("=", ",").replace("?", "").split(","))
+      .forEach((el:any) => (dataFromQuery[el[0]] = el[1]));
+  };
+  getQueryData(location.search);
+
 
   const handleClick = (e: any) => {
     if (!clicked) {
@@ -33,19 +46,19 @@ export default function OfferCardIV(props: any): JSX.Element {
   };
 
   const handleFavs = (e: any) => {
-    console.log(props)
+    if(auth.currentUser){
+    
     const info = {
-      id: props.offers,
-      origin: props.originCity,
-      originAirport: props.originAirport,
-      destination: props.destinationCity,
-      destinationAirport: props.destinationAirport,
-      escalasIda:props.transfersD.length -1,
-      escalasVuelta:props.transfersR.length -1,
-      price: `${props.currency} ${props.price}`,
+      ...dataFromQuery,
+      userId: auth.currentUser.uid,
+     ...props
     }
+    console.log(info);
     dispatch(sendFavs(info));
+  }else{
+    alert("Debes iniciar sesión para poder agregar a favoritos")
   }
+}
 
   return (
     <>
