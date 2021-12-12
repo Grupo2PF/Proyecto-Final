@@ -31,13 +31,13 @@ app.post("/process-payment", (req, res) => {
     token: req.body.token,
     description: req.body.description,
     installments: Number(req.body.installments),
-    payment_method_id: req.body.paymentMethodId,
-    issuer_id: req.body.issuer,
+    payment_method_id: req.body.payment_method_id,
+    issuer_id: req.body.issuer_id,
     payer: {
-      email: req.body.payer.email,
+      email: req.body.email,
       identification: {
-        type: req.body.payer.docType,
-        number: req.body.payer.docNumber,
+        type: req.body.identification_type,
+        number: req.body.identification_number,
       },
     },
   };

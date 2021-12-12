@@ -7,7 +7,7 @@ const VITE_PUBLIC_KEY_MP = "TEST-0f046780-e30e-443a-b0c8-cc6d4fd9be99";
 const VITE_URL_PAYMENT_MP = "http://localhost:3001";
 
 export default function useMercadoPago() {
-    const [resultPayment, setResultPayment] = useState(undefined);
+    const [resultPayment, setResultPayment] = useState(null);
 
     const { MercadoPago } = useScript(
         "https://sdk.mercadopago.com/js/v2",
@@ -37,14 +37,14 @@ export default function useMercadoPago() {
                             paymentMethodId: payment_method_id,
                             issuerId: issuer_id,
                             cardholderEmail: email,
-                            amount,
+                            transaction_amount: amount,
                             token,
                             installments,
                             identificationNumber: identification_number,
                             identificationType: identification_type,
                         } = cardForm.getCardFormData();
 
-                        fetch(`${VITE_URL_PAYMENT_MP}/process-payment`,
+                        axios.get(`http://localhost:3001/process-payment`,
                             {
                                 // entry point backend
                                 method: "POST",
@@ -55,6 +55,25 @@ export default function useMercadoPago() {
                                     "Content-Type": "application/json",
                                 },
                                 body: JSON.stringify({
+                                    transaction_amount: 1,
+                                    description: "Descripción del producto",
+                                    payment_method_id,
+                                    issuer_id,
+                                    email,
+                                    amount,
+                                    token,
+                                    installments: Number(installments),
+                                    identification_number,
+                                    identification_type,
+                                    payer: {
+                                        email,
+                                        identification: {
+                                            type: identification_type,
+                                            number: identification_number,
+                                        },
+                                    },
+                                })
+                                /*body: JSON.stringify({
                                     token,
                                     issuer_id,
                                     payment_method_id,
@@ -68,13 +87,17 @@ export default function useMercadoPago() {
                                             number: identification_number,
                                         },
                                     },
-                                }),
+                                })*/,
                             }
                         )
-                            .then((res) => res.json())
-                            .then((data) => setResultPayment(data))
+                            /*.then((res) => res.json(setResultPayment))*/
+
+                            .then((data) => {
+                                console.log(data);
+                                setResultPayment(data);
+                            })
                             .catch((err) => {
-                                setResultPayment(err);
+                                console.log(err);
                             });
                     },
                     onFetching: (resource) => {
