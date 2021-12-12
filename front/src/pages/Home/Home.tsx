@@ -1,4 +1,4 @@
-import React from 'react'
+import {useEffect} from 'react'
 import SearchBar from '../../components/Searchbar/Searchbar'
 import style from './Home.module.scss'
 import PopularDestinations from "../../components/PopularDestinations/PopularDestinations";
@@ -8,6 +8,10 @@ import Chat from "../../components/Chatbot/Chatbot"
 
 
 export default function Home() {
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    } , [])
     return (
         <>
         <Navbar/>

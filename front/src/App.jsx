@@ -37,7 +37,7 @@ function App() {
         <Route exact path="/terms" component={Terms} />
         <Route exact path="/pay" component={PayPage} />
       </Switch>
-        {/* <Footer/> */}
+        <Footer/>
     </div>
   );
 }

@@ -32,6 +32,7 @@ export default function UserProfile(documentPath) {
     });
   };
 
+
   const userDelete = (e) => {
     e.preventDefault();
     swal({
@@ -65,7 +66,7 @@ export default function UserProfile(documentPath) {
     if (!user) return history.replace("/");
     getUser();
     dispatch(getFavs(user.uid));
-  }, [user, loading, history]);
+  }, [user, loading, history, favs]);
 
   return (
     <div className={styles.pageContainer}>

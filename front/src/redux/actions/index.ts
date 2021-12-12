@@ -99,6 +99,7 @@ export function getFlightUrl(payload: any) {
     export function getFavs(payload: any) {
       return async function (dispatch: any) {
         const favs = await axios.get(`http://localhost:3001/getsaves/${payload}`);
+        console.log(favs.data)
         dispatch({
           type: GET_FAVS,
           payload: favs.data,
@@ -107,11 +108,11 @@ export function getFlightUrl(payload: any) {
     }
 
     export function isAvailable(payload: any) {
-      console.log("payload");
-      console.log(payload);
       return async function (dispatch: any) {
+        console.log("payload");
+        console.log(payload);
         try{
-        const info = await axios.get(`http://localhost:3001/isavailable?originAirport=${payload[0].origin.airport}&destinationAirport=${payload[0].destination.airport}&dDate=${payload[0].departureDate}&rDate=${payload[0].returnDate}&adults=${payload[0].passengers.adults}&childs=${payload[0].passengers.childs}&baby=${payload[0].passengers.baby}&cabin=${payload[0].class}&flightId=${payload[0].flightId}&price=${payload[0].price}&transfers=${payload[0].transfers}`);
+        const info = await axios.get(`http://localhost:3001/isavailable?originAirport=${payload[0].originAirport}&destinationAirport=${payload[0].destinationAirport}&dDate=${payload[0].dDate}&rDate=${payload[0].rDate}&adults=${payload[0].adults}&childs=${payload[0].childs}&baby=${payload[0].baby}&cabin=${payload[0].cabin}&flightId=${payload[0].offers}&price=${payload[0].price}&transfers=${payload[0].transfers}`);
         console.log("respuesta del back is available");
         console.log(info.data);
         return dispatch({
