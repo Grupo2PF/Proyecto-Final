@@ -16,7 +16,7 @@ router.post('/saveflight', async(req, res, next)=>{
         const data = await db.collection('saves').get();
     
         data.forEach(doc => {
-                if(id === doc.data().flightId){
+                if(offers === doc.data().offers){
                     isSaved = true;
                 }   
             });
@@ -33,26 +33,20 @@ router.post('/saveflight', async(req, res, next)=>{
     }else{
 
         const save = {
-            flightId: offers,
+            offers: offers,
             userId: userId,
             mode: mode,
             currency: currency,
             price: price,
             dDate: dDate,
             cabin: cabin,
-            passengers: {
-                adults: adults,
-                childs: childs,
-                baby: baby
-            },
-            origin: {
-                city: originCity,
-                airport: originAirport
-            },
-            destination: {
-                city: destinationCity,
-                airport: destinationAirport
-            },
+            adults: adults,
+            childs: childs,
+            baby: baby,
+            originCity: originCity,
+            originAirport: originAirport,
+            destinationCity: destinationCity,
+            destinationAirport: destinationAirport,
             transfers: transfers
         }
     
@@ -69,10 +63,12 @@ router.post('/saveflight', async(req, res, next)=>{
 
 
 
-router.get('/getsaves', async(req, res, next)=>{
+router.get('/getsaves/:userId', async(req, res, next)=>{
     try{
 
-        const { userId } = req.body;
+        const { userId } = req.params;
+        console.log("usuario que llega del front")
+        console.log(userId);
 
         const data = await db.collection('saves').get();
         const saves = [];
@@ -81,26 +77,21 @@ router.get('/getsaves', async(req, res, next)=>{
 
             if(userId === doc.data().userId){
                 const save = {
-                    flightId: doc.data().flightId,
+                    iddelDoc: doc.id,
+                    offers: doc.data().offers,
                     userId: doc.data().userId,
                     mode: doc.data().mode,
                     currency: doc.data().currency,
                     price: doc.data().price,
                     dDate: doc.data().dDate,
                     cabin: doc.data().cabin,
-                    passengers: {
-                        adults: doc.data().passengers.adults,
-                        childs: doc.data().passengers.childs,
-                        baby: doc.data().passengers.baby
-                    },
-                    origin: {
-                        city: doc.data().origin.city,
-                        airport: doc.data().origin.airport
-                    },
-                    destination: {
-                        city: doc.data().destination.city,
-                        airport: doc.data().destination.airport
-                    },
+                    adults: doc.data().adults,
+                    childs: doc.data().childs,
+                    baby: doc.data().baby,
+                    originCity: doc.data().originCity,
+                    originAirport: doc.data().originAirport,
+                    destinationCity: doc.data().destinationCity,
+                    destinationAirport: doc.data().destinationAirport,
                     transfers: doc.data().transfers
                 }
                 saves.push(save);
