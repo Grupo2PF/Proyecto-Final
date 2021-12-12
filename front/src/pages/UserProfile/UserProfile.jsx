@@ -5,21 +5,37 @@ import { Link, useHistory } from "react-router-dom";
 import { createRef, useEffect, useState } from "react";
 import { auth, db, logout } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { getFavs} from "../../redux/actions";
+import { getFavs } from "../../redux/actions";
 import firebase from "firebase/app";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import swal from "sweetalert";
 import { useSelector, useDispatch } from "react-redux";
-import FavCard from "./favCard"
-
+// import FavCard from "./favCard";
+import { isAvailable } from "../../redux/actions";
 
 export default function UserProfile(documentPath) {
   const [user, loading, error] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
   const dispatch = useDispatch();
-  const favs = useSelector(state => state.favs);
-
+  const favs = useSelector((state) => state.favs);
+  const yetAvailable = useSelector((state) => state.availableFlight);
   const history = useHistory();
+  var fav = [];
+
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return history.replace("/");
+    getUser();
+    dispatch(getFavs(user.uid));
+  }, [loading, user]);
+
+  // useEffect(() => {
+  //   if (loading) return;
+  //   if (!user) return history.replace("/");
+  //   getUser();
+  //   dispatch(getFavs(user.uid));
+  //   history.push("/user");
+  // }, [favs]);
 
   const getUser = () => {
     db.collection("users").onSnapshot((querySnapshot) => {
@@ -31,7 +47,6 @@ export default function UserProfile(documentPath) {
       setUsuario(filtrado);
     });
   };
-
 
   const userDelete = (e) => {
     e.preventDefault();
@@ -51,7 +66,7 @@ export default function UserProfile(documentPath) {
             firebase
               .auth()
               .currentUser.delete()
-              .catch(function (error) {
+              .catch(function(error) {
                 swal("Error!", "No se pudo borrar la cuenta!", "error");
               })
           );
@@ -61,12 +76,51 @@ export default function UserProfile(documentPath) {
     });
   };
 
-  useEffect(() => {
-    if (loading) return;
-    if (!user) return history.replace("/");
-    getUser();
-    dispatch(getFavs(user.uid));
-  }, [user, loading, history, favs]);
+  const available = (e) => {
+    e.preventDefault();
+    fav = favs.filter((fav) => fav.offers === e.target.value);
+    dispatch(isAvailable(fav));
+    if (yetAvailable.class) {
+      if (window.confirm("El vuelo esta disponible, desea comprarlo?")) {
+        console.log();
+        history.push({
+          pathname: "/pruebaprops",
+          state: { ...fav[0] },
+        });
+      }
+    }
+  };
+
+  const borrarFav = (e) => {
+    e.preventDefault();
+    swal({
+      title: "Esta seguro?",
+      text: "Esta seguro que desea eliminar el favorito?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((isConfirm) => {
+      if (isConfirm) {
+        // swal("Eliminado!", "El vuelo ha sido eliminado", "success");
+        db.collection("saves")
+          .doc(e.target.value)
+          .delete()
+          .then(() => {
+            swal(
+              "Exito!",
+              "el favorito ha sido borrado exitosamente",
+              "success"
+            );
+           dispatch(getFavs(user.uid));
+          })
+          .catch((error) => {
+            swal("Error!", "No se pudo borrar la cuenta!", "error");
+          });
+      } else {
+        swal("Cancelado", "El favorito no ha sido eliminado", "error");
+      }
+    });
+  };
 
   return (
     <div className={styles.pageContainer}>
@@ -144,13 +198,31 @@ export default function UserProfile(documentPath) {
                 <div
                   className={styles.cardOptions + " " + styles.cardOptionsFavs}
                 >
-                  <div><FavCard/></div>
+                  <div>
+                    {favs?.map((fav) => {
+                      return (
+                        <div key={fav.id}>
+                          {fav.originCity}
+                          {fav.destinationCity}
+                          {`${fav.price}`}
+                          <button value={fav.iddelDoc} onClick={borrarFav}>
+                            X
+                          </button>
+                          <button value={fav.offers} onClick={available}>
+                            ¿Sigue disponible?
+                          </button>
+                          <button>Buscar similares</button>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div className={styles.card}>
-                <h1>Mis tickets</h1>
-                {/* {dato.tik.map((e) => (
+            <div className={styles.card}>
+              <h1>Mis tickets</h1>
+              {/* {dato.tik.map((e) => (
                   <div className={styles.cardOptions}>
                     <h3>{e.originCity}</h3>
                     <h3>{e.destinyCity}</h3>
@@ -160,14 +232,13 @@ export default function UserProfile(documentPath) {
                     <h3>{e.class}</h3>
                   </div>
                 ))}*/}
-              </div>
+            </div>
 
-              <div className={styles.button}>
-                <div className={styles.btn}>
-                  <button type="submit" onClick={(e) => userDelete(e)}>
-                    Eliminar cuenta
-                  </button>
-                </div>
+            <div className={styles.button}>
+              <div className={styles.btn}>
+                <button type="submit" onClick={(e) => userDelete(e)}>
+                  Eliminar cuenta
+                </button>
               </div>
             </div>
           </div>
