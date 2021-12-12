@@ -13,7 +13,6 @@ import Reset from "./pages/ResetPass/ResetPass";
 import React from "react";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
-// import Navbar from "./components/Navbar/Navbar";
 import PayPage from "./pages/PayPage/PayPage";
 import PruebaProps from "./pages/pruebaProps/pruebaProps";
 

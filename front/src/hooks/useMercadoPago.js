@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import useScript from "./useScript";
-import { formConfig } from "./formConfig.jsx";
+import { formConfig } from "../components/MercadoPago/formConfig.js";
+import axios from "axios";
 
-const VITE_PUBLIC_KEY_MP = "TEST-0f046780-e30e-443a-b0c8-cc6d4fd9be99"
+const VITE_PUBLIC_KEY_MP = "TEST-0f046780-e30e-443a-b0c8-cc6d4fd9be99";
+const VITE_URL_PAYMENT_MP = "http://localhost:3001";
 
 export default function useMercadoPago() {
     const [resultPayment, setResultPayment] = useState(undefined);
@@ -16,7 +18,7 @@ export default function useMercadoPago() {
         if (MercadoPago) {
             const mp = new MercadoPago(VITE_PUBLIC_KEY_MP);
             const cardForm = mp.cardForm({
-                amount: "100.5", //Aca va el precio de la offer elegida
+                amount: "100.5",
                 autoMount: true,
                 form: formConfig,
                 callbacks: {
@@ -38,14 +40,11 @@ export default function useMercadoPago() {
                             amount,
                             token,
                             installments,
-                            identificationNumber,
-                            identificationType,
+                            identificationNumber: identification_number,
+                            identificationType: identification_type,
                         } = cardForm.getCardFormData();
 
-                        var VITE_URL_PAYMENT_MP = "http://localhost:3001"
-                        fetch(
-                            `${VITE_URL_PAYMENT_MP
-                            }/process-payment`,
+                        fetch(`${VITE_URL_PAYMENT_MP}/process-payment`,
                             {
                                 // entry point backend
                                 method: "POST",
@@ -59,14 +58,14 @@ export default function useMercadoPago() {
                                     token,
                                     issuer_id,
                                     payment_method_id,
-                                    transaction_amount: 1000,
+                                    transaction_amount: 1,
                                     installments: Number(installments),
                                     description: "Descripción del producto",
                                     payer: {
                                         email,
                                         identification: {
-                                            type: identificationType,
-                                            number: identificationNumber,
+                                            type: identification_type,
+                                            number: identification_number,
                                         },
                                     },
                                 }),

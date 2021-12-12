@@ -6,14 +6,16 @@ import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsArrowLeftRight, BsCalendarDateFill, BsCalendarDate } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
 import { GiCommercialAirplane } from "react-icons/gi";
-import { getSeats, sendFavs } from "../../redux/actions/";
+import { sendFavs } from "../../redux/actions/";
 import {auth} from "../../firebaseConfig";
-import { useLocation } from "react-router-dom";
+import { getPay } from "../../redux/actions/";
+import {useLocation, useHistory} from "react-router-dom";
 
 
 export default function OfferCardI(props: any): JSX.Element {
   const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
   const location = useLocation();
 
   const handleClick = (e: any) => {
@@ -26,7 +28,8 @@ export default function OfferCardI(props: any): JSX.Element {
 
   const handleBuy = (e: any) => {
     const id = props.offers;
-    dispatch(getSeats(id));
+    dispatch(getPay(id));
+    history.push('/pay')
   };
 
   const dataFromQuery:any = {};
@@ -57,8 +60,15 @@ export default function OfferCardI(props: any): JSX.Element {
     console.log("info")
     console.log(info)
     dispatch(sendFavs(info));
-    }else{
-      alert("Debes iniciar sesión para poder agregar a favoritos")
+    }else if (!auth.currentUser){
+      // @ts-ignore
+      swal({
+        title: "Inicia sesión",
+        text: "Para poder guardar tus vuelos en favoritos debes estar registrado ",
+        icon: "warning", center: true,
+        dangerMode: true,
+      }).then((r: any) => console.log(r));
+      /*alert("Debes iniciar sesión para poder agregar a favoritos")*/
     }
 
   }
@@ -100,11 +110,8 @@ export default function OfferCardI(props: any): JSX.Element {
 
               <button onClick={handleFavs}>añadir a favs</button>
 
-              <button
-                className={styles.offersCardButtonsPrice}
-                onClick={handleBuy}
-                >
-                {`${props.currency} ${props.price}`}
+              <button className={styles.offersCardButtonsPrice} onClick={handleBuy}>
+              {`${props.currency} ${props.price}`}
               </button>
             </div>
           </div>
@@ -140,34 +147,4 @@ export default function OfferCardI(props: any): JSX.Element {
       </section>
     </>
   );
-
-  // return (
-  //   <div className={styles.cardContainer}>
-
-  //     <div className={styles.cardInfo}>
-  //         <h2>
-  //         {props.originCity ? props.originCity : props.originAirport} -
-  //         {props.destinationCity ? props.destinationCity : props.destinationAirport}
-  //         </h2>
-  //         <div className={styles.cardNumTransfers}>
-  //           Tiene {props.transfers.length} Escalas
-  //         <button onClick={(e) => {handleClick(e);}}> <AiOutlineExclamationCircle size={23}/> </button>
-  //         </div>
-  //         <div className={styles.cardPrice}>
-  //         <button onClick={handleBuy} >{`${props.currency} ${props.price}`} </button>
-  //         </div>
-  //     </div>
-
-  //     {clicked
-  // ? props.transfers.map((escala: any) => (
-  //           <div className={styles.cardTransfers}>
-  //             <p> {escala.origin} - {escala.destination} </p>
-  //             <p> Salida: {escala.departure} - Llegada: {escala.arrive}</p>
-  //             <p> Aerolinea: {escala.airline}</p>
-  //           </div>
-  //         ))
-  //       : false}
-
-  //   </div>
-  // );
-}
+};

@@ -7,4 +7,5 @@ export const RESET: string = "RESET";
 export const SEND_FAVS: string = "SEND_FAVS";
 export const GET_FAVS: string = "GET_FAVS";
 export const IS_AVAILABLE: string = "IS_AVAILABLE";
+export const GET_PAY: string = "GET_PAY";
 

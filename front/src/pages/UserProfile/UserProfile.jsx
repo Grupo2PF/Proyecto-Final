@@ -44,13 +44,8 @@ export default function UserProfile(documentPath) {
     }).then((isConfirm) => {
       if (isConfirm) {
         swal("Exito!", "La cuenta ah sido borrada!", "success");
-        db.collection("users")
-          .doc(usuario[0].id)
-          .delete()
-          .then((r) =>
-            firebase
-              .auth()
-              .currentUser.delete()
+        db.collection("users").doc(usuario[0].id).delete()
+          .then((r) => firebase.auth().currentUser.delete()
               .catch(function (error) {
                 swal("Error!", "No se pudo borrar la cuenta!", "error");
               })
