@@ -28,7 +28,7 @@ export default function Chat() {
   const steps = [
     {
       id: "1",
-      message: "Hola Juan Carlos",
+      message: "Hola ¿Como estas?",
       trigger: "2",
       delay: false
     },
@@ -105,7 +105,7 @@ export default function Chat() {
       <button className={styles.cerrar} onClick={handleClick} >X</button>
       <ThemeProvider theme={theme}>
         <ChatBot
-          speechSynthesis={{ enable: true, lang: 'spanish' }}
+          speechSynthesis={{ enable: false, lang: 'spanish' }}
           botDelay={3000}
           botAvatar={botImg}
           userAvatar="https://i.pinimg.com/originals/6f/d4/90/6fd490df8567c4086c6f7444693543da.png"

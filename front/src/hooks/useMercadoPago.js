@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import useScript from "./useScript";
 import { formConfig } from "../components/MercadoPago/formConfig.js";
-import axios from "axios";
+import swal from "sweetalert";
+import { useHistory } from "react-router-dom";
 
 const VITE_PUBLIC_KEY_MP = "TEST-0f046780-e30e-443a-b0c8-cc6d4fd9be99";
 const VITE_URL_PAYMENT_MP = "http://localhost:3001";
 
 export default function useMercadoPago() {
-    const [resultPayment, setResultPayment] = useState(null);
-
+    const [resultPayment, setResultPayment] = useState(undefined);
+    const history = useHistory();
     const { MercadoPago } = useScript(
         "https://sdk.mercadopago.com/js/v2",
         "MercadoPago"
@@ -44,7 +45,7 @@ export default function useMercadoPago() {
                             identificationType: identification_type,
                         } = cardForm.getCardFormData();
 
-                        axios.get(`http://localhost:3001/process-payment`,
+                        fetch(`http://localhost:3001/process-payment`,
                             {
                                 // entry point backend
                                 method: "POST",
@@ -73,29 +74,21 @@ export default function useMercadoPago() {
                                         },
                                     },
                                 })
-                                /*body: JSON.stringify({
-                                    token,
-                                    issuer_id,
-                                    payment_method_id,
-                                    transaction_amount: 1,
-                                    installments: Number(installments),
-                                    description: "Descripción del producto",
-                                    payer: {
-                                        email,
-                                        identification: {
-                                            type: identification_type,
-                                            number: identification_number,
-                                        },
-                                    },
-                                })*/,
                             }
                         )
-                            /*.then((res) => res.json(setResultPayment))*/
-
-                            .then((data) => {
-                                console.log(data);
-                                setResultPayment(data);
-                            })
+                            .then((res) => res.json())
+                            .then(async (data) => {
+                                    setResultPayment(data);
+                                    await swal({
+                                        title: "¡Pago realizado!",
+                                        text: "¡Gracias por comprar con nosotros!",
+                                        icon: "success",
+                                        button: "Aceptar",
+                                    });
+                                }
+                                ).then(r =>
+                                    history.push("/")
+                                )
                             .catch((err) => {
                                 console.log(err);
                             });

@@ -9,7 +9,7 @@ import { FiAtSign } from "react-icons/fi";
 import { HiOutlineIdentification, HiOutlineDocumentText } from "react-icons/hi";
 import {BsCalendar3, BsCalendarDate, BsCreditCard} from "react-icons/bs";
 import { AiOutlineBank } from "react-icons/ai";
-import swal from "sweetalert";
+import {useHistory} from "react-router-dom";
 
 const INITIAL_STATE = {
   cvc: "",
@@ -24,6 +24,7 @@ const INITIAL_STATE = {
 export default function MercadoPagoForm() {
   const [state, setState] = useState(INITIAL_STATE);
   const resultPayment = useMercadoPago();
+  const history = useHistory();
 
   const handleInputChange = (e) => {
     setState({
@@ -192,19 +193,7 @@ export default function MercadoPagoForm() {
               Cargando...
             </progress>
           </form>
-          {
-              resultPayment && (
-                  swal({
-                    title: "Pago exitoso",
-                    text: `${JSON.stringify(resultPayment)}`,
-                    icon: "success",
-                    button: "Aceptar",
-                  }).then(() => {
-                    window.location.href = "/";
-                  })
-              )
-          }
-          {/*{resultPayment && <p>{JSON.stringify(resultPayment)}</p>}*/}
+          {resultPayment && console.log(resultPayment)}
         </div>
       </div>
   );
