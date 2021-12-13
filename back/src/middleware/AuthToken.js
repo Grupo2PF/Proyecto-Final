@@ -1,4 +1,4 @@
-import admin from '../firebase-service';
+const admin = require("firebase-admin");
 
 
 const getAuthToken = (req, res, next) => {
@@ -14,7 +14,7 @@ const getAuthToken = (req, res, next) => {
 };
 
 
-export const checkIfAuthenticated = (req, res, next) => {
+ const checkIfAuthenticated = (req, res, next) => {
     getAuthToken(req, res, async () => {
         try {
             const { authToken } = req;
@@ -29,4 +29,32 @@ export const checkIfAuthenticated = (req, res, next) => {
                 .send({ error: 'You are not authorized to make this request' });
         }
     });
+};
+
+ const checkIfAdmin = (req, res, next) => {
+    getAuthToken(req, res, async () => {
+        try {
+            const { authToken } = req;
+            const userInfo = await admin
+                .auth()
+                .verifyIdToken(authToken);
+
+            if (userInfo.admin === true) {
+                req.authId = userInfo.uid;
+                return next();
+            }
+
+            throw new Error('unauthorized')
+        } catch (e) {
+            return res
+                .status(401)
+                .send({ error: 'You are not authorized to make this request' });
+        }
+    });
+};
+
+ module.exports = {
+    getAuthToken,
+    checkIfAuthenticated,
+    checkIfAdmin
 };

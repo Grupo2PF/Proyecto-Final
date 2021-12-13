@@ -66,6 +66,19 @@
   top: 10%;
   color: #ff0000;
 }
+.resetInputError {
+  color: #ff0000;
+}
+.resetInputError:focus {
+  border-bottom-color: #ff0000 !important;
+}
+.resetInputErrorMessage {
+  display: inline-block;
+  color: #ff0000;
+  padding-top: 5px;
+  text-align: center;
+  width: 100%;
+}
 .resetButton {
   background-color: #3884FE;
   color: #ffffff;

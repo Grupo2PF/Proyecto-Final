@@ -1,36 +1,73 @@
-import React, { useState } from "react";
 import styles from "./OfferCard.module.scss";
 import { useDispatch } from "react-redux";
-import {
-  AiOutlineExclamationCircle,
-  AiOutlineFieldNumber,
-} from "react-icons/ai";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
-import {
-  BsArrowLeftRight,
-  BsCalendarDateFill,
-  BsCalendarDate,
-} from "react-icons/bs";
+import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
-import { GiCommercialAirplane } from "react-icons/gi";
-import { getSeats } from "../../redux/actions/";
+import { getSeats, sendFavs } from "../../redux/actions/";
+import {auth} from "../../firebaseConfig";
+import { useLocation, Link} from "react-router-dom";
 
 export default function OfferCardIV(props: any): JSX.Element {
-  const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
+  const location = useLocation();
 
-  const handleClick = (e: any) => {
-    if (!clicked) {
-      return setClicked(true);
-    } else {
-      return setClicked(false);
+  // const handleBuy = (e: any) => {
+  //   const id = props.offers;
+  //   dispatch(getSeats(id));
+  // };
+
+  const dataFromQuery: any = {};
+
+  const getQueryData = (offerQuery: any) => {
+    return offerQuery
+      .split("&")
+      .map((word: any) =>
+        word
+          .replace("=", ",")
+          .replace("?", "")
+          .split(",")
+      )
+      .forEach((el: any) => (dataFromQuery[el[0]] = el[1]));
+  };
+  getQueryData(location.search);
+
+  const formatedRecomendations = props.recomendations?.map((item: any) => {
+    return {
+      offers: item.id,
+      currency: item.currency,
+      price: item.price,
+      transfersD: item.departure.transfers,
+      transfersR: item.return.transfers,
+      mode: props.mode,
+      originCity: props.originCity,
+      destinationCity: props.destinationCity,
+      originAirport: props.originAirport,
+      destinationAirport: props.destinationAirport,
+      ...dataFromQuery,
+    };
+  });
+
+  const offerProps = {
+    ...props,
+    recomendations: formatedRecomendations,
+  };
+  // console.log("Ida y Vuelta: ", offerProps);
+
+  const handleFavs = (e: any) => {
+    if(auth.currentUser){
+    
+    const info = {
+      ...dataFromQuery,
+      userId: auth.currentUser.uid,
+     ...props
     }
-  };
-
-  const handleBuy = (e: any) => {
-    const id = props.offers;
-    dispatch(getSeats(id));
-  };
+    console.log(info);
+    dispatch(sendFavs(info));
+  }else{
+    alert("Debes iniciar sesión para poder agregar a favoritos")
+  }
+}
 
   return (
     <>
@@ -59,141 +96,45 @@ export default function OfferCardIV(props: any): JSX.Element {
                 </p>
               ) : (
                 <p>
-                  <BsArrowLeftRight /> Tiene {props.transfersD.length-1} escalas
+                  <BsArrowLeftRight /> Tiene {props.transfersD.length - 1}{" "}
+                  escalas
                 </p>
               )}
             </div>
 
             {/* Buttons */}
             <div className={styles.offersCardButtons}>
-              <button
-                onClick={(e) => {
-                  handleClick(e);
+              <Link
+                to={{
+                  pathname: `/offer-detail/${props.offers}`,
+                  state: {
+                    ...offerProps,
+                    ...dataFromQuery,
+                  },
                 }}
+                className={styles.offersCardButtonsDetail}
               >
                 <AiOutlineExclamationCircle />
                 Ver detalles
-              </button>
-              <button
+              </Link>
+              <button onClick={handleFavs}>Añadir a favs</button>
+              <Link
+                to={{
+                  pathname: `/ticket/${props.offers}`,
+                  state: {
+                    ...offerProps,
+                    ...dataFromQuery,
+                  },
+                }}
                 className={styles.offersCardButtonsPrice}
-                onClick={handleBuy}
+                // onClick={handleBuy}
               >
                 {`${props.currency} ${props.price}`}
-              </button>
-            </div>
-          </div>
-
-          <div className={styles.offersCardDetail}>
-            {clicked ? (
-              <>
-                <h3>Detalles del Vuelo</h3>
-                {props.transfersD.length > 1 ? (
-                  <h4>Escalas de ida</h4>
-                ) : (
-                  <h4>Vuelo directo</h4>
-                )}
-              </>
-            ) : (
-              false
-            )}
-            {clicked
-              ? props.transfersD.map((escala: any) => (
-                  <div className={styles.offersCardTransfers}>
-                    <div>
-                      <p> <FaPlaneDeparture /> <span className={styles.sp}>{escala.origin}</span> </p>
-                      <p> <FaPlaneArrival /> <span className={styles.sp}>{escala.destination}</span> </p>
-                    </div>
-                    <div>
-                      <p> <BsCalendarDateFill /> <span>Salida:</span> {escala.departure.slice(0,10)}{" "}{escala.departure.slice(11,19)} </p>
-                      <p> <BsCalendarDate /> <span>Llegada:</span> {escala.arrive.slice(0,10)}{" "}{escala.arrive.slice(11,19)}</p>
-                    </div>
-                    <div>
-                      <p> <GiCommercialAirplane /><span>Aerolinea:</span> {escala.airline}</p>
-                      <p> <AiOutlineFieldNumber /> <span>Vuelo Nro:</span> {escala.flightNumber} </p>
-                    </div>
-                  </div>
-                ))
-              : false}
-
-            <div className={styles.offersCardDetail}>
-              {clicked ? (
-                <>
-                  {props.transfersR.length > 1 ? (
-                    <h4>Escalas de vuelta</h4>
-                  ) : (
-                    <h4>Vuelo directo</h4>
-                  )}
-                </>
-              ) : (
-                false
-              )}
-              {clicked
-                ? props.transfersR.map((escala: any) => (
-                    <div className={styles.offersCardTransfers}>
-                      <div>
-                        <p> <FaPlaneDeparture /> <span className={styles.sp}>{escala.origin}</span> </p>
-                        <p> <FaPlaneArrival /> <span className={styles.sp}>{escala.destination}</span> </p>
-                      </div>
-                      <div>
-                        <p> <BsCalendarDateFill /> <span>Salida:</span> {escala.departure.slice(0,10)}{" "}{escala.departure.slice(11,19)} </p>
-                        <p> <BsCalendarDate /> <span>Llegada:</span>{escala.arrive.slice(0,10)}{" "}{escala.arrive.slice(11,19)} </p>
-                      </div>
-                      <div>
-                        <p> <GiCommercialAirplane /> <span>Aerolinea:</span> {escala.airline} </p>
-                        <p> <AiOutlineFieldNumber /> <span>Vuelo Nro:</span> {escala.flightNumber} </p>
-                      </div>
-                    </div>
-                  ))
-                : false}
+              </Link>
             </div>
           </div>
         </div>
       </section>
     </>
   );
-  // return (
-  //   <div className={styles.cardContainer}>
-  //       <div className={styles.cardInfo}>
-  //           <h2>
-  //               {props.originCity ? props.originCity : props.originAirport} -
-  //               {props.destinationCity ? props.destinationCity : props.destinationAirport}
-  //               <button onClick={(e) => { handleClick(e) }}> <AiOutlineExclamationCircle size={25}/> </button>
-  //           </h2>
-  //           <div className={styles.cardPrice}>
-  //           <button onClick={handleBuy} >{`${props.currency} ${props.price}`} </button>
-  //           </div>
-  //       </div>
-
-  //       {clicked
-  //         ? props.transfersD.map((escala: any) => (
-  //             <div className={styles.cardTransfers}>
-  //                 <h2> Escalas IDA </h2>
-  //               <div>
-  //                 {escala.origin} - {escala.destination}
-  //               </div>
-  //               <p>Salida: {escala.departure}</p>
-  //               <p>Llegada: {escala.arrive}</p>
-  //               <p>Aerolinea: {escala.airline}</p>
-  //               <p>Vuelo Nro: {escala.flightNumber}</p>
-  //             </div>
-  //           ))
-  //         : false}
-
-  //       {clicked
-  //         ? props.transfersR.map((escala: any) => (
-  //             <div className={styles.cardTransfers}>
-  //                 <h2> Escalas VUELTA </h2>
-  //               <div>
-  //                 {escala.origin} - {escala.destination}
-  //               </div>
-  //               <p>Salida: {escala.departure}</p>
-  //               <p>Llegada: {escala.arrive}</p>
-  //               <p>Aerolinea: {escala.airline}</p>
-  //               <p>Vuelo Nro: {escala.flightNumber}</p>
-  //             </div>
-  //           ))
-  //         : false}
-
-  //   </div>
-  // )
 }

@@ -28,39 +28,93 @@
   align-items: center;
   position: relative;
   background-color: #ffffff;
-  width: 70%;
+  width: 100%;
   flex-direction: column;
   justify-content: space-around;
-  padding: 1rem 0;
   height: auto;
-  margin: 8rem 0;
-  border-radius: 24px;
+  width: 100vw;
+  margin-top: 12vh;
   z-index: 10;
 }
-.pageContainer .userProfileContainer .imgAndNameContainer {
+.pageContainer .imgAndNameContainer {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0.5rem 0;
+  flex-direction: row;
+  margin-bottom: 0.5rem;
 }
-.pageContainer .userProfileContainer .imgAndNameContainer h1 {
-  padding: 1rem 0;
-  font-size: 30px;
-}
-.pageContainer .userProfileContainer .imgAndNameContainer img {
+.pageContainer .imgAndNameContainer .ProfileImg img {
   width: 9rem;
   height: 9rem;
-  border-radius: 50%;
 }
-.pageContainer .userProfileContainer .cardOptionsContainer {
+.pageContainer .imgAndNameContainer .h1LogoutBox {
+  height: initial;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+.pageContainer .imgAndNameContainer .h1LogoutBox h1 {
+  padding: 0 0.5rem;
+  font-size: 30px;
+  width: 100%;
+  height: 70%;
+  height: auto;
+}
+.pageContainer .imgAndNameContainer .h1LogoutBox .LogoutBox {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0.5rem;
+}
+.pageContainer .imgAndNameContainer .h1LogoutBox .LogoutBox .btnLogout {
+  border: none;
+  background-color: transparent;
+  padding: 5px;
+}
+.pageContainer .imgAndNameContainer .h1LogoutBox .LogoutBox .btnLogout .icon {
+  transition: 0.1s;
+  color: #828282;
+  font-size: 2rem;
+}
+.pageContainer .imgAndNameContainer .h1LogoutBox .LogoutBox .btnLogout .icon:hover {
+  color: red;
+  filter: drop-shadow(1px 1px 2px black);
+}
+.pageContainer .imgAndNameContainer .h1LogoutBox .cardOptionsFavs {
+  justify-content: center;
+  align-items: center;
+}
+.pageContainer .imgAndNameContainer .h1LogoutBox .btnUpdateBox {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+.pageContainer .imgAndNameContainer .h1LogoutBox .btnUpdateBox .btnLink {
+  background-color: #3884FE;
+  border-radius: 3px;
+  border: 1px solid #3884FE;
+  font-size: 0.8rem;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 5px;
+  transition: 0.3s;
+}
+.pageContainer .imgAndNameContainer .h1LogoutBox .btnUpdateBox .btnLink:hover {
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+.pageContainer .imgAndNameContainer .h1LogoutBox .btnUpdateBox .btnLink:active {
+  box-shadow: 1px 1px 3px black inset;
+}
+.pageContainer .imgAndNameContainer p {
+  transition: 0.5s;
+  display: none;
+}
+
+.cardOptionsContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 80%;
 }
-.pageContainer .userProfileContainer .cardOptionsContainer .card {
+.cardOptionsContainer .card {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -69,21 +123,53 @@
   border-top: 1px solid #828282;
   min-height: 12rem;
 }
-.pageContainer .userProfileContainer .cardOptionsContainer .card h1 {
+.cardOptionsContainer .card h1 {
   border-bottom: 1px solid #3884FE;
-  margin-bottom: 1rem;
   font-size: 25px;
 }
-.pageContainer .userProfileContainer .cardOptionsContainer .cardOptions {
+.cardOptionsContainer .card .cardOptions {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
-.pageContainer .userProfileContainer .cardOptionsContainer .button {
-  display: flex;
-  flex-direction: row;
   justify-content: space-evenly;
+  height: 30vh;
+}
+.cardOptionsContainer .card .cardOptions .textBox {
+  display: flex;
+}
+.cardOptionsContainer .card .cardOptions .textBox p {
+  margin: 0 0.5rem;
+}
+.cardOptionsContainer .card .cardOptionsFavs {
+  justify-content: center;
+  align-items: center;
+}
+.cardOptionsContainer .card .btnUpdateBox {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+.cardOptionsContainer .card .btnUpdateBox .btnLink {
+  background-color: #3884FE;
+  border-radius: 3px;
+  border: 1px solid #3884FE;
+  font-size: 0.8rem;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 5px;
+  transition: 0.3s;
+}
+.cardOptionsContainer .card .btnUpdateBox .btnLink:hover {
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+.cardOptionsContainer .card .btnUpdateBox .btnLink:active {
+  box-shadow: 1px 1px 3px black inset;
+}
+.cardOptionsContainer .button {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: auto;
@@ -91,50 +177,57 @@
   position: relative;
   flex-wrap: wrap;
 }
-.pageContainer .userProfileContainer .cardOptionsContainer .button .btn1 {
-  width: 12rem;
-  height: 3rem;
-  background: #ffffff;
-  color: #3884FE;
-  font-size: x-large;
-  border-radius: 10px;
-  border: #3884FE 1px solid;
+.cardOptionsContainer .button p {
+  display: none;
+}
+.cardOptionsContainer .button .btn {
+  width: 100%;
+  height: 2rem;
   flex: none;
   order: 0;
   flex-grow: 0;
-  margin: 0px 50px;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  border-top: 1px solid #828282;
 }
-.pageContainer .userProfileContainer .cardOptionsContainer .button .btn1:hover {
+.cardOptionsContainer .button .btn button {
+  color: #fe3838;
+  background-color: transparent;
+  border: none;
+  transition: 0.3s;
+}
+.cardOptionsContainer .button .btn button:hover {
   cursor: pointer;
-  background: #b1b1b1;
-}
-.pageContainer .userProfileContainer .cardOptionsContainer .button .btn {
-  width: 12rem;
-  height: 3rem;
-  color: #ffffff;
-  font-size: x-large;
-  background: #fe3838;
-  border-radius: 10px;
-  border: #fe3838 1px solid;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  margin: 0px 50px;
-}
-.pageContainer .userProfileContainer .cardOptionsContainer .button .btn:hover {
-  cursor: pointer;
-  background: #a30b0b;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
 }
 
-@media screen and (width: 768px) {
-  .button {
+@media screen and (min-width: 768px) {
+  .pageContainer .imgAndNameContainer .ProfileImg img {
+    width: 15rem;
+    height: 15rem;
+  }
+  .pageContainer .imgAndNameContainer .LogoutBox {
+    height: 50%;
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: space-evenly;
-    width: 100%;
-    padding: 1rem 0;
-    position: fixed;
+  }
+  .pageContainer .imgAndNameContainer .LogoutBox .btnLogout {
+    height: initial;
+    height: 50%;
+  }
+}
+@media screen and (min-width: 768px) {
+  .LogoutBox .btnLogout:hover {
+    transition: 0.5s;
+    height: initial;
+  }
+  .LogoutBox .btnLogout:hover p {
+    display: flex;
+    position: absolute;
+    right: 2rem;
+    border: solid 1px gray;
+    padding: 2px;
+    border-radius: 2px;
   }
 }
 
