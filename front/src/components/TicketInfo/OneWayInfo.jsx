@@ -1,4 +1,4 @@
-import styles from "./BasicTicketinfo.module.scss";
+import styles from "./Ticketinfo.module.scss";
 import {
   FaBabyCarriage,
   FaChild,
@@ -20,7 +20,7 @@ import {
 import { useState } from "react";
 import { GiCommercialAirplane } from "react-icons/gi";
 
-export default function BasicTicketinfo(props) {
+export default function OneWayInfo(props) {
   const [clicked, setClicked] = useState([false, "Ver más detalles"]);
 
   const handleClick = (e) => {
@@ -89,6 +89,19 @@ export default function BasicTicketinfo(props) {
             <FaBabyCarriage /> <span>Infantes:</span> {props.baby}
           </p>
         </div>
+
+        {/* Aeropuertos */}
+        <div>
+          <p className={styles.ticketMainInfoAirports}>
+            <IoIosAirplane /> <span>Aeropuerto origen: </span>{" "}
+            {props.originAirport}
+          </p>
+          <p className={styles.ticketMainInfoAirports}>
+            <IoIosAirplane />
+            <span>Aeropuerto destino: </span>
+            {props.destinationAirport}
+          </p>
+        </div>
       </section>
 
       {/* Button */}
@@ -117,8 +130,8 @@ export default function BasicTicketinfo(props) {
           false
         )}
         {clicked[0]
-          ? props.transfers.map((escala) => (
-              <div className={styles.ticketTransfers}>
+          ? props.transfers.map((escala, index) => (
+              <div className={styles.ticketTransfers} key={index}>
                 <div>
                   <p>
                     {" "}

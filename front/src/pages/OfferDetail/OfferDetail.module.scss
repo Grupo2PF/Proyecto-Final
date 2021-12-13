@@ -58,16 +58,17 @@
         width: 100%;
     }
 
-    &Buttons{
-        width: 100%;
+    &Buttons {
+        width: 90%;
         display: flex;
         flex-wrap: wrap;
         justify-content: space-evenly;
         align-items: center;
         gap: 2rem;
         max-width: 30rem;
-        margin-bottom: 3rem;
+        margin: 2rem auto 3rem;
     }
+
     &Button {
         cursor: pointer;
         display: block;
@@ -100,12 +101,13 @@
         cursor: pointer;
         font-weight: $bold-font;
         outline: none;
-        padding: .8rem 1.5rem;
+        padding: .8rem 2rem;
         display: flex;
         align-items: center;
         transition: all .5s;
         gap: .5rem;
-        svg{
+
+        svg {
             font-size: 1.2rem;
             transform: rotate(180deg);
         }

@@ -4,11 +4,17 @@ import {
   nameValidation,
   lastNameValidation,
   dniValidation,
-  validateForm,
+  // validateForm,
 } from "./validations";
 import { FaPassport, FaUserAlt } from "react-icons/fa";
 
-export default function PassengerForm({ passenger, totalPassengers }) {
+export default function PassengerForm({
+  passenger,
+  totalPassengers,
+  validForms,
+  setValidForms,
+}) {
+
   const [input, setInput] = useState({
     name: "",
     lastName: "",
@@ -21,36 +27,38 @@ export default function PassengerForm({ passenger, totalPassengers }) {
     dni: [false, ""],
   });
 
-  const resetForm = () => {
-    setInput({
-      name: "",
-      lastName: "",
-      dni: "",
-    });
-    setInputError({
-      name: [false, ""],
-      lastName: [false, ""],
-      dni: [false, ""],
-    });
-  };
+  // const resetForm = () => {
+  //   setInput({
+  //     name: "",
+  //     lastName: "",
+  //     dni: "",
+  //   });
+  //   setInputError({
+  //     name: [false, ""],
+  //     lastName: [false, ""],
+  //     dni: [false, ""],
+  //   });
+  // };
 
   const handleInputChange = (e) => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (validateForm(input, inputError, setInputError)) {
-      resetForm();
-    }
+    setValidForms({
+      ...validForms,
+      [`passenger${passenger}`]: [
+        validForms[`passenger${passenger}`][0],
+        {
+          ...validForms[`passenger${passenger}`][1],
+          [e.target.name]: e.target.value,
+        },
+      ],
+    });
   };
 
   return (
-    <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
+    <form className={styles.form}>
       <h2 className={styles.formTitle}>
         {passenger === 1 && totalPassengers === 1
           ? "Datos del pasajero"
@@ -75,7 +83,10 @@ export default function PassengerForm({ passenger, totalPassengers }) {
           name="name"
           value={input.name}
           onChange={handleInputChange}
-          onKeyUp={(e) => nameValidation(e, inputError, setInputError)}
+          onKeyUp={(e) => {
+            handleInputChange(e);
+            nameValidation(e, inputError, setInputError);
+          }}
           placeholder="Ingrese su nombre"
         />
         {inputError.name[0] && (
@@ -105,7 +116,10 @@ export default function PassengerForm({ passenger, totalPassengers }) {
           placeholder="Ingrese su apellido"
           value={input.lastName}
           onChange={handleInputChange}
-          onKeyUp={(e) => lastNameValidation(e, inputError, setInputError)}
+          onKeyUp={(e) => {
+            handleInputChange(e);
+            lastNameValidation(e, inputError, setInputError);
+          }}
         />
         {inputError.lastName[0] && (
           <span className={styles.formInputErrorMessage}>
@@ -132,7 +146,10 @@ export default function PassengerForm({ passenger, totalPassengers }) {
           name="dni"
           value={input.dni}
           onChange={handleInputChange}
-          onKeyUp={(e) => dniValidation(e, inputError, setInputError)}
+          onKeyUp={(e) => {
+            handleInputChange(e);
+            dniValidation(e, inputError, setInputError);
+          }}
           placeholder="Ingrese su DNI"
         />
         {inputError.dni[0] && (

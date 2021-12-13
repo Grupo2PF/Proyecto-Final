@@ -36,6 +36,15 @@ export default function OfferPage(): JSX.Element {
   }, [location]);
 
   const render = () => {
+
+    const recomendations:any = []
+    if(response.offers?.length >= 4){
+      for (let i = 0; i < 3; i++) {
+        recomendations.push(response.offers[i])
+      }
+    }
+
+
     if (response.mode) {
       return (
         <section className={styles.divContainer}>
@@ -56,6 +65,7 @@ export default function OfferPage(): JSX.Element {
             {response.mode === "oneway"
               ? response.offers.map((item: any) => (
                   <OfferCardI
+                    key={item.id}
                     offers={item.id}
                     currency={item.currency}
                     price={item.price}
@@ -65,10 +75,12 @@ export default function OfferPage(): JSX.Element {
                     destinationCity={response.destination.city}
                     originAirport={response.origin.airport}
                     destinationAirport={response.destination.airport}
+                    recomendations={recomendations}
                   />
                 ))
               : response.offers.map((item: any) => (
                   <OfferCardIV
+                    key={item.id}
                     offers={item.id}
                     currency={item.currency}
                     price={item.price}
@@ -79,6 +91,7 @@ export default function OfferPage(): JSX.Element {
                     destinationCity={response.destination.city}
                     originAirport={response.origin.airport}
                     destinationAirport={response.destination.airport}
+                    recomendations={recomendations}
                   />
                 ))}
           </section>

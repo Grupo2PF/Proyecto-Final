@@ -67,83 +67,54 @@ export const dniValidation = (e, inputError, setInputError) => {
   }
 };
 
-export const validateForm = (input, inputError, setInputError) => {
+export const validateForm = (
+  passengerIndex,
+  passengerData,
+  validForms,
+  setValidForms
+) => {
   let isValid = false;
 
-  const { name, lastName, dni } = input;
+  const { name, lastName, dni } = passengerData;
 
   //   Campos vacios
   if (name === "" || lastName === "" || dni === "") {
-    const nameError =
-      name === "" ? [true, "Debe completar este campo"] : [false, ""];
-    const lastNameError =
-      lastName === "" ? [true, "Debe completar este campo"] : [false, ""];
-    const dniError =
-      dni === "" ? [true, "Debe completar este campo"] : [false, ""];
-
-    setInputError({
-      ...inputError,
-      name: nameError,
-      lastName: lastNameError,
-      dni: dniError,
-    });
-    swal("Error", "Debe completar todos los campos", "error");
-    return isValid;
+    return swal(
+      "Error",
+      "Debe completar todos los campos del pasajero " +
+        passengerIndex[passengerIndex.length - 1],
+      "error"
+    );
   }
 
   //   Campos de nombre y apellido vacios (trim)
   if (name.trim() === "" || lastName.trim() === "") {
-    const nameError =
-      name === "" ? [true, "Debe completar este campo"] : [false, ""];
-    const lastNameError =
-      lastName === "" ? [true, "Debe completar este campo"] : [false, ""];
-    setInputError({
-      ...inputError,
-      name: nameError,
-      lastName: lastNameError,
-    });
-    swal("Error", "Ningún campo puede estar vacío.", "error");
-    return isValid;
+    return swal("Error", "Ningún campo puede estar vacío.", "error");
   }
 
-  // Nombre sin numeros
-  if (!regex.name.test(name)) {
-    setInputError({
-      ...inputError,
-      name: [true, "El campo solo acepta letras y espacios."],
-    });
-    swal(
+  // Nombre y apellido sin números
+  if (!regex.name.test(name) || !regex.lastName.test(lastName)) {
+    return swal(
       "Error",
-      "El nombre no puede contener números ni caracteres especiales ",
+      "Los campos de nombre y apellido no deben contener números ni caracteres especiales y deben tener entre 3 y 40 caracteres.",
       "error"
     );
-    return isValid;
-  }
-
-  // Apellido sin numeros
-  if (!regex.lastName.test(lastName)) {
-    setInputError({
-      ...inputError,
-      lastName: [true, "El campo solo acepta letras y espacios."],
-    });
-    swal(
-      "Error",
-      "El apellido no puede contener números ni caracteres especiales ",
-      "error"
-    );
-    return isValid;
   }
 
   //   DNI
   if (!regex.dni.test(dni) || dni.includes(" ")) {
-    setInputError({
-      ...inputError,
-      dni: [true, "El campo no debe contener espacios, números ni simbolos."],
-    });
-    swal("Error", "El DNI solo puede contener entre 8 y 10 números.", "error");
-    return isValid;
+    return swal(
+      "Error",
+      "El DNI no pude contener letras, espacios ni caracteres especiales, solo puede contener entre 8 y 10 números.",
+      "error"
+    );
   }
 
   isValid = true;
+  const newValue = [true, passengerData];
+  setValidForms({
+    ...validForms,
+    [passengerIndex]: newValue,
+  });
   return isValid;
 };

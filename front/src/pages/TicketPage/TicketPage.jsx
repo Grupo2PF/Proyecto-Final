@@ -1,41 +1,94 @@
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import styles from "./TicketPage.module.scss";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import PassengerForm from "../../components/PassengerForm/PassengerForm";
-import BasicTicketinfo from "../../components/BasicTicketInfo/BasicTicketinfo";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import Ticketinfo from "../../components/TicketInfo/Ticketinfo";
+import { validateForm } from "../../components/PassengerForm/validations";
+import swal from "sweetalert";
+
 export default function TicketPage() {
   const { state } = useLocation();
-  const { offerId } = useParams();
   const history = useHistory();
-  // console.log("State desde Ticket form: ", state);
-  // console.log("Props de la oferta desde Ticket form: ", state.offerProps);
-  // console.log("ID desde Ticket form: ", offerId);
 
-  console.log("ESTADO: ", state);
+  // console.log("TicketPage: ", state);
 
-  const dataFromQuery = {};
+  const totalPassengers = parseInt(state.adults) + parseInt(state.childs);
 
-  const getQueryData = (offerQuery) => {
-    return offerQuery
-      .split("&")
-      .map((word) => word.replace("=", ",").replace("?", "").split(","))
-      .forEach((el) => (dataFromQuery[el[0]] = el[1]));
-  };
-  getQueryData(state.offerProps.query);
+  const passengersIdentifications = {};
+  const [validForms, setValidForms] = useState(passengersIdentifications);
 
-  const totalPassengers =
-    parseInt(dataFromQuery.adults) + parseInt(dataFromQuery.childs);
-
-  const insertForms = (passengers) => {
+  function insertForms(passengers) {
     const forms = [];
     for (let i = 1; i < passengers + 1; i++) {
       forms.push(
-        <PassengerForm totalPassengers={passengers} passenger={i} key={i} />
+        <PassengerForm
+          totalPassengers={passengers}
+          passenger={i}
+          key={i}
+          validForms={validForms}
+          setValidForms={setValidForms}
+        />
       );
+      passengersIdentifications[`passenger${i}`] = [
+        false,
+        { name: "", lastName: "", dni: "" },
+      ];
     }
+
     return forms;
+  }
+  insertForms(totalPassengers);
+
+  // console.log("validForms: ", validForms);
+
+  const handleSubmit = () => {
+    for (let passengerId in validForms) {
+      const passengerData = validForms[passengerId][1];
+      if (
+        validateForm(passengerId, passengerData, validForms, setValidForms) !==
+        true
+      ) {
+        return validateForm(
+          passengerId,
+          passengerData,
+          validForms,
+          setValidForms
+        );
+      }
+      // console.log("Se valido uno: ", validForms);
+    }
+
+    const passengers = Object.values(validForms);
+    const passengersData = passengers.map((passenger, index) => {
+      passenger[0] = `Pasajero ${index + 1}`;
+      return passenger;
+    });
+    // console.log("Salio del for: ", passengersData);
+
+    if (passengersData.every((passenger) => passenger[0])) {
+      const offerProps = {
+        offer: { ...state },
+        passengers: passengersData,
+      };
+      console.log("offerProps: ", offerProps);
+      swal({
+        title: "Datos registrados",
+        // text: "Tu boleto ha sido generado",
+        icon: "success",
+        button: "Aceptar",
+      }).then(() => {
+        history.push("/");
+      });
+    } else {
+      swal({
+        title: "¡Error!",
+        text: "Debe completar todos los campos de manera correcta",
+        icon: "error",
+        button: "Aceptar",
+      });
+    }
   };
 
   useEffect(() => window.scrollTo(0, 0), []);
@@ -61,13 +114,14 @@ export default function TicketPage() {
         {/* Info */}
         <div className={styles.ticketPageInfo}>
           <h2>Información del vuelo</h2>
-          <BasicTicketinfo {...{ ...state.offerProps, ...dataFromQuery }} />
+          <Ticketinfo {...state} />
         </div>
 
         {/* Buttons */}
         <div className={styles.ticketPageButtons}>
           <button onClick={history.goBack}>Cancelar</button>
-          <Link to="/">Continuar</Link>
+          <button onClick={() => handleSubmit()}>Continuar</button>
+          {/* <Link to="/">Continuar</Link> */}
         </div>
       </section>
     </main>
