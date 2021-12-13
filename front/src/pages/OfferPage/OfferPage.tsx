@@ -9,6 +9,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { getFlightUrl, resetState } from "../../redux/actions";
 // import HeroBanner from "../../components/HeroBanner/HeroBanner";
 import Maps from "../../components/map/map"
+import notFound from "../../assets/notFound.jpg";
 
 export default function OfferPage(): JSX.Element {
   const response: any = useSelector((state: any) => state.allFlight);
@@ -18,15 +19,7 @@ export default function OfferPage(): JSX.Element {
 
 
   useEffect(() => {
-    setTimeout(() => {
-      if (cargando) {
-        <LoadingScreen />;
-      } else {
-        console.log("soy location")
-        console.log(location)
         dispatch(getFlightUrl(location.search));
-      }
-    }, 3000);
   }, []);
 
   useEffect(() => {
@@ -98,7 +91,7 @@ export default function OfferPage(): JSX.Element {
         </section>
       );
     }else {
-      return <div><p>No hay vuelos</p></div>;
+      return <div><Navbar/><img className={styles.imagen} src={notFound} alt = "error"></img></div>;
     }
   };
 

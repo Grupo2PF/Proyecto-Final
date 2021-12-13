@@ -1,9 +1,11 @@
-import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET } from "../actionTypes";
+import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, GET_FAVS, IS_AVAILABLE, RESET_FAVS_Y_AVAILABLES } from "../actionTypes";
 
 const initialState: any = {
   allFlight: undefined,
   allSeats: {},
   loading: false,
+  favs: [],
+  availableFlight: {}
 };
 
 type Action = {
@@ -35,7 +37,24 @@ export default function rootReducer(state = initialState, action: Action) {
       };
       case RESET:
       return {
-        initialState,
+        ...state,
+        allFlight: initialState.allFlight,
+      };
+      case GET_FAVS:
+      return {
+        ...state,
+        favs: action.payload
+      };
+      case IS_AVAILABLE:
+      return {
+        ...state,
+        availableFlight: action.payload
+      };
+      case RESET_FAVS_Y_AVAILABLES:
+      return {
+        ...state,
+        favs: initialState.favs,
+        availableFlight: initialState.availableFlight
       };
     default:
       return state;

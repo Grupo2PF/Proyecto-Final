@@ -247,6 +247,7 @@
           background-color: transparent;
           border: none;
           transition: 0.3s;
+          
         }
 
         button:hover {
@@ -302,5 +303,73 @@
         border-radius: 2px;
       }
     }
+  }
+}
+
+.favCard {
+border: solid 1px black;
+border-radius: 1rem;
+width: 18rem;
+height: 7rem;
+margin: 0.5rem;
+}
+
+.favCardContainer{
+  margin-top: 1rem;
+  height: 10rem;
+  width: 85%;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.journey{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.cities{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-weight: $medium-font
+}
+.delete{
+  background-color: transparent;
+  border: none;
+  display: flex;
+  margin-top: -1rem;
+  margin-left: 16.8rem
+}
+.delete:hover{
+  transition: 0.5s;
+  cursor: pointer;
+  color: red;
+}
+
+.price{
+  display: flex;
+  justify-content: center;
+}
+
+.buttons{
+  display: flex;
+  margin-top: 0.7rem;
+  justify-content: center;
+  justify-content: space-evenly;
+  
+  button{
+    padding: 0.15rem;
+    font-size: 0.8rem;
+    background-color: $main-color;
+    color : $white;
+    border-radius: 3px;
+    border: 2px solid $main-color;
+  }
+  button:hover{
+    cursor: pointer;
+    border: 2px solid $black;
   }
 }

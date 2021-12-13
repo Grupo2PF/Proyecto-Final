@@ -5,7 +5,8 @@ import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
 import { getSeats, sendFavs } from "../../redux/actions/";
-import { Link, useLocation } from "react-router-dom";
+import {auth} from "../../firebaseConfig";
+import { useLocation, Link} from "react-router-dom";
 
 export default function OfferCardIV(props: any): JSX.Element {
   const dispatch = useDispatch();
@@ -54,19 +55,19 @@ export default function OfferCardIV(props: any): JSX.Element {
   // console.log("Ida y Vuelta: ", offerProps);
 
   const handleFavs = (e: any) => {
-    console.log(props);
+    if(auth.currentUser){
+    
     const info = {
-      id: props.offers,
-      origin: props.originCity,
-      originAirport: props.originAirport,
-      destination: props.destinationCity,
-      destinationAirport: props.destinationAirport,
-      escalasIda: props.transfersD.length - 1,
-      escalasVuelta: props.transfersR.length - 1,
-      price: `${props.currency} ${props.price}`,
-    };
+      ...dataFromQuery,
+      userId: auth.currentUser.uid,
+     ...props
+    }
+    console.log(info);
     dispatch(sendFavs(info));
-  };
+  }else{
+    alert("Debes iniciar sesión para poder agregar a favoritos")
+  }
+}
 
   return (
     <>

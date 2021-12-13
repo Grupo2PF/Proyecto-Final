@@ -29,8 +29,8 @@ export default function OfferCardI(props: any): JSX.Element {
           .split(",")
       )
       .forEach((el: any) => (dataFromQuery[el[0]] = el[1]));
-  };
-  getQueryData(location.search);
+    };
+    getQueryData(location.search);
 
   const formatedRecomendations = props.recomendations?.map((item: any) => {
     return {
@@ -52,25 +52,26 @@ export default function OfferCardI(props: any): JSX.Element {
     recomendations: formatedRecomendations,
   };
 
-  // console.log("Formated props: ", offerProps);
-
   const handleFavs = (e: any) => {
-    if (auth.currentUser) {
-      const info = {
-        id: props.offers,
-        userId: auth.currentUser.uid,
-        mode: props.mode,
-        origin: props.originCity,
-        destination: props.destinationCity,
-        originAirport: props.originAirport,
-        destinationAirport: props.destinationAirport,
-        escalas: props.transfers.length - 1,
-        price: `${props.currency} ${props.price}`,
-      };
-      console.log(info);
-      dispatch(sendFavs(info));
-    } else {
-      alert("Debes iniciar sesión para poder agregar a favoritos");
+    if(auth.currentUser){
+    const info = {
+      ...dataFromQuery,
+      userId: auth.currentUser.uid,
+      ...props
+      // id: props.offers,
+      // mode: props.mode,
+      // origin: props.originCity,
+      // destination: props.destinationCity,
+      // originAirport: props.originAirport,
+      // destinationAirport: props.destinationAirport,
+      // transfers: props.transfers.length -1,
+      // price: `${props.currency} ${props.price}`,
+    }
+    console.log("info")
+    console.log(info)
+    dispatch(sendFavs(info));
+    }else{
+      alert("Debes iniciar sesión para poder agregar a favoritos")
     }
   };
   return (

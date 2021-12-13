@@ -8,12 +8,49 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import swal from "sweetalert";
+import { useSelector, useDispatch } from "react-redux";
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
+// import FavCard from "./favCard";
+import { getFavs, isAvailable, resetUserProfile } from "../../redux/actions";
 
 export default function UserProfile(documentPath) {
   const [user, loading, error] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
-
+  const dispatch = useDispatch();
+  const favs = useSelector((state) => state.favs);
+  const yetAvailable = useSelector((state) => state.availableFlight);
   const history = useHistory();
+  const [fav, setFav] = useState({});
+
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return history.replace("/");
+    getUser();
+    dispatch(getFavs(user.uid));
+  }, [loading, user]);
+
+  useEffect(() => {
+    console.log(yetAvailable)
+    if (yetAvailable.cabin) { 
+      if (window.confirm("El vuelo esta disponible, desea comprarlo?")) {
+        dispatch(resetUserProfile());
+        history.push({
+          pathname: `/offer-detail/${yetAvailable.offers}`,
+          state: { ...fav[0] },
+        });
+      }
+    }
+  }, [yetAvailable]);
+
+
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetUserProfile());
+    };
+  }, []);
+
+
 
   const getUser = () => {
     db.collection("users").onSnapshot((querySnapshot) => {
@@ -44,7 +81,7 @@ export default function UserProfile(documentPath) {
             firebase
               .auth()
               .currentUser.delete()
-              .catch(function (error) {
+              .catch(function(error) {
                 swal("Error!", "No se pudo borrar la cuenta!", "error");
               })
           );
@@ -54,14 +91,53 @@ export default function UserProfile(documentPath) {
     });
   };
 
-  useEffect(() => {
-    if (loading) return;
-    if (!user) return history.replace("/");
-    getUser();
-  }, [user, loading, history]);
+  const available = async (e) => {
+    e.preventDefault();
+    const filter = favs.filter((fav) => fav.offers === e.target.value)
+    setFav(filter);
+     dispatch(isAvailable(filter))
+  };
 
-  return (
-    <div className={styles.pageContainer}>
+  const borrarFav = (e) => {
+    e.preventDefault();
+    swal({
+      title: "Esta seguro?",
+      text: "Esta seguro que desea eliminar el favorito?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((isConfirm) => {
+      if (isConfirm) {
+        // swal("Eliminado!", "El vuelo ha sido eliminado", "success");
+        db.collection("saves")
+          .doc(e.target.value)
+          .delete()
+          .then(() => {
+            swal(
+              "Exito!",
+              "el favorito ha sido borrado exitosamente",
+              "success"
+            );
+           dispatch(getFavs(user.uid));
+          })
+          .catch((error) => {
+            swal("Error!", "No se pudo borrar la cuenta!", "error");
+          });
+      } else {
+        swal("Cancelado", "El favorito no ha sido eliminado", "error");
+      }
+    });
+  };
+
+  const buscarParecidos= (e) => {
+    e.preventDefault();
+    const filter = favs.filter((fav) => fav.offers === e.target.value)
+    history.push(`/offers?origin=${filter[0].origin}&destination=${filter[0].destination}&dDate=${filter[0].dDate}&adults=${filter[0].adults}&childs=${filter[0].childs}&baby=${filter[0].baby}&cabin=${filter[0].cabin}`)
+  }
+
+  const render = () => { 
+    return (
+      <div className={styles.pageContainer}>
       <GoHomeButton />
       {usuario.map((dato) => {
         return (
@@ -132,39 +208,54 @@ export default function UserProfile(documentPath) {
 
               <div className={styles.card}>
                 <h1>Mis favs</h1>
-
                 <div
                   className={styles.cardOptions + " " + styles.cardOptionsFavs}
                 >
-                  <h3>Favoritos Aqui</h3>
-                </div>
-              </div>
-
-              <div className={styles.card}>
-                <h1>Mis tickets</h1>
-                {/* {dato.tik.map((e) => (
-                  <div className={styles.cardOptions}>
-                    <h3>{e.originCity}</h3>
-                    <h3>{e.destinyCity}</h3>
-                    <h3>{e.departureDate}</h3>
-                    <h3>{e.returnDate}</h3>
-                    <h3>{e.journeyType}</h3>
-                    <h3>{e.class}</h3>
+                  <div className={styles.favCardContainer}>
+                    {favs?.map((fav) => {
+                      console.log(favs)
+                      return (
+                        <div className={styles.favCard} key={fav.id}>
+                          <div className={styles.cities}><p>{fav.originCity}</p>
+                          <p>{fav.destinationCity}</p></div>
+                          <button className={styles.delete}value={fav.iddelDoc} onClick={borrarFav}>
+                            X
+                          </button>
+                          <div className={styles.journey}>{fav.transfersD? <p>IDA Y VUELTA</p>:<p>IDA</p> }</div>
+                          <div className={styles.price}>{`U$D${fav.price}`}</div>
+                         <div className={styles.buttons}> <button value={fav.offers} onClick={available}>
+                            ¿Sigue disponible?
+                          </button>
+                          <button value= {fav.offers} onClick={buscarParecidos}>Buscar similares</button>
+                        </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                ))}*/}
-              </div>
-
-              <div className={styles.button}>
-                <div className={styles.btn}>
-                  <button type="submit" onClick={(e) => userDelete(e)}>
-                    Eliminar cuenta
-                  </button>
                 </div>
+              </div>
+            </div>
+
+            <div className={styles.card}>
+              <h1>Mis tickets</h1>
+            </div>
+
+            <div className={styles.button}>
+              <div className={styles.btn}>
+                <button type="submit" onClick={(e) => userDelete(e)}>
+                  Eliminar cuenta
+                </button>
               </div>
             </div>
           </div>
         );
       })}
+    </div>
+    )
+  }
+  return (
+    <div>
+      {usuario[0]?.photoURL? render():   <LoadingScreen />}
     </div>
   );
 }
