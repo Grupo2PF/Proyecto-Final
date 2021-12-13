@@ -82,7 +82,6 @@ export default function UserProfile(documentPath) {
     dispatch(isAvailable(fav));
     if (yetAvailable.class) {
       if (window.confirm("El vuelo esta disponible, desea comprarlo?")) {
-        console.log();
         history.push({
           pathname: "/pruebaprops",
           state: { ...fav[0] },
