@@ -23,7 +23,6 @@ import { useHistory } from "react-router-dom";
 export default function SearchBar() {
   const history = useHistory();
   const dispatch = useDispatch();
-
   const loading: boolean = useSelector((state: any) => state.loading);
   const [error, setError] = useState(false);
   const [msjError, setMsjError] = useState({ title: "", p: "" });

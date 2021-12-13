@@ -5,13 +5,13 @@ import { Link, useHistory } from "react-router-dom";
 import { createRef, useEffect, useState } from "react";
 import { auth, db, logout } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { getFavs } from "../../redux/actions";
 import firebase from "firebase/app";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import swal from "sweetalert";
 import { useSelector, useDispatch } from "react-redux";
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 // import FavCard from "./favCard";
-import { isAvailable } from "../../redux/actions";
+import { getFavs, isAvailable, resetUserProfile } from "../../redux/actions";
 
 export default function UserProfile(documentPath) {
   const [user, loading, error] = useAuthState(auth);
@@ -20,7 +20,7 @@ export default function UserProfile(documentPath) {
   const favs = useSelector((state) => state.favs);
   const yetAvailable = useSelector((state) => state.availableFlight);
   const history = useHistory();
-  var fav = [];
+  const [fav, setFav] = useState({});
 
   useEffect(() => {
     if (loading) return;
@@ -29,13 +29,27 @@ export default function UserProfile(documentPath) {
     dispatch(getFavs(user.uid));
   }, [loading, user]);
 
-  // useEffect(() => {
-  //   if (loading) return;
-  //   if (!user) return history.replace("/");
-  //   getUser();
-  //   dispatch(getFavs(user.uid));
-  //   history.push("/user");
-  // }, [favs]);
+  useEffect(() => {
+    if (yetAvailable.cabin) {
+      if (window.confirm("El vuelo esta disponible, desea comprarlo?")) {
+        dispatch(resetUserProfile());
+        history.push({
+          pathname: "/pruebaprops",
+          state: { ...fav[0] },
+        });
+      }
+    }
+  }, [yetAvailable]);
+
+
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetUserProfile());
+    };
+  }, []);
+
+
 
   const getUser = () => {
     db.collection("users").onSnapshot((querySnapshot) => {
@@ -76,18 +90,11 @@ export default function UserProfile(documentPath) {
     });
   };
 
-  const available = (e) => {
+  const available = async (e) => {
     e.preventDefault();
-    fav = favs.filter((fav) => fav.offers === e.target.value);
-    dispatch(isAvailable(fav));
-    if (yetAvailable.class) {
-      if (window.confirm("El vuelo esta disponible, desea comprarlo?")) {
-        history.push({
-          pathname: "/pruebaprops",
-          state: { ...fav[0] },
-        });
-      }
-    }
+    const filter = favs.filter((fav) => fav.offers === e.target.value)
+    setFav(filter);
+     dispatch(isAvailable(filter))
   };
 
   const borrarFav = (e) => {
@@ -121,8 +128,15 @@ export default function UserProfile(documentPath) {
     });
   };
 
-  return (
-    <div className={styles.pageContainer}>
+  const buscarParecidos= (e) => {
+    e.preventDefault();
+    const filter = favs.filter((fav) => fav.offers === e.target.value)
+    history.push(`/offers?origin=${filter[0].origin}&destination=${filter[0].destination}&dDate=${filter[0].dDate}&adults=${filter[0].adults}&childs=${filter[0].childs}&baby=${filter[0].baby}&cabin=${filter[0].cabin}`)
+  }
+
+  const render = () => { 
+    return (
+      <div className={styles.pageContainer}>
       <GoHomeButton />
       {usuario.map((dato) => {
         return (
@@ -193,24 +207,26 @@ export default function UserProfile(documentPath) {
 
               <div className={styles.card}>
                 <h1>Mis favs</h1>
-
                 <div
                   className={styles.cardOptions + " " + styles.cardOptionsFavs}
                 >
-                  <div>
+                  <div className={styles.favCardContainer}>
                     {favs?.map((fav) => {
+                      console.log(favs)
                       return (
-                        <div key={fav.id}>
-                          {fav.originCity}
-                          {fav.destinationCity}
-                          {`${fav.price}`}
-                          <button value={fav.iddelDoc} onClick={borrarFav}>
+                        <div className={styles.favCard} key={fav.id}>
+                          <div className={styles.cities}><p>{fav.originCity}</p>
+                          <p>{fav.destinationCity}</p></div>
+                          <button className={styles.delete}value={fav.iddelDoc} onClick={borrarFav}>
                             X
                           </button>
-                          <button value={fav.offers} onClick={available}>
+                          <div className={styles.journey}>{fav.transfersD? <p>IDA Y VUELTA</p>:<p>IDA</p> }</div>
+                          <div className={styles.price}>{`U$D${fav.price}`}</div>
+                         <div className={styles.buttons}> <button value={fav.offers} onClick={available}>
                             ¿Sigue disponible?
                           </button>
-                          <button>Buscar similares</button>
+                          <button value= {fav.offers} onClick={buscarParecidos}>Buscar similares</button>
+                        </div>
                         </div>
                       );
                     })}
@@ -221,16 +237,6 @@ export default function UserProfile(documentPath) {
 
             <div className={styles.card}>
               <h1>Mis tickets</h1>
-              {/* {dato.tik.map((e) => (
-                  <div className={styles.cardOptions}>
-                    <h3>{e.originCity}</h3>
-                    <h3>{e.destinyCity}</h3>
-                    <h3>{e.departureDate}</h3>
-                    <h3>{e.returnDate}</h3>
-                    <h3>{e.journeyType}</h3>
-                    <h3>{e.class}</h3>
-                  </div>
-                ))}*/}
             </div>
 
             <div className={styles.button}>
@@ -243,6 +249,12 @@ export default function UserProfile(documentPath) {
           </div>
         );
       })}
+    </div>
+    )
+  }
+  return (
+    <div>
+      {usuario[0]?.photoURL? render():   <LoadingScreen />}
     </div>
   );
 }
