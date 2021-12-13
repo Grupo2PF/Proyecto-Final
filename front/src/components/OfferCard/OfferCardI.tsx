@@ -8,11 +8,13 @@ import { IoMdAirplane } from "react-icons/io";
 import { GiCommercialAirplane } from "react-icons/gi";
 import { getSeats, sendFavs } from "../../redux/actions/";
 import {auth} from "../../firebaseConfig";
+import { useLocation } from "react-router-dom";
 
 
 export default function OfferCardI(props: any): JSX.Element {
   const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const handleClick = (e: any) => {
     if (!clicked) {
@@ -27,20 +29,33 @@ export default function OfferCardI(props: any): JSX.Element {
     dispatch(getSeats(id));
   };
 
+  const dataFromQuery:any = {};
+
+  const getQueryData = (offerQuery:any) => {
+    return offerQuery
+      .split("&")
+      .map((word:any) => word.replace("=", ",").replace("?", "").split(","))
+      .forEach((el:any) => (dataFromQuery[el[0]] = el[1]));
+  };
+  getQueryData(location.search);
+
   const handleFavs = (e: any) => {
     if(auth.currentUser){
     const info = {
-      id: props.offers,
+      ...dataFromQuery,
       userId: auth.currentUser.uid,
-      mode: props.mode,
-      origin: props.originCity,
-      destination: props.destinationCity,
-      originAirport: props.originAirport,
-      destinationAirport: props.destinationAirport,
-      escalas:props.transfers.length -1,
-      transfers: props.transfers.length -1,
-      price: `${props.currency} ${props.price}`,
+      ...props
+      // id: props.offers,
+      // mode: props.mode,
+      // origin: props.originCity,
+      // destination: props.destinationCity,
+      // originAirport: props.originAirport,
+      // destinationAirport: props.destinationAirport,
+      // transfers: props.transfers.length -1,
+      // price: `${props.currency} ${props.price}`,
     }
+    console.log("info")
+    console.log(info)
     dispatch(sendFavs(info));
     }else{
       alert("Debes iniciar sesión para poder agregar a favoritos")

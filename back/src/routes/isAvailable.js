@@ -19,7 +19,9 @@ router.get('/isavailable', async(req, res, next)=>{
         rDate,
         transfers,
         returnTransfers
-    } = req.body;
+    } = req.query;
+    console.log("req.query");
+    console.log(req.query);
 
     const escalasIda = transfers?.length;
     const escalasVuelta = returnTransfers?.length;
@@ -87,7 +89,7 @@ router.get('/isavailable', async(req, res, next)=>{
                 info.transfers.push(tr);
                 
               });
-        
+              console.log(info)
             return res.send(info);
     
         }catch{
@@ -123,6 +125,7 @@ router.get('/isavailable', async(req, res, next)=>{
                       cabin_class: cabin,
                     }
                 );
+                res.send(offerRequestOneway);
     
                 for(let i = 0; i < offerRequestOneway.data.offers.length; i++){
                     

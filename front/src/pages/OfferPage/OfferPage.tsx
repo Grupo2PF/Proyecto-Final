@@ -55,6 +55,8 @@ export default function OfferPage(): JSX.Element {
           <section className={styles.offersCards}>
             {response.mode === "oneway"
               ? response.offers.map((item: any) => (
+                console.log("location"),
+                console.log(location.search),
                   <OfferCardI
                     offers={item.id}
                     currency={item.currency}
