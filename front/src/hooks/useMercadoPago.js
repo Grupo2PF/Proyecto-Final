@@ -3,17 +3,47 @@ import useScript from "./useScript";
 import { formConfig } from "../components/MercadoPago/formConfig.js";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import {auth, db} from "../firebaseConfig";
+import {useAuthState} from "react-firebase-hooks/auth";
 
 const VITE_PUBLIC_KEY_MP = "TEST-0f046780-e30e-443a-b0c8-cc6d4fd9be99";
-const VITE_URL_PAYMENT_MP = "http://localhost:3001";
+const VITE_URL_PAYMENT_MP = "http://localhost:3001/mercadoPagob";
 
 export default function useMercadoPago() {
+    const [user, loading, error] = useAuthState(auth);
+    const [usuario, setUsuario] = useState([]);
     const [resultPayment, setResultPayment] = useState(undefined);
     const history = useHistory();
     const { MercadoPago } = useScript(
         "https://sdk.mercadopago.com/js/v2",
         "MercadoPago"
     );
+
+    const savedTicket = async (resultPayment) => {
+        try {
+            await db.collection("saved_tickets").add({
+                ...resultPayment,
+                date: new Date(),
+                user: user.email,
+                userId: user.uid,
+            }).then(() => {
+                console.log("Ticket guardado");
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const getUser = () => {
+        db.collection("users").onSnapshot((querySnapshot) => {
+            const docs = [];
+            querySnapshot.forEach((doc) => {
+                docs.push({ ...doc.data(), id: doc.id });
+            });
+            const filtrado = docs.filter((doc) => doc.email === user.email);
+            setUsuario(filtrado);
+        });
+    };
 
     useEffect(() => {
         if (MercadoPago) {
@@ -78,7 +108,9 @@ export default function useMercadoPago() {
                         )
                             .then((res) => res.json())
                             .then(async (data) => {
+                                    getUser()
                                     setResultPayment(data);
+                                    await savedTicket(data);
                                     await swal({
                                         title: "¡Pago realizado!",
                                         text: "¡Gracias por comprar con nosotros!",
