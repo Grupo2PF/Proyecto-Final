@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
 import cities from "../../components/PopularDestinations/cities";
 import styles from "./PopularDestination.module.scss";

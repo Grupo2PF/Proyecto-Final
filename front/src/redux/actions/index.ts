@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, SEND_FAVS, GET_FAVS, IS_AVAILABLE, GET_PAY } from "../actionTypes";
+import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, SEND_FAVS, GET_FAVS, IS_AVAILABLE, RESET_FAVS_Y_AVAILABLES, GET_PAY } from "../actionTypes";
 
 export function getFlight(payload: any) {
 
@@ -93,6 +93,14 @@ export function getFlightUrl(payload: any) {
       return async function (dispatch: any) {
           return dispatch({
             type: RESET,
+          });
+        }
+    }
+
+    export function resetUserProfile() {
+      return async function (dispatch: any) {
+          return dispatch({
+            type: RESET_FAVS_Y_AVAILABLES,
           });
         }
     }

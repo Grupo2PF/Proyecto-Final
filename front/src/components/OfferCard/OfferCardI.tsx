@@ -1,46 +1,56 @@
-import React, { useState } from "react";
 import styles from "./OfferCard.module.scss";
 import { useDispatch } from "react-redux";
-import { AiOutlineExclamationCircle, AiOutlineFieldNumber  } from "react-icons/ai";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
-import { BsArrowLeftRight, BsCalendarDateFill, BsCalendarDate } from "react-icons/bs";
+import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
-import { GiCommercialAirplane } from "react-icons/gi";
-import { sendFavs } from "../../redux/actions/";
-import {auth} from "../../firebaseConfig";
-import { getPay } from "../../redux/actions/";
-import {useLocation, useHistory} from "react-router-dom";
-
+import { getSeats, sendFavs } from "../../redux/actions/";
+import { Link, useLocation } from "react-router-dom";
+import { auth } from "../../firebaseConfig";
 
 export default function OfferCardI(props: any): JSX.Element {
-  const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory();
   const location = useLocation();
 
-  const handleClick = (e: any) => {
-    if (!clicked) {
-      return setClicked(true);
-    } else {
-      return setClicked(false);
-    }
-  };
+  // const handleBuy = (e: any) => {
+  //   const id = props.offers;
+  //   dispatch(getSeats(id));
+  // };
 
-  const handleBuy = (e: any) => {
-    const id = props.offers;
-    dispatch(getPay(id));
-    history.push('/pay')
-  };
+  const dataFromQuery: any = {};
 
-  const dataFromQuery:any = {};
-
-  const getQueryData = (offerQuery:any) => {
+  const getQueryData = (offerQuery: any) => {
     return offerQuery
       .split("&")
-      .map((word:any) => word.replace("=", ",").replace("?", "").split(","))
-      .forEach((el:any) => (dataFromQuery[el[0]] = el[1]));
+      .map((word: any) =>
+        word
+          .replace("=", ",")
+          .replace("?", "")
+          .split(",")
+      )
+      .forEach((el: any) => (dataFromQuery[el[0]] = el[1]));
+    };
+    getQueryData(location.search);
+
+  const formatedRecomendations = props.recomendations?.map((item: any) => {
+    return {
+      offers: item.id,
+      currency: item.currency,
+      price: item.price,
+      transfers: item.transfers,
+      mode: props.mode,
+      originCity: item.origin.city,
+      destinationCity: item.destiny.city,
+      originAirport: item.origin.airport,
+      destinationAirport: item.destiny.airport,
+      ...dataFromQuery,
+    };
+  });
+
+  const offerProps = {
+    ...props,
+    recomendations: formatedRecomendations,
   };
-  getQueryData(location.search);
 
   const handleFavs = (e: any) => {
     if(auth.currentUser){
@@ -60,91 +70,75 @@ export default function OfferCardI(props: any): JSX.Element {
     console.log("info")
     console.log(info)
     dispatch(sendFavs(info));
-    }else if (!auth.currentUser){
-      // @ts-ignore
-      swal({
-        title: "Inicia sesión",
-        text: "Para poder guardar tus vuelos en favoritos debes estar registrado ",
-        icon: "warning", center: true,
-        dangerMode: true,
-      }).then((r: any) => console.log(r));
-      /*alert("Debes iniciar sesión para poder agregar a favoritos")*/
+    }else{
+      alert("Debes iniciar sesión para poder agregar a favoritos")
     }
-
-  }
-
+  };
   return (
-    <>
-      <section className={styles.offers}>
-          <div className={styles.offersCard}>
-            <div className={styles.offersCardMainInfo}>
-            {/* Puntos de partida y llegada */}
-            <div className={styles.offersCardInfo}>
+    <section className={styles.offers}>
+      <div className={styles.offersCard}>
+        <div className={styles.offersCardMainInfo}>
+          {/* Puntos de partida y llegada */}
+          <div className={styles.offersCardInfo}>
+            <p>
+              <FaPlaneDeparture />{" "}
+              {props.originCity ? props.originCity : props.originAirport}{" "}
+            </p>
+            <p>
+              <FaPlaneArrival />{" "}
+              {props.destinationCity
+                ? props.destinationCity
+                : props.destinationAirport}{" "}
+            </p>
+          </div>
+
+          {/* Tipo de vuelo */}
+          <div className={styles.offersCardType}>
+            {props.transfers.length === 1 ? (
               <p>
-               <FaPlaneDeparture />{" "}
-                {props.originCity ? props.originCity : props.originAirport}{" "}
+                {" "}
+                <IoMdAirplane /> Vuelo directo{" "}
               </p>
+            ) : (
               <p>
-                 <FaPlaneArrival />{" "}
-                {props.destinationCity
-                  ? props.destinationCity
-                  : props.destinationAirport}{" "}
+                {" "}
+                <BsArrowLeftRight /> Tiene {props.transfers.length - 1} escalas
               </p>
-            </div>
+            )}
+          </div>
 
-            {/* Tipo de vuelo */}
-            <div className={styles.offersCardType}>
-              {props.transfers.length === 1 ? <p> <IoMdAirplane/> Vuelo directo </p> : <p> <BsArrowLeftRight /> Tiene {props.transfers.length-1} escalas</p> }
-            </div>
-
-            {/* Buttons */}
-            <div className={styles.offersCardButtons}>
-              <button
-                onClick={(e) => {
-                  handleClick(e);
-                }}
-                >
-                <AiOutlineExclamationCircle />
-                Ver detalles
-              </button>
-
-              <button onClick={handleFavs}>añadir a favs</button>
-
-              <button className={styles.offersCardButtonsPrice} onClick={handleBuy}>
+          {/* Buttons */}
+          <div className={styles.offersCardButtons}>
+            <Link
+              to={{
+                pathname: `/offer-detail/${props.offers}`,
+                state: {
+                  ...offerProps,
+                  ...dataFromQuery,
+                },
+              }}
+              className={styles.offersCardButtonsDetail}
+            >
+              <AiOutlineExclamationCircle />
+              Ver detalles
+            </Link>
+            <button onClick={handleFavs}>Añadir a favs</button>
+            <Link
+              to={{
+                pathname: `/ticket/${props.offers}`,
+                state: {
+                  ...offerProps,
+                  ...dataFromQuery,
+                },
+              }}
+              className={styles.offersCardButtonsPrice}
+              // onClick={handleBuy}
+            >
               {`${props.currency} ${props.price}`}
-              </button>
-            </div>
+            </Link>
           </div>
-
-          <div className={styles.offersCardDetail}>
-            {clicked ? 
-            <>
-            <h3>Detalles del Vuelo</h3>
-            {props.transfers.length > 1 ? <h4>Escalas de Ida</h4> : <h4>Vuelo directo</h4> }
-            </>
-            : false}
-            {clicked
-              ? props.transfers.map((escala: any) => (
-                <div className={styles.offersCardTransfers}>
-                  <div>
-                    <p> <FaPlaneDeparture /> <span className={styles.sp} >{escala.origin}</span> </p>
-                    <p> <FaPlaneArrival /> <span className={styles.sp} >{escala.destination}</span> </p>
-                  </div>
-                  <div>
-                    <p>  <BsCalendarDateFill/> <span> Salida: </span> {escala.departure.slice(0, 10)}{" "}{escala.departure.slice(11, 19)} </p>
-                    <p> <BsCalendarDate/> <span>Llegada:</span> {escala.arrive.slice(0, 10)}{" "}{escala.arrive.slice(11, 19)} </p>
-                  </div>
-                  <div>
-                    <p> <GiCommercialAirplane /> <span>Aerolinea:</span> {escala.airline}</p>
-                    <p> <AiOutlineFieldNumber/><span>Vuelo Nro:</span> {escala.flightNumber}</p>
-                  </div>
-                  </div>
-                ))
-                : false}
-          </div>
-
-          </div>
-      </section>
-    </>
+        </div>
+      </div>
+    </section>
   );
-};
+}
