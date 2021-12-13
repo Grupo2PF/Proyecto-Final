@@ -21,7 +21,11 @@ export default function Footer(): JSX.Element {
         <p>
           &copy; 2021 Dev-Sky. <br /> Todos los derechos reservados.
         </p>
+<<<<<<< HEAD
         <Link to="/about-us" >Sobre nosotros</Link>
+=======
+        <Link to="/about-us">Sobre nosotros</Link>
+>>>>>>> origin/Angel-Front
       </div>
     </footer>
   );
