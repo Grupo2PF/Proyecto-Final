@@ -33,9 +33,16 @@ const INITIAL_STATE = {
   identificationNumber: "",
 };
 
-export default function MercadoPagoForm() {
+export default function MercadoPagoForm(props) {
   const [state, setState] = useState(INITIAL_STATE);
   const resultPayment = useMercadoPago();
+
+  // En props esta toda la información necesaria
+  // puedes acceder a las props del vuelo mediante props.offer
+  // puedes acceder a las props de los pasajeros mediante props.passengers
+  console.log("Data completa: ", props);
+  console.log("Data del vuelo: ", props.offer);
+  console.log("Data de los pasajeros: ", props.passengers);
 
   const [inputError, setInputError] = useState({
     cvc: [false, ""],
@@ -91,9 +98,8 @@ export default function MercadoPagoForm() {
 
   return (
     <div className={styles.paymentContainer}>
-      <GoHomeButton/>
+      <GoHomeButton />
       <div className={styles.paymentCard}>
-
         <h1>Payment Process</h1>
         <Card
           cvc={state.cvc}
@@ -105,15 +111,13 @@ export default function MercadoPagoForm() {
         />
       </div>
 
-      <div>
-
-      </div>
+      <div></div>
 
       <form
         className={styles.paymentForm}
         onSubmit={(e) => handleSubmit(e)}
         id="form-checkout"
-        name='form1'
+        name="form1"
       >
         <div className={styles.paymentFormDiv}>
           <BsCreditCard
