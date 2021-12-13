@@ -31,7 +31,7 @@ export default function UserProfile(documentPath) {
 
   useEffect(() => {
     console.log(yetAvailable)
-    if (yetAvailable.cabin) {
+    if (yetAvailable.cabin) { 
       if (window.confirm("El vuelo esta disponible, desea comprarlo?")) {
         dispatch(resetUserProfile());
         history.push({
