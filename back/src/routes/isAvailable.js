@@ -10,6 +10,8 @@ router.get('/isavailable', async(req, res, next)=>{
         flightId,
         originAirport,
         destinationAirport,
+        origin,
+        destination,
         price,
         adults,
         childs,
@@ -18,13 +20,18 @@ router.get('/isavailable', async(req, res, next)=>{
         dDate,
         rDate,
         transfers,
-        returnTransfers
+        transfersD,
+        transfersR
     } = req.query;
     console.log("req.query");
+
+    console.log("AIRPORT: ", originAirport)
+
+    console.log("AIRPORT: ", destinationAirport)
+
     console.log(req.query);
 
-    const escalasIda = transfers?.length;
-    const escalasVuelta = returnTransfers?.length;
+    const escalasIda = parseInt(transfers);
     const psgrs = [];
 
     for(let i = 0; i < adults; i++){
@@ -45,6 +52,8 @@ router.get('/isavailable', async(req, res, next)=>{
           psgrs.push(psgr);
         }
     }
+
+    console.log(rDate);
 
     if(!rDate){
         try{
@@ -98,18 +107,11 @@ router.get('/isavailable', async(req, res, next)=>{
 
                 console.log("Ya cambió el ID")
     
-                let originIATA, destinationIATA;
-    
-                for(let i = 0; i < IATA.length; i++){
-                    if(IATA[i].airport === originAirport){
-                        originIATA = IATA[i].iata;
-                    }
-                    if(IATA[i].airport === destinationAirport){
-                        destinationIATA = IATA[i].iata;
-                    }
-                }
+                let originIATA = origin, destinationIATA = destination;
     
                 console.log(originIATA, destinationIATA);
+
+                console.log(originIATA, destinationIATA, dDate, psgrs, cabin);
     
                 const offerRequestOneway = await duffel.offerRequests.create(
                     {
@@ -125,7 +127,6 @@ router.get('/isavailable', async(req, res, next)=>{
                       cabin_class: cabin,
                     }
                 );
-                res.send(offerRequestOneway);
     
                 for(let i = 0; i < offerRequestOneway.data.offers.length; i++){
                     
@@ -147,48 +148,41 @@ router.get('/isavailable', async(req, res, next)=>{
                     
                     if(offerRequestOneway.data.offers[i].slices[0].origin.iata_code === originIATA && offerRequestOneway.data.offers[i].slices[0].destination.iata_code === destinationIATA){
                         if(offerRequestOneway.data.offers[i].total_amount === price){
+                            console.log(escalasIda, transfers.length);
                           if(escalasIda === transfers.length){
                               let response = {
-                                flightId: offerRequestOneway.data.offers[i].id,
+                                offers: offerRequestOneway.data.offers[i].id,
                                 mode: "oneway",
                                 currency: offerRequestOneway.data.offers[i].total_currency,
                                 price: offerRequestOneway.data.offers[i].total_amount,
                                 dDate: dDate,
                                 cabin: cabin,
-                                passengers: {
                                     adults: adults,
                                     childs: childs,
-                                    baby: baby
-                                },
-                                origin: {
-                                    city: offerRequestOneway.data.offers[i].slices[0].origin.city_name,
-                                    airport: offerRequestOneway.data.offers[i].slices[0].origin.name,
-                                    date: offerRequestOneway.data.offers[i].slices[0].segments[0].departing_at,
-                                },
-                                destination: {
-                                    city: offerRequestOneway.data.offers[i].slices[0].destination.city_name,
-                                    airport: offerRequestOneway.data.offers[i].slices[0].destination.name,
-                                    date: offerRequestOneway.data.offers[i].slices[0].segments[0].arriving_at
-                                },
+                                    baby: baby,
+                                    originCity: offerRequestOneway.data.offers[i].slices[0].origin.city_name,
+                                    originAirport: offerRequestOneway.data.offers[i].slices[0].origin.name,
+                                    destinationCity: offerRequestOneway.data.offers[i].slices[0].destination.city_name,
+                                    destinationAirport: offerRequestOneway.data.offers[i].slices[0].destination.name,
                                 transfers: transfers
                               }
     
-                              if(response.origin.city === response.origin.airport){
+                              if(response.originCity === response.originAirport){
                                 let i = 0;
-                                while(response.origin.city === response.origin.airport){
-                                  if(response.data.offers[i].slices[0].origin.iata_code === originIATA){
-                                    response.origin.airport = offerRequestOneway.data.offers[i].slices[0].origin.name;
+                                while(response.originCity === response.originAirport){
+                                  if(offerRequestOneway.data.offers[i].slices[0].origin.iata_code === originIATA){
+                                    response.originAirport = offerRequestOneway.data.offers[i].slices[0].origin.name;
                                   }
                                   i++;
                                 }
                               }
     
     
-                              if(response.destination.city === response.destination.airport){
+                              if(response.destinationCity === response.destinationAirport){
                                 let i = 0;
-                                while(response.destination.city === response.destination.airport){
-                                  if(response.data.offers[i].slices[0].destination.iata_code === destinationIATA){
-                                    response.destination.airport = offerRequestOneway.data.offers[i].slices[0].destination.name;
+                                while(response.destinationCity === response.destinationAirport){
+                                  if(offerRequestOneway.data.offers[i].slices[0].destination.iata_code === destinationIATA){
+                                    response.destinationAirport = offerRequestOneway.data.offers[i].slices[0].destination.name;
                                   }
                                   i++;
                                 }
@@ -201,8 +195,6 @@ router.get('/isavailable', async(req, res, next)=>{
                         }
                     }
                 }
-    
-                return res.send("El vuelo no está disponible");
     
             }catch{
                 const error = {
@@ -291,143 +283,122 @@ router.get('/isavailable', async(req, res, next)=>{
     
         }catch{
 
-            console.log("Ya cambió el ID")
-    
-                let originIATA, destinationIATA;
-    
-                for(let i = 0; i < IATA.length; i++){
-                    if(IATA[i].airport === originAirport){
-                        originIATA = IATA[i].iata;
-                    }
-                    if(IATA[i].airport === destinationAirport){
-                        destinationIATA = IATA[i].iata;
-                    }
-                }
-    
-                console.log(originIATA, destinationIATA);
-    
-                const offerRequestRoundtrip = await duffel.offerRequests.create(
-                    {
-                      return_offers: true,
-                      slices: [
+            try{
+                console.log("Ya cambió el ID")
+        
+                let originIATA = origin, destinationIATA = destination;
+        
+                    console.log(originIATA, destinationIATA);
+        
+                    const offerRequestRoundtrip = await duffel.offerRequests.create(
                         {
-                            origin: originIATA,
-                            destination: destinationIATA,
-                            departure_date: dDate,
-                        },
-                        {
-                            origin: destinationIATA,
-                            destination: originIATA,
-                            departure_date: rDate,
+                        return_offers: true,
+                        slices: [
+                            {
+                                origin: originIATA,
+                                destination: destinationIATA,
+                                departure_date: dDate,
+                            },
+                            {
+                                origin: destinationIATA,
+                                destination: originIATA,
+                                departure_date: rDate,
+                            }
+                        ],
+                        passengers: psgrs,
+                        cabin_class: cabin,
                         }
-                      ],
-                      passengers: psgrs,
-                      cabin_class: cabin,
-                    }
-                );
+                    );
 
-                for(let i = 0; i < offerRequestRoundtrip.data.offers.length; i++){
-                    
-                    let transfers = [[], []];
+                    for(let i = 0; i < offerRequestRoundtrip.data.offers.length; i++){
+                        
+                        let transfers = [[], []];
 
-                    offerRequestRoundtrip.data.offers[i].slices[0].segments.map((transfer)=>{
-                        let tr = {
-                            origin: transfer.origin.city_name,
-                            destination: transfer.destination.city_name,
-                            departure: transfer.departing_at,
-                            arrive: transfer.arriving_at,
-                            airline: transfer.marketing_carrier.name,
-                            flightNumber: transfer.marketing_carrier_flight_number
-                        }
-            
-                    transfers[0].push(tr);
-                    });
-
-                    offerRequestRoundtrip.data.offers[i].slices[1].segments.map((transfer)=>{
-                        let tr = {
-                            origin: transfer.origin.city_name,
-                            destination: transfer.destination.city_name,
-                            departure: transfer.departing_at,
-                            arrive: transfer.arriving_at,
-                            airline: transfer.marketing_carrier.name,
-                            flightNumber: transfer.marketing_carrier_flight_number
-                        }
-            
-                    transfers[1].push(tr);
-                    });
-
-                    if(offerRequestRoundtrip.data.offers[i].slices[0].origin.iata_code === originIATA && offerRequestRoundtrip.data.offers[i].slices[0].destination.iata_code === destinationIATA &&
-                        offerRequestRoundtrip.data.offers[i].slices[1].origin.iata_code === destinationIATA && offerRequestRoundtrip.data.offers[i].slices[1].destination.iata_code === originIATA
-                        ){
-                        if(offerRequestRoundtrip.data.offers[i].total_amount === price){
-                        if(escalasIda === transfers[0].length && escalasVuelta === transfers[1].length){
-                            let response = {
-                                flightId: offerRequestRoundtrip.data.offers[i].id,
-                                mode: "roundtrip",
-                                currency: offerRequestRoundtrip.data.offers[i].total_currency,
-                                price: offerRequestRoundtrip.data.offers[i].total_amount,
-                                dDate: dDate,
-                                cabin: cabin,
-                                passengers: {
-                                    adults: adults,
-                                    childs: childs,
-                                    baby: baby
-                                },
-                                departure: {
-                                    origin: {
-                                        city: offerRequestRoundtrip.data.offers[i].slices[0].origin.city_name,
-                                        airport: offerRequestRoundtrip.data.offers[i].slices[0].origin.name,
-                                        date: offerRequestRoundtrip.data.offers[i].slices[0].segments[0].departing_at,
-                                    },
-                                    destination: {
-                                        city: offerRequestRoundtrip.data.offers[i].slices[0].destination.city_name,
-                                        airport: offerRequestRoundtrip.data.offers[i].slices[0].destination.name,
-                                        date: offerRequestRoundtrip.data.offers[i].slices[0].segments[0].arriving_at
-                                    },
-                                    transfers: transfers[0]
-                                },
-                                return: {
-                                    origin: {
-                                        city: offerRequestRoundtrip.data.offers[i].slices[1].origin.city_name,
-                                        airport: offerRequestRoundtrip.data.offers[i].slices[1].origin.name,
-                                        date: offerRequestRoundtrip.data.offers[i].slices[1].segments[0].departing_at,
-                                    },
-                                    destination: {
-                                        city: offerRequestRoundtrip.data.offers[i].slices[1].destination.city_name,
-                                        airport: offerRequestRoundtrip.data.offers[i].slices[1].destination.name,
-                                        date: offerRequestRoundtrip.data.offers[i].slices[1].segments[0].arriving_at
-                                    },
-                                    transfers: transfers[1]
-                                }
+                        offerRequestRoundtrip.data.offers[i].slices[0].segments.map((transfer)=>{
+                            let tr = {
+                                origin: transfer.origin.city_name,
+                                destination: transfer.destination.city_name,
+                                departure: transfer.departing_at,
+                                arrive: transfer.arriving_at,
+                                airline: transfer.marketing_carrier.name,
+                                flightNumber: transfer.marketing_carrier_flight_number
                             }
+                
+                        transfers[0].push(tr);
+                        });
 
-                            if(response.departure.origin.city === response.departure.origin.airport){
-                                let i = 0;
-                                while(response.departure.origin.city === response.departure.origin.airport){
-                                if(offerRequestRoundtrip.data.offers[i].slices[0].origin.iata_code === originIATA){
-                                    response.departure.origin.airport = offerRequestRoundtrip.data.offers[i].slices[0].origin.name;
-                                }
-                                i++;
-                                }
+                        offerRequestRoundtrip.data.offers[i].slices[1].segments.map((transfer)=>{
+                            let tr = {
+                                origin: transfer.origin.city_name,
+                                destination: transfer.destination.city_name,
+                                departure: transfer.departing_at,
+                                arrive: transfer.arriving_at,
+                                airline: transfer.marketing_carrier.name,
+                                flightNumber: transfer.marketing_carrier_flight_number
                             }
+                
+                        transfers[1].push(tr);
+                        });
 
-
-                            if(response.departure.destination.city === response.departure.destination.airport){
-                                let i = 0;
-                                while(response.departure.destination.city === response.destination.airport){
-                                if(offerRequestRoundtrip.data.offers[i].slices[0].destination.iata_code === destinationIATA){
-                                    response.destination.airport = offerRequestRoundtrip.data.offers[i].slices[0].destination.name;
+                        if(offerRequestRoundtrip.data.offers[i].slices[0].origin.iata_code === originIATA && offerRequestRoundtrip.data.offers[i].slices[0].destination.iata_code === destinationIATA &&
+                            offerRequestRoundtrip.data.offers[i].slices[1].origin.iata_code === destinationIATA && offerRequestRoundtrip.data.offers[i].slices[1].destination.iata_code === originIATA
+                            ){
+                            console.log(price, offerRequestRoundtrip.data.offers[i].total_amount)
+                            if(offerRequestRoundtrip.data.offers[i].total_amount === price){
+                            if(parseInt(transfersD) === transfers[0].length && parseInt(transfersR) === transfers[1].length){
+                                let response = {
+                                    offers: offerRequestRoundtrip.data.offers[i].id,
+                                    mode: "roundtrip",
+                                    currency: offerRequestRoundtrip.data.offers[i].total_currency,
+                                    price: offerRequestRoundtrip.data.offers[i].total_amount,
+                                    dDate: dDate,
+                                    cabin: cabin,
+                                        adults: adults,
+                                        childs: childs,
+                                        baby: baby,
+                                            originCity: offerRequestRoundtrip.data.offers[i].slices[0].origin.city_name,
+                                            originAirport: offerRequestRoundtrip.data.offers[i].slices[0].origin.name,
+                                            destinationCity: offerRequestRoundtrip.data.offers[i].slices[0].destination.city_name,
+                                            destinationAirport: offerRequestRoundtrip.data.offers[i].slices[0].destination.name,
+                                        transfersD: transfers[0],
+                                        transfersR: transfers[1]
                                 }
-                                i++;
-                                }
-                            }
 
-                            return res.send(response);
+                                if(response.originCity === response.originAirport){
+                                    let i = 0;
+                                    while(response.originCity === response.originAirport){
+                                    if(offerRequestRoundtrip.data.offers[i].slices[0].origin.iata_code === originIATA){
+                                        response.originAirport = offerRequestRoundtrip.data.offers[i].slices[0].origin.name;
+                                    }
+                                    i++;
+                                    }
+                                }
+
+
+                                if(response.destinationCity === response.destinationAirport){
+                                    let i = 0;
+                                    while(response.destinationCity === response.destinationAirport){
+                                    if(offerRequestRoundtrip.data.offers[i].slices[0].destination.iata_code === destinationIATA){
+                                        response.destinationAirport = offerRequestRoundtrip.data.offers[i].slices[0].destination.name;
+                                    }
+                                    i++;
+                                    }
+                                }
+
+                                return res.send(response);
+
+                                }
 
                             }
-
                         }
                     }
+                    next();
+                }catch{
+                    const error = {
+                        message: "El vuelo solicitado no está disponible"
+                    }
+            
+                    next(error);
                 }
 
         }

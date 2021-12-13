@@ -6,7 +6,7 @@ const router = express();
 
 router.post('/saveflight', async(req, res, next)=>{
 
-    const { offers, originCity, destinationCity, originAirport, destinationAirport, transfers,transfersR, transfersD, price, userId, adults, baby, childs, cabin, dDate, rDate, mode, currency } = req.body;
+    const { offers, originCity, destinationCity, originAirport, destinationAirport, transfers,transfersR, transfersD, price, userId, adults, baby, childs, cabin, dDate, rDate, mode, currency, origin, destination } = req.body;
     var isSaved = false;
 
     console.log(userId);
@@ -35,6 +35,8 @@ router.post('/saveflight', async(req, res, next)=>{
         if(rDate){
              save = {
                     offers: offers,
+                    origin: origin,
+                    destination: destination,
                     userId: userId,
                     mode: mode,
                     currency: currency,
@@ -55,6 +57,8 @@ router.post('/saveflight', async(req, res, next)=>{
         }else{
        save = {
             offers: offers,
+            origin: origin,
+            destination: destination,
             userId: userId,
             mode: mode,
             currency: currency,
@@ -103,6 +107,8 @@ router.get('/getsaves/:userId', async(req, res, next)=>{
                 save = {
                     iddelDoc: doc.id,
                     offers: doc.data().offers,
+                    origin: doc.data().origin,
+                    destination: doc.data().destination,
                     userId: doc.data().userId,
                     mode: doc.data().mode,
                     currency: doc.data().currency,
@@ -123,6 +129,8 @@ router.get('/getsaves/:userId', async(req, res, next)=>{
                 save = {
                     iddelDoc: doc.id,
                     offers: doc.data().offers,
+                    origin: doc.data().origin,
+                    destination: doc.data().destination,
                     userId: doc.data().userId,
                     mode: doc.data().mode,
                     currency: doc.data().currency,
