@@ -71,10 +71,11 @@ router.get('/isavailable', async(req, res, next)=>{
                 airline: data.owner.name,
                 currency: data.total_currency,
                 price: data.total_amount,
-                class: data.slices[0].segments[0].passengers[0].cabin_class,
+                cabin: data.slices[0].segments[0].passengers[0].cabin_class,
                 adults: adults,
-                childs, childs,
-                baby, baby,
+                childs: childs,
+                baby: baby,
+                offers:info.offers,
                 originCity: data.slices[0].origin.city_name,
                 originAirport: data.slices[0].origin.name,
                 destinationCity: data.slices[0].destination.city_name,
@@ -238,7 +239,10 @@ router.get('/isavailable', async(req, res, next)=>{
                 airline: data.owner.name,
                 currency: data.total_currency,
                 price: data.total_amount,
-                class: data.slices[0].segments[0].passengers[0].cabin_class,
+                dDate: dDate,
+                rDate: rDate,
+                offers:data.id,
+                cabin: data.slices[0].segments[0].passengers[0].cabin_class,
                 adults: adults,
                 childs, childs,
                 baby, baby,
@@ -249,6 +253,8 @@ router.get('/isavailable', async(req, res, next)=>{
                 transfersD: [],
                 transfersR: []
             }
+            console.log("info")
+            console.log(data)
 
             if(info.originCity === info.originAirport){
                 let i = 0;

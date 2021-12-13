@@ -6,7 +6,7 @@ import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
 import { getSeats, sendFavs } from "../../redux/actions/";
 import {auth} from "../../firebaseConfig";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link} from "react-router-dom";
 
 export default function OfferCardIV(props: any): JSX.Element {
   const dispatch = useDispatch();
