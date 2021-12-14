@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import { auth, sendPasswordResetEmail } from "../../firebaseConfig";
+// import { auth, sendPasswordResetEmail } from "../../firebaseConfig";
+import { auth } from "../../firebaseConfig";
 import styles from "./ResetPass.module.scss";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FaEnvelope } from "react-icons/fa";
@@ -16,12 +17,13 @@ function Reset() {
   });
 
   const [email, setEmail] = useState("");
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const [user, loading ] = useAuthState(auth);
   const history = useHistory();
   useEffect(() => {
     if (loading) return;
     if (user) history.replace("/dashboard");
-  }, [user, loading]);
+  }, [user, loading, history]);
 
   return (
     <section className={styles.resetPage}>

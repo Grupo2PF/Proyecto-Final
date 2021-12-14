@@ -13,6 +13,7 @@
   min-height: 100vh;
   max-width: 100vw;
   position: relative;
+
   &::after {
     content: "";
     position: absolute;
@@ -49,12 +50,14 @@
       align-items: center;
       margin: 2rem 0;
       gap: 2rem;
+
       img {
         width: 9rem;
         height: 9rem;
         border-radius: 50%;
       }
-      h1{
+
+      h1 {
         margin: 0 0 2rem 0;
         font-weight: $bold-font;
         font-size: 1.8rem;
@@ -69,14 +72,17 @@
       padding: 0 0.5rem;
       justify-content: flex-end;
     }
+
     &Button {
       border: none;
       background-color: transparent;
       padding: 5px;
+
       &Icon {
         transition: 0.1s;
         color: $gray;
         font-size: 2rem;
+
         &:hover {
           color: #d10b0b;
           filter: drop-shadow(1px 1px 2px black);
@@ -94,11 +100,30 @@
   padding: 2rem 0;
   border-top: 1px solid $gray;
   min-height: 12rem;
-  h1{
+
+  &:first-child {
+    width: 20rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 2px 0px 3px #ccc;
+    justify-content: center;
+    margin-bottom: 4rem;
+
+
+  }
+
+
+  h1 {
+    border-bottom: 2px solid $main-color;
     margin: 0 0 2rem 0;
     font-weight: $bold-font;
     font-size: 1.5rem;
   }
+
   &Container {
     display: flex;
     flex-direction: column;
@@ -109,7 +134,9 @@
   &Update {
     width: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: center;
+    margin: 1rem auto;
+
     &Button {
       background-color: $main-color;
       border-radius: 3px;
@@ -117,16 +144,19 @@
       font-size: 0.8rem;
       color: $white;
       text-decoration: none;
-      padding: 5px;
+      padding: .6rem 1rem;
       transition: 0.3s;
+
       &:hover {
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
       }
+
       &:active {
         box-shadow: 1px 1px 3px black inset;
       }
     }
   }
+
   &Favs {
     display: flex;
     justify-content: center;
@@ -136,19 +166,29 @@
     gap: 4rem;
   }
 }
+
 .card {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-evenly;
+
+
   &TextBox {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    padding: 1rem 0;
+
     p {
       margin: 0 0.5rem;
     }
   }
 }
+
 .cardFav {
   border-radius: 0.8rem;
   box-shadow: 5px 5px 10px rgba(148, 148, 148, 0.5);
@@ -156,6 +196,7 @@
   padding: 0.4rem 2rem 2rem 2rem;
   max-height: 10rem;
   max-width: 100%;
+
   &City {
     display: flex;
     justify-content: space-evenly;
@@ -163,10 +204,12 @@
     position: relative;
     bottom: 1.1rem;
     right: 1.2rem;
+
     p {
       font-weight: $bold-font;
     }
   }
+
   &Button {
     &X {
       width: 100%;
@@ -175,6 +218,7 @@
       left: 1.5rem;
       justify-content: flex-end;
     }
+
     &Delete {
       background-color: #d10b0b;
       color: $white;
@@ -185,28 +229,33 @@
       padding: 0.1rem 0.3rem;
     }
   }
+
   &JourneyAndPrice {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
     padding: 0 0 1rem 0;
   }
+
   &Journey {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     margin-bottom: 0.4rem;
   }
+
   &Price {
     display: flex;
     justify-content: center;
   }
+
   &Buttons {
     display: flex;
     justify-content: space-around;
     grid-gap: 1rem;
     width: 100%;
     padding: 0 0 1rem 0;
+
     button {
       padding: 0.4rem;
       font-size: 0.8rem;
@@ -216,6 +265,7 @@
       border-radius: 10px;
       border: 2px solid $main-color;
       cursor: pointer;
+
       &:hover {
         border: 2px solid $black;
       }
@@ -226,44 +276,59 @@
 
 
 
-.buttons{
+.buttons {
   width: 100%;
   height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 2rem;
+  margin: 4rem auto;
   gap: 2rem;
+
   &Delete {
+    cursor: pointer;
     color: $white;
     background-color: #d10b0b;
     border: none;
     transition: 0.3s;
-    padding: 0.5rem 0.5rem;
-    border-radius: 10px;
-    &hover {
-      cursor: pointer;
-      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    padding: 0.6rem 1rem;
+    border-radius: 5px;
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    &:active {
+      transform: none;
     }
   }
-  &LogOut{
-    color: $black;
+
+  &LogOut {
+    color: $main-color;
+    cursor: pointer;
     background-color: $white;
-    border: 1px solid $gray;
+    border: 1px solid $main-color;
     transition: 0.3s;
-    padding: 0.5rem 0.5rem;
-    border-radius: 10px;
-    &hover {
-      cursor: pointer;
-      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    padding: 0.6rem 1rem;
+    border-radius: 5px;
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    &:active {
+      transform: none;
     }
   }
 }
 
 @media screen and (min-width: $tablet-width) {
-  .userContainer{
+  .userContainer {
     width: 70%;
   }
+
   .cards {
     &Favs {
       flex-direction: row;

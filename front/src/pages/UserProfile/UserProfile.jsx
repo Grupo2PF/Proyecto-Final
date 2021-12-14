@@ -1,8 +1,7 @@
 import styles from "./UserProfile.module.scss";
 import noImgProfile from "../../assets/noImgProfile2.jpg";
-import { BiLogOut } from "react-icons/bi";
 import { Link, useHistory } from "react-router-dom";
-import { createRef, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { auth, db, logout } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
@@ -15,7 +14,8 @@ import { getFavs, isAvailable, resetUserProfile } from "../../redux/actions";
 import Spinner from "../../components/Spinner/Spinner";
 
 export default function UserProfile(documentPath) {
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
   const dispatch = useDispatch();
   const favs = useSelector((state) => state.favs);
@@ -29,7 +29,7 @@ export default function UserProfile(documentPath) {
     if (!user) return history.replace("/");
     getUser();
     dispatch(getFavs(user.uid));
-  }, [loading, user]);
+  }, [loading, user, history, dispatch]);
 
   useEffect(() => {
     if (yetAvailable.cabin) {

@@ -4,9 +4,10 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
-import { getSeats, sendFavs } from "../../redux/actions/";
-import {auth} from "../../firebaseConfig";
-import {useLocation, Link, useHistory} from "react-router-dom";
+// import { getSeats, sendFavs } from "../../redux/actions/";
+import { sendFavs } from "../../redux/actions/";
+import { auth } from "../../firebaseConfig";
+import { useLocation, Link, useHistory } from "react-router-dom";
 
 export default function OfferCardIV(props: any): JSX.Element {
   const dispatch = useDispatch();
@@ -56,14 +57,13 @@ export default function OfferCardIV(props: any): JSX.Element {
   // console.log("Ida y Vuelta: ", offerProps);
 
   const handleFavs = (e: any) => {
-    if(auth.currentUser){
-    
-    const info = {
-      ...dataFromQuery,
-      userId: auth.currentUser.uid,
-     ...props
-    }
-    console.log(info);
+    if (auth.currentUser) {
+      const info = {
+        ...dataFromQuery,
+        userId: auth.currentUser.uid,
+        ...props,
+      };
+      console.log(info);
       if (dispatch(sendFavs(info))) {
         // @ts-ignore
         swal({
@@ -72,7 +72,7 @@ export default function OfferCardIV(props: any): JSX.Element {
           icon: "success",
         }).then(() => console.log("added"));
       }
-  }else{
+    } else {
       // @ts-ignore
       swal({
         title: "Debes iniciar sesión",
@@ -80,8 +80,8 @@ export default function OfferCardIV(props: any): JSX.Element {
         icon: "warning",
         dangerMode: true,
       }).then(() => history.push("/login"));
-  }
-}
+    }
+  };
 
   return (
     <>
