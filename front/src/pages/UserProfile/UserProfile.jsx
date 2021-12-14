@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 // import FavCard from "./favCard";
 import { getFavs, isAvailable, resetUserProfile } from "../../redux/actions";
+import Spinner from "../../components/Spinner/Spinner";
 
 export default function UserProfile(documentPath) {
   const [user, loading, error] = useAuthState(auth);
@@ -21,6 +22,7 @@ export default function UserProfile(documentPath) {
   const yetAvailable = useSelector((state) => state.availableFlight);
   const history = useHistory();
   const [fav, setFav] = useState({});
+  const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
     if (loading) return;
@@ -30,15 +32,37 @@ export default function UserProfile(documentPath) {
   }, [loading, user]);
 
   useEffect(() => {
-    console.log(yetAvailable)
+
     if (yetAvailable.cabin) { 
-      if (window.confirm("El vuelo esta disponible, desea comprarlo?")) {
-        dispatch(resetUserProfile());
+      setCargando(false);
+      swal({
+        title: "El vuelo esta disponible!",
+        text: "¿Desea comprarlo?",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          dispatch(resetUserProfile());
         history.push({
           pathname: `/offer-detail/${yetAvailable.offers}`,
           state: { ...fav[0] },
         });
-      }
+        }
+      })
+    }else if(yetAvailable === "error"){
+      swal({
+        title: "El vuelo ya no esta disponible!",
+        text: "",
+        icon: "error",
+        button: "Volver",
+      })
+      .then((value) => {
+      setCargando(false);
+      dispatch(resetUserProfile());
+      dispatch(getFavs(user.uid));
+      });
     }
   }, [yetAvailable]);
 
@@ -91,8 +115,9 @@ export default function UserProfile(documentPath) {
     });
   };
 
-  const available = async (e) => {
+  const available = (e) => {
     e.preventDefault();
+    setCargando(true);
     const filter = favs.filter((fav) => fav.offers === e.target.value)
     setFav(filter);
      dispatch(isAvailable(filter))
@@ -213,7 +238,7 @@ export default function UserProfile(documentPath) {
                 >
                   <div className={styles.favCardContainer}>
                     {favs?.map((fav) => {
-                      console.log(favs)
+          
                       return (
                         <div className={styles.favCard} key={fav.id}>
                           <div className={styles.cities}><p>{fav.originCity}</p>
@@ -255,6 +280,7 @@ export default function UserProfile(documentPath) {
   }
   return (
     <div>
+      {cargando && <Spinner />}
       {usuario[0]?.photoURL? render():   <LoadingScreen />}
     </div>
   );
