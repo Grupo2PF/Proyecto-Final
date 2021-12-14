@@ -1,17 +1,14 @@
-import React, { useEffect, useState, FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import React, { useEffect, useState, FC } from "react";
+import React, { useState, FC } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getFlight, setLoading } from "../../redux/actions";
 import styles from "./Searchbar.module.scss";
 import json from "../../assets/IATA.json";
-import LoadingScreen from "../LoadingScreen/LoadingScreen";
+// import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBaby,
-  faChild,
   faExclamationTriangle,
-  faHouseUser,
-  faMale,
-  faMapMarkerAlt,
   faPlane,
   faPlaneArrival,
   faPlaneDeparture,
@@ -23,7 +20,7 @@ import { useHistory } from "react-router-dom";
 export default function SearchBar() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const loading: boolean = useSelector((state: any) => state.loading);
+  // const loading: boolean = useSelector((state: any) => state.loading);
   const [error, setError] = useState(false);
   const [msjError, setMsjError] = useState({ title: "", p: "" });
   // const [extraBox, setExtraBox] = useState(false)
@@ -247,7 +244,7 @@ export default function SearchBar() {
 
   const isDisable: Function = () => {
     // return value.journeyType === false && value.departureDate.length !=0
-    if (value.journeyType === true && value.departureDate.length != 0) {
+    if (value.journeyType === true && value.departureDate.length !== 0) {
       return false;
     } else {
       return true;
@@ -303,8 +300,8 @@ export default function SearchBar() {
                   <ul role="listbox">
                     {value.originCity.length > 0 &&
                     value.destinyCity.length < 20
-                      ? filterOptional.map((d: any) => (
-                          <li>
+                      ? filterOptional.map((d: any,index) => (
+                          <li key={index} >
                             {" "}
                             <button
                               name={`${d.airport}`}
@@ -352,8 +349,8 @@ export default function SearchBar() {
                   <ul role="listbox">
                     {value.destinyCity.length > 0 &&
                     value.destinyCity.length < 20
-                      ? filterOptionalBack.map((d: any) => (
-                          <li>
+                      ? filterOptionalBack.map((d: any,index) => (
+                          <li key={index}>
                             {" "}
                             <button
                               name={`${d.airport}`}

@@ -1,8 +1,7 @@
 import styles from "./UserProfile.module.scss";
 import noImgProfile from "../../assets/noImgProfile2.jpg";
-
 import { Link, useHistory } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { auth, db, logout } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
@@ -10,14 +9,16 @@ import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import swal from "sweetalert";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
-import { getFavs, isAvailable, resetUserProfile } from "../../redux/actions";
+import {getFavs, getTickets, isAvailable, resetUserProfile} from "../../redux/actions";
 import Spinner from "../../components/Spinner/Spinner";
 
 export default function UserProfile(documentPath) {
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
   const dispatch = useDispatch();
   const favs = useSelector((state) => state.favs);
+  const tickets = useSelector((state) => state.tickets);
   const yetAvailable = useSelector((state) => state.availableFlight);
   const history = useHistory();
   const [fav, setFav] = useState({});
@@ -28,7 +29,8 @@ export default function UserProfile(documentPath) {
     if (!user) return history.replace("/");
     getUser();
     dispatch(getFavs(user.uid));
-  }, [loading, user]);
+    dispatch(getTickets(user.uid));
+  }, [loading, user, dispatch , history]);
 
   useEffect(() => {
     if (yetAvailable.cabin) {
@@ -194,12 +196,12 @@ export default function UserProfile(documentPath) {
                       <h1> Mis datos</h1>
                       <div className={styles.card}>
                         <div className={styles.cardTextBox}>
-                          <h3>Dni: </h3>
+                          <h3>DNI : </h3>
                           <p> {dato.dni}</p>
                         </div>
 
                         <div className={styles.cardTextBox}>
-                          <h3>Mail :</h3>
+                          <h3>Correo :</h3>
                           <p>{dato.email}</p>
                         </div>
 
@@ -207,19 +209,24 @@ export default function UserProfile(documentPath) {
                           <h3>Nº de Teléfono :</h3>
                           <p>{dato.phone}</p>
                         </div>
+
+                        <div className={styles.cardTextBox}>
+                          <h3>Dirección :</h3>
+                          <p>{dato.address}</p>
+                        </div>
                       </div>
                       <div className={styles.cardsUpdate}>
                         <Link
                             className={styles.cardsUpdateButton}
                             to="/user/update"
                         >
-                          Actualizar Cuenta
+                          Actualizar datos
                         </Link>
                       </div>
                     </div>
 
                     <div className={styles.cards}>
-                      <h1>Mis favs</h1>
+                      <h1>Favoritos</h1>
                       <div className={styles.cardsFavs}>
                         {favs?.map((fav) => {
                           return (
@@ -244,13 +251,13 @@ export default function UserProfile(documentPath) {
                                 <div key={fav.id} className={styles.cardFavJourneyAndPrice}>
                                   <div key={fav.id} className={styles.cardFavJourney}>
                                     {fav.transfersD ? (
-                                        <p key={fav.id}>Tipo: Ida y vuelta</p>
+                                        <p><span>Tipo:</span> Ida y vuelta</p>
                                     ) : (
-                                        <p key={fav.id}>Tipo: Solo Ida</p>
+                                        <p><span>Tipo:</span> Solo Ida</p>
                                     )}
                                   </div>
-                                  <div key={fav.id} className={styles.cardFavPrice}>
-                                    <p>Precio: U$D{fav.price}</p>
+                                  <div className={styles.cardFavPrice}>
+                                    <p><span>Precio:</span> U$D{fav.price}</p>
                                   </div>
                                 </div>
                                 <div key={fav.id} className={styles.cardFavButtons}>
@@ -272,7 +279,44 @@ export default function UserProfile(documentPath) {
                     </div>
 
                     <div className={styles.cards}>
-                      <h1>Mis tickets</h1>
+                      <h1>Compras</h1>
+                      <div className={styles.cardsFavs}>
+                      {tickets?.map((ticket) => {
+                        // console.log(tickets);
+                        return (
+                            <div className={styles.cardFav + " " + styles.ticketCard} key={ticket.id}>
+                              <h3>Ticket  comprado</h3>
+                              <div className={styles.cardFavCity}>
+                                <p>
+                                  {ticket.originCity} - {ticket.destinationCity}
+                                </p>
+                              </div>
+
+                              <div className={styles.cardFavJourneyAndPrice}>
+                                <div className={styles.cardFavJourney}>
+                                  {ticket.transfersD ? (
+                                      <p><span>Tipo:</span> Ida y vuelta</p>
+                                  ) : (
+                                      <p><span>Tipo:</span> Solo Ida</p>
+                                  )}
+                                </div>
+                                <div className={styles.cardFavPrice}>
+                                  <p><span>Precio:</span> U$D{ticket.price}</p>
+                                </div>
+                              </div>
+
+                              <div className={styles.cardFavJourneyAndPrice}>
+                                <div className={styles.cardFavJourney}>
+                                  <p><span>Estado del Pago:</span> {ticket.status}</p>
+                                </div>
+                                <div className={styles.cardFavPrice}>
+                                  <p><span>Detalles:</span> {ticket.status_detail}</p>
+                                </div>
+                              </div>
+                            </div>
+                        );
+                      })}
+                    </div>
                     </div>
                   </div>
                   <div key={fav.id} className={styles.buttons}>

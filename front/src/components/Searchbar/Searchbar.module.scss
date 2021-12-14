@@ -1,7 +1,7 @@
 @import "../../scss/variables";
 
 .searchBarContainer {
-  width: 100vw;
+  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +16,8 @@
   ); */
   background-color: $white;
   box-sizing: border-box;
-  border-radius: 3px;
+  border-radius: 1rem;
+  padding: 1rem;
 
   .titleBox {
     width: 100%;
@@ -25,6 +26,7 @@
     justify-content: center;
     align-items: center;
     margin: 2rem 0;
+
     // background-color: red;
     h3 {
       // padding-top        : 1rem;
@@ -53,6 +55,7 @@
       .originDestiny {
         width: 100%;
         align-items: center;
+
         // height: 30vh;
         .selects {
           width: 80%;
@@ -74,12 +77,14 @@
               text-shadow: 0px 0px 2px black;
               height: 50%;
             }
+
             input {
               padding-left: 0.4rem;
               height: 100%;
               color: black;
             }
           }
+
           .inputBox:hover {
             // background-color: rgba(255, 255, 255, 0.4);
 
@@ -96,8 +101,9 @@
             height: auto;
             // background-color: blue;
             z-index: 5000;
+
             ul {
-            outline: solid 1px $main-color;
+              outline: solid 1px $main-color;
               background-color: white;
               list-style: none;
               position: absolute;
@@ -118,13 +124,14 @@
                 transition: 0.1s;
                 width: 100%;
                 padding: 0.5rem 0.2rem;
-                text-align: start;
+                text-align: left;
 
                 background-color: white;
                 border: none;
               }
-              button:hover{
-color: white;
+
+              button:hover {
+                color: white;
                 background-color: $main-color
               }
             }
@@ -142,6 +149,7 @@ color: white;
           width: 80%;
           border-radius: 3px;
           border-bottom: solid 1px $main-color;
+
           .inputBox {
             height: 8vh;
             transition: 0.3s;
@@ -150,6 +158,7 @@ color: white;
               color: $main-color;
               height: 50%;
             }
+
             select {
               background-color: transparent;
               color: lightgray;
@@ -166,6 +175,7 @@ color: white;
               }
             }
           }
+
           .inputBox:hover {
             outline: 1px solid $main-color;
           }
@@ -175,7 +185,7 @@ color: white;
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: start;
+          justify-content: flex-start;
           // background-color: mediumslateblue;
           width: 100%;
           // height                   : 30vh;
@@ -201,6 +211,9 @@ color: white;
               margin-right: 2px;
               opacity: 0.6;
               filter: invert(0.2);
+              -ms-filter: invert(0.2);
+              -webkit-filter: invert(0.2);
+              -o-filter: invert(0.2);
             }
 
             input::-webkit-calendar-picker-indicator:hover {
@@ -210,6 +223,7 @@ color: white;
             .labelDisableD {
               opacity: 0.4;
             }
+
             .inputBoxDisabled {
               // height        : 7vh;
               border-radius: 5px;
@@ -400,6 +414,7 @@ color: white;
     width: 70%;
 
     .titleBox {
+
       // background-color: red;
       h3 {
         font-size: 2rem;
@@ -429,6 +444,7 @@ color: white;
             // width: 90%;
             // height: 5em;
             margin: 0 0.5rem;
+
             label {
               // font-size: 1rem;
             }
@@ -455,6 +471,7 @@ color: white;
           .selects {
             width: 60%;
             margin: 0 0.5rem;
+
             .inputBox {
               select {
                 height: 100%;
@@ -462,12 +479,15 @@ color: white;
               }
             }
           }
+
           .dataBox {
             width: 95%;
             flex-direction: row;
+
             .selectsData {
               width: 100%;
               margin: 0 0.5rem;
+
               input {
                 font-size: 1rem;
               }
@@ -476,6 +496,7 @@ color: white;
         }
       }
     }
+
     .botonBox {
       margin-top: 1.5rem;
     }
@@ -485,9 +506,11 @@ color: white;
       height: 100%;
 
       justify-content: space-between;
+
       .selectsData {
         // margin-right: 1rem;
         height: 100%;
+
         input {
           font-size: 1rem;
         }
@@ -516,6 +539,7 @@ color: white;
 
     .botonBox {
       width: 50%;
+
       // background: red;
       .boton {
         width: 40%;
@@ -538,6 +562,7 @@ color: white;
   justify-content: center;
   align-items: center;
   z-index: 3000;
+
   // background-color: rgba(43, 117, 43, 0.432);
   .errorr {
     transition: 0.4s;
@@ -554,6 +579,7 @@ color: white;
 
     .textBox {
       text-align: center;
+
       h2,
       p {
         font-size: 1.2rem;

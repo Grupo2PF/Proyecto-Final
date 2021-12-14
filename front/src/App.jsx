@@ -17,7 +17,6 @@ import TicketPage from "./pages/TicketPage/TicketPage";
 import OfferDetail from "./pages/OfferDetail/OfferDetail";
 // import Navbar from "./components/Navbar/Navbar";
 import PayPage from "./pages/PayPage/PayPage";
-import PruebaProps from "./pages/pruebaProps/pruebaProps";
 
 
 
@@ -27,7 +26,6 @@ function App() {
       
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/pruebaprops" component={PruebaProps} />
         <Route exact path="/popular-destination/:id" component={PopularDestination} />
         <Route exact path="/about-us" component={AboutUs}/>
         <Route exact path="/login" component={LoginPage} />

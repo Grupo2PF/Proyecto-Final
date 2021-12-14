@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+// import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FcGoogle } from "react-icons/fc";
@@ -9,7 +10,7 @@ import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   auth,
-  signInWithEmailAndPassword,
+  // signInWithEmailAndPassword,
   signInWithGoogle,
 } from "../../firebaseConfig";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
@@ -28,7 +29,8 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const history = useHistory();
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function LoginPage() {
       return;
     }
     if (user) history.replace("/");
-  }, [user, loading]);
+  }, [user, loading, history]);
 
   const resetForm = () => {
     setEmail("");
@@ -66,23 +68,21 @@ export default function LoginPage() {
               icon: "error",
               button: "Continue",
             });
-          }
-          else if (err.code === "auth/wrong-password") {
+          } else if (err.code === "auth/wrong-password") {
             swal({
               title: "Error!",
               text: "Contraseña Incorrecta!",
               icon: "error",
               button: "Continue",
             });
-          }
-          else if (err.code === "auth/invalid-email") {
+          } else if (err.code === "auth/invalid-email") {
             swal({
               title: "Error!",
               text: "El Email no es Valido!",
               icon: "error",
               button: "Continue",
             });
-          }else{
+          } else {
             console.log(err);
             swal("Error!", err.message, "error");
           }

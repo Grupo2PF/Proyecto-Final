@@ -4,7 +4,8 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
-import { getSeats, sendFavs } from "../../redux/actions/";
+// import { getSeats, sendFavs } from "../../redux/actions/";
+import { sendFavs } from "../../redux/actions/";
 import {Link, useHistory, useLocation} from "react-router-dom";
 import { auth } from "../../firebaseConfig";
 

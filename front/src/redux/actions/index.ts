@@ -1,5 +1,17 @@
 import axios from "axios";
-import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, SEND_FAVS, GET_FAVS, IS_AVAILABLE, RESET_FAVS_Y_AVAILABLES, GET_PAY } from "../actionTypes";
+import {
+  GET_FLIGHT,
+  GET_SEATS,
+  SET_LOADING,
+  GET_FLIGHT_URL,
+  RESET,
+  SEND_FAVS,
+  GET_FAVS,
+  GET_TICKETS,
+  IS_AVAILABLE,
+  RESET_FAVS_Y_AVAILABLES,
+  GET_PAY,
+} from "../actionTypes";
 
 type Swal = {
   title: string;
@@ -95,16 +107,15 @@ export function resetState() {
     });
   };
 }
-  export function getPay(payload: any) {
-    console.log(payload);
-    return async function (dispatch: any) {
-      return dispatch({
-        type: GET_PAY,
-        payload: payload
-      });
-    }
-  }
-
+export function getPay(payload: any) {
+  console.log(payload);
+  return async function(dispatch: any) {
+    return dispatch({
+      type: GET_PAY,
+      payload: payload,
+    });
+  };
+}
 
 export function resetUserProfile() {
   return async function(dispatch: any) {
@@ -154,7 +165,7 @@ export function isAvailable(payload: any) {
         return dispatch({
           type: IS_AVAILABLE,
           payload: "error",
-      });
+        });
       }
     } else {
       try {
@@ -168,12 +179,23 @@ export function isAvailable(payload: any) {
           payload: info.data,
         });
       } catch (err) {
-        
         return dispatch({
           type: IS_AVAILABLE,
           payload: "error",
-      });
+        });
       }
     }
+  };
+}
+export function getTickets(payload: any) {
+  return async function(dispatch: any) {
+    const tickets = await axios.get(
+      `http://localhost:3001/gettickets/${payload}`
+    );
+    console.log(tickets.data);
+    dispatch({
+      type: GET_TICKETS,
+      payload: tickets.data,
+    });
   };
 }
