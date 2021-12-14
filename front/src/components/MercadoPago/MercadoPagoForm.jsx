@@ -51,16 +51,6 @@ export default function MercadoPagoForm(props) {
     setState({ ...state, focus: e.target.dataset.name || e.target.name });
   };
 
-
-
-
-
-
-
-
-
-
-
   const [user, loading, error] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
   const [resultPayment, setResultPayment] = useState(undefined);
@@ -192,21 +182,6 @@ export default function MercadoPagoForm(props) {
       });
     }
   }, [MercadoPago]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   return (

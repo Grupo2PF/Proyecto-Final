@@ -68,7 +68,13 @@ export default function OfferCardI(props: any): JSX.Element {
       }).then(() => console.log("added"));
     }
     }else{
-      alert("Debes iniciar sesión para poder agregar a favoritos")
+      // @ts-ignore
+      swal({
+        title: "Debes iniciar sesión",
+        text: "Para poder agregar a favoritos debes estar registrado",
+        icon: "warning",
+        dangerMode: true,
+      }).then(() => history.push("/login"));
     }
   };
 
