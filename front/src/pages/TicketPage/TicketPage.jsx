@@ -3,7 +3,7 @@ import styles from "./TicketPage.module.scss";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import PassengerForm from "../../components/PassengerForm/PassengerForm";
 import { useEffect, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import Ticketinfo from "../../components/TicketInfo/Ticketinfo";
 import { validateForm } from "../../components/PassengerForm/validations";
 import swal from "sweetalert";

@@ -73,7 +73,8 @@ export default function UpdateUserProfile() {
     });
   };
 
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
   const [value, setValue] = useState({ uploadValue: 0, picture: null });
 

@@ -52,8 +52,11 @@
       gap: 2rem;
 
       img {
+        border: 1px solid $lightgray;
         width: 9rem;
         height: 9rem;
+        object-fit: cover;
+        object-position: center;
         border-radius: 50%;
       }
 
@@ -97,23 +100,26 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 0;
+  padding: 3rem 0;
   border-top: 1px solid $gray;
   min-height: 12rem;
 
   &:first-child {
-    width: 20rem;
+    width: 100%;
+    max-width: 20rem;
     padding: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid #eee;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 2px 0px 3px #ccc;
+    box-shadow: 5px 5px 10px rgb(148 148 148 / 50%);
     justify-content: center;
     margin-bottom: 4rem;
+  }
 
-
+  &:nth-child(even) {
+    margin: 2rem 0;
   }
 
 
@@ -141,7 +147,7 @@
       background-color: $main-color;
       border-radius: 3px;
       border: 1px solid $main-color;
-      font-size: 0.8rem;
+      font-size: .9rem;
       color: $white;
       text-decoration: none;
       padding: .6rem 1rem;
@@ -191,19 +197,20 @@
 
 .cardFav {
   border-radius: 0.8rem;
-  box-shadow: 5px 5px 10px rgba(148, 148, 148, 0.5);
+  box-shadow: 5px 5px 10px rgb(148 148 148 / 50%);
   font-size: 2.4rem;
-  padding: 0.4rem 2rem 2rem 2rem;
-  max-height: 10rem;
-  max-width: 100%;
+  padding: 2rem;
+  width: 100%;
+  max-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
 
   &City {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    position: relative;
-    bottom: 1.1rem;
-    right: 1.2rem;
+    margin-top: 1.5rem;
 
     p {
       font-weight: $bold-font;
@@ -212,62 +219,73 @@
 
   &Button {
     &X {
-      width: 100%;
-      display: flex;
-      position: relative;
-      left: 1.5rem;
-      justify-content: flex-end;
+      position: absolute;
+      right: 15px;
+      top: 15px;
     }
 
     &Delete {
       background-color: #d10b0b;
-      color: $white;
+      color: #ffffff;
+      cursor: pointer;
       border: none;
       display: flex;
       align-items: center;
-      border-radius: 50%;
-      padding: 0.1rem 0.3rem;
+      border-radius: 2px;
+      padding: 0.3rem 0.5rem;
+      transition: all .5s;
+
+      &:hover {
+        background-color: #a80d0d;
+      }
     }
   }
 
   &JourneyAndPrice {
     display: flex;
-    align-items: flex-start;
     flex-direction: column;
-    padding: 0 0 1rem 0;
-  }
-
-  &Journey {
-    display: flex;
-    justify-content: space-evenly;
     align-items: center;
-    margin-bottom: 0.4rem;
+    gap: .5rem;
+    text-align: center;
+
   }
 
-  &Price {
-    display: flex;
-    justify-content: center;
+  span {
+    font-weight: $bold-font;
   }
 
   &Buttons {
     display: flex;
-    justify-content: space-around;
-    grid-gap: 1rem;
+    gap: 1.5rem;
     width: 100%;
-    padding: 0 0 1rem 0;
+    flex-direction: column;
+    align-items: center;
+    margin: .5rem auto;
 
     button {
-      padding: 0.4rem;
-      font-size: 0.8rem;
-      width: 50%;
+      padding: 0.7rem 0;
+      font-size: .9rem;
+      font-family: $content-font;
+      width: 100%;
       background-color: $main-color;
       color: $white;
-      border-radius: 10px;
+      border-radius: 5px;
       border: 2px solid $main-color;
       cursor: pointer;
+      transition: all .5s;
+
+      &:first-child {
+        background-color: white;
+        color: #3884FE;
+        font-weight: 700;
+      }
 
       &:hover {
-        border: 2px solid $black;
+        transform: scale(1.02);
+      }
+
+      &:active {
+        transform: scale(1);
       }
     }
   }
@@ -277,13 +295,14 @@
 
 
 .buttons {
-  width: 100%;
-  height: 2rem;
+  width: 60%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin: 4rem auto;
+  margin: 1rem auto 4rem;
   gap: 2rem;
+  max-width: 40rem;
 
   &Delete {
     cursor: pointer;
@@ -291,7 +310,7 @@
     background-color: #d10b0b;
     border: none;
     transition: 0.3s;
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 1.5rem;
     border-radius: 5px;
 
     &:hover {
@@ -310,7 +329,7 @@
     background-color: $white;
     border: 1px solid $main-color;
     transition: 0.3s;
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 1.5rem;
     border-radius: 5px;
 
     &:hover {
@@ -335,5 +354,19 @@
       flex-wrap: wrap;
       gap: 3rem;
     }
+  }
+}
+
+
+.ticketCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+
+  h3 {
+    font-size: 1.1rem;
+    border-bottom: 2px solid $main-color;
   }
 }
