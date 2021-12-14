@@ -22,8 +22,8 @@ function Reset() {
   const history = useHistory();
   useEffect(() => {
     if (loading) return;
-    if (user) history.replace("/dashboard");
-  }, [user, loading, history]);
+    if (user) history.replace("/user/update");
+  }, [user, loading,history]);
 
   return (
     <section className={styles.resetPage}>

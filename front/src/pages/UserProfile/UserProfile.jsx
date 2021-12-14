@@ -10,7 +10,7 @@ import swal from "sweetalert";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 // import FavCard from "./favCard";
-import { getFavs, isAvailable, resetUserProfile } from "../../redux/actions";
+import {getFavs, getTickets, isAvailable, resetUserProfile} from "../../redux/actions";
 import Spinner from "../../components/Spinner/Spinner";
 
 export default function UserProfile(documentPath) {
@@ -19,6 +19,7 @@ export default function UserProfile(documentPath) {
   const [usuario, setUsuario] = useState([]);
   const dispatch = useDispatch();
   const favs = useSelector((state) => state.favs);
+  const tickets = useSelector((state) => state.tickets);
   const yetAvailable = useSelector((state) => state.availableFlight);
   const history = useHistory();
   const [fav, setFav] = useState({});
@@ -29,7 +30,8 @@ export default function UserProfile(documentPath) {
     if (!user) return history.replace("/");
     getUser();
     dispatch(getFavs(user.uid));
-  }, [loading, user, history, dispatch]);
+    dispatch(getTickets(user.uid));
+  }, [loading, user, dispatch , history]);
 
   useEffect(() => {
     if (yetAvailable.cabin) {
@@ -273,6 +275,40 @@ export default function UserProfile(documentPath) {
 
                     <div className={styles.cards}>
                       <h1>Mis tickets</h1>
+                      {tickets?.map((ticket) => {
+                        console.log(tickets);
+                        return (
+                            <div className={styles.cardFav} key={ticket.id}>
+                              <div className={styles.cardFavCity}>
+                                <p>
+                                  {ticket.originCity} - {ticket.destinationCity}
+                                </p>
+                              </div>
+
+                              <div className={styles.cardFavJourneyAndPrice}>
+                                <div className={styles.cardFavJourney}>
+                                  {ticket.transfersD ? (
+                                      <p>Tipo: Ida y vuelta</p>
+                                  ) : (
+                                      <p>Tipo: Solo Ida</p>
+                                  )}
+                                </div>
+                                <div className={styles.cardFavPrice}>
+                                  <p>Precio: U$D{ticket.price}</p>
+                                </div>
+                              </div>
+
+                              <div className={styles.cardFavJourneyAndPrice}>
+                                <div className={styles.cardFavJourney}>
+                                  <p>Estado del Pago: {ticket.status}</p>
+                                </div>
+                                <div className={styles.cardFavPrice}>
+                                  <p>Detalles: {ticket.status_detail}</p>
+                                </div>
+                              </div>
+                            </div>
+                        );
+                      })}
                     </div>
                   </div>
                   <div className={styles.buttons}>
