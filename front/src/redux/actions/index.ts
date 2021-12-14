@@ -1,5 +1,17 @@
 import axios from "axios";
-import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, SEND_FAVS, GET_FAVS, IS_AVAILABLE, RESET_FAVS_Y_AVAILABLES, GET_PAY } from "../actionTypes";
+import {
+  GET_FLIGHT,
+  GET_SEATS,
+  SET_LOADING,
+  GET_FLIGHT_URL,
+  RESET,
+  SEND_FAVS,
+  GET_FAVS,
+  IS_AVAILABLE,
+  RESET_FAVS_Y_AVAILABLES,
+  GET_PAY,
+  GET_TICKETS
+} from "../actionTypes";
 
 export function getFlight(payload: any) {
 
@@ -124,6 +136,17 @@ export function getFlightUrl(payload: any) {
         });
       }
     }
+
+  export function getTickets(payload: any) {
+    return async function (dispatch: any) {
+      const tickets = await axios.get(`http://localhost:3001/gettickets/${payload}`);
+      console.log(tickets.data)
+      dispatch({
+        type: GET_TICKETS,
+        payload: tickets.data,
+      });
+    }
+  }
 
     export function isAvailable(payload: any) {
       return async function (dispatch: any) {
