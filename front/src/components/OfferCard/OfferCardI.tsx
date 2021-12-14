@@ -55,20 +55,26 @@ export default function OfferCardI(props: any): JSX.Element {
       ...dataFromQuery,
       userId: auth.currentUser.uid,
       ...props
-      // id: props.offers,
-      // mode: props.mode,
-      // origin: props.originCity,
-      // destination: props.destinationCity,
-      // originAirport: props.originAirport,
-      // destinationAirport: props.destinationAirport,
-      // transfers: props.transfers.length -1,
-      // price: `${props.currency} ${props.price}`,
     }
     console.log("info")
     console.log(info)
-    dispatch(sendFavs(info));
+
+    if (dispatch(sendFavs(info))) {
+      // @ts-ignore
+      swal({
+        title: "Se ha agregado a favoritos",
+        text: "El vuelo se ha agregado a tus favoritos",
+        icon: "success",
+      }).then(() => console.log("added"));
+    }
     }else{
-      alert("Debes iniciar sesión para poder agregar a favoritos")
+      // @ts-ignore
+      swal({
+        title: "Debes iniciar sesión",
+        text: "Para poder agregar a favoritos debes estar registrado",
+        icon: "warning",
+        dangerMode: true,
+      }).then(() => history.push("/login"));
     }
   };
 
