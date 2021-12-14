@@ -9,11 +9,13 @@ import {useAuthState} from "react-firebase-hooks/auth";
 const VITE_PUBLIC_KEY_MP = "TEST-0f046780-e30e-443a-b0c8-cc6d4fd9be99";
 const VITE_URL_PAYMENT_MP = "http://localhost:3001/mercadoPagob";
 
-export default function useMercadoPago() {
+export default function useMercadoPago(props) {
+
     const [user, loading, error] = useAuthState(auth);
     const [usuario, setUsuario] = useState([]);
     const [resultPayment, setResultPayment] = useState(undefined);
     const history = useHistory();
+
     const { MercadoPago } = useScript(
         "https://sdk.mercadopago.com/js/v2",
         "MercadoPago"

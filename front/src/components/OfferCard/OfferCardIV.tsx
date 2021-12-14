@@ -63,7 +63,14 @@ export default function OfferCardIV(props: any): JSX.Element {
      ...props
     }
     console.log(info);
-    dispatch(sendFavs(info));
+      if (dispatch(sendFavs(info))) {
+        // @ts-ignore
+        swal({
+          title: "Se ha agregado a favoritos",
+          text: "El vuelo se ha agregado a tus favoritos",
+          icon: "success",
+        }).then(() => console.log("added"));
+      }
   }else{
     alert("Debes iniciar sesión para poder agregar a favoritos")
   }

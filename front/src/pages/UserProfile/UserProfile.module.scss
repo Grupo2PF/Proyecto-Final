@@ -95,9 +95,9 @@
   border-top: 1px solid $gray;
   min-height: 12rem;
   h1{
-      margin: 0 0 2rem 0;
-      font-weight: $bold-font;
-      font-size: 1.5rem;
+    margin: 0 0 2rem 0;
+    font-weight: $bold-font;
+    font-size: 1.5rem;
   }
   &Container {
     display: flex;
@@ -256,15 +256,15 @@
     &hover {
       cursor: pointer;
       text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
-    }  
+    }
   }
 }
 
 @media screen and (min-width: $tablet-width) {
   .userContainer{
-      width: 70%;
+    width: 70%;
   }
-    .cards {
+  .cards {
     &Favs {
       flex-direction: row;
       flex-wrap: wrap;
