@@ -8,7 +8,7 @@ router.get('/gettickets/:userId', async(req, res, next)=>{
     try{
         const { userId } = req.params;
 
-        const data = await db.collection('saves').get();
+        const data = await db.collection('saved_tickets').get();
         const saves = [];
 
         data.forEach(doc => {
