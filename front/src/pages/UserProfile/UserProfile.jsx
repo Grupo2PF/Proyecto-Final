@@ -239,7 +239,6 @@ export default function UserProfile(documentPath) {
                                       key={fav.iddelDoc}
                                       className={styles.cardFavButtonDelete}
                                       value={fav.iddelDoc}
-                                      key={fav.iddelDoc}
                                       onClick={borrarFav}
                                   >
                                     X
@@ -269,7 +268,6 @@ export default function UserProfile(documentPath) {
                                     ¿Sigue disponible?
                                   </button>
                                   <button
-                                      key={fav.offers}
                                       value={fav.offers}
                                       key={fav.offers}
                                       onClick={buscarParecidos}
