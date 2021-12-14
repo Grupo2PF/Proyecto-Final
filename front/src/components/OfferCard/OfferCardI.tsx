@@ -5,17 +5,14 @@ import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
 import { getSeats, sendFavs } from "../../redux/actions/";
-import { Link, useLocation } from "react-router-dom";
+import {Link, useHistory, useLocation} from "react-router-dom";
 import { auth } from "../../firebaseConfig";
 
 export default function OfferCardI(props: any): JSX.Element {
   const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
 
-  // const handleBuy = (e: any) => {
-  //   const id = props.offers;
-  //   dispatch(getSeats(id));
-  // };
 
   const dataFromQuery: any = {};
 
@@ -74,6 +71,28 @@ export default function OfferCardI(props: any): JSX.Element {
       alert("Debes iniciar sesión para poder agregar a favoritos")
     }
   };
+
+  /*Funcion para validar login al comprar*/
+  const handleBuy = (e: any) => {
+    e.preventDefault();
+    if (auth.currentUser) {
+      history.push({
+        pathname: `/ticket/${props.offers}`,
+        state: {
+          ...offerProps,
+          ...dataFromQuery
+      }
+    });
+     } else {
+      // @ts-ignore
+      swal({
+        title: "Debes iniciar sesión para comprar",
+        icon: "warning",
+        dangerMode: true,
+      }).then(() => history.push("/login"));
+    }
+  };
+
   return (
     <section className={styles.offers}>
       <div className={styles.offersCard}>
@@ -123,19 +142,12 @@ export default function OfferCardI(props: any): JSX.Element {
               Ver detalles
             </Link>
             <button onClick={handleFavs}>Añadir a favs</button>
-            <Link
-              to={{
-                pathname: `/ticket/${props.offers}`,
-                state: {
-                  ...offerProps,
-                  ...dataFromQuery,
-                },
-              }}
+            <button
               className={styles.offersCardButtonsPrice}
-              // onClick={handleBuy}
+              onClick={handleBuy}
             >
               {`${props.currency} ${props.price}`}
-            </Link>
+            </button>
           </div>
         </div>
       </div>
