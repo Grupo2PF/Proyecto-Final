@@ -10,7 +10,6 @@ import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import swal from "sweetalert";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
-// import FavCard from "./favCard";
 import {getFavs, getTickets, isAvailable, resetUserProfile} from "../../redux/actions";
 import Spinner from "../../components/Spinner/Spinner";
 
@@ -331,6 +330,6 @@ export default function UserProfile(documentPath) {
   };
   return <div>
     {cargando && <Spinner />}
-    {usuario[0]?.photoURL? render():   <LoadingScreen />}
+    {usuario[0]?.name? render():   <LoadingScreen />}
   </div>
 }
