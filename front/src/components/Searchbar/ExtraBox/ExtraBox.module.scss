@@ -2,8 +2,8 @@
 
 .extraBoxx {
   // height: 40vh;
-  // width              : 100%;
-  margin: 2rem 0;
+  width: 100%;
+  margin: 0.5rem 0;
   // position           : absolute;
   // left               : 0;
   // top                : 20vh;
@@ -26,9 +26,9 @@
       margin: 0.3rem 0;
     }
     .inputBox {
-      border-bottom: 1px solid white;
+      border-bottom: 1px solid $main-color;
       border-radius: 5px;
-      // height: 20%;
+      height: 8vh;
       display: flex;
       flex-direction: row;
       // flex-wrap: nowrap;
@@ -40,16 +40,17 @@
         // background-color: blue;
         height: 100%;
         // width: 20%;
-        color: white;
+        color: $main-color;
         text-align: center;
         font-size: 1.8rem;
+        margin-left: 6px;
       }
 
       select {
-        color:lightgray;
-
+        color: darkgray;
+        height: 100%;
         background-color: transparent;
-        font-size: 1rem;
+        font-size: 1.5rem;
 
         option {
           color: $gray;
@@ -58,11 +59,7 @@
     }
 
     .inputBox:hover {
-      background-color: rgba(255, 255, 255, 0.4);
-      .icon {
-        color: $main-color;
-        filter: drop-shadow(0px 0px 4px white);
-      }
+      outline: 1px solid $main-color;
     }
   }
 
@@ -70,27 +67,27 @@
     // background-color: blue;
     padding: 5px;
     width: 80%;
-    height: 40vh;
+    // height: 40vh;
     display: flex;
     justify-content: space-evenly;
     // flex-direction  : column;
     // border: 1px solid #505050;
     border-radius: 5px;
     margin: 0.5rem 0;
-    color: white;
+    color: $main-color;
     transition: 0.3s;
 
     .counterBoxx {
       // background-color: red;
-      height: 8vh;
+      // height: 8vh;
 
-      justify-content: space-between;
+      // justify-content: space-between;
       width: 100%;
 
       label {
-        text-shadow: 1px 1px 1px black;
-        color: $white;
-        height: 30%;
+        // text-shadow: 1px 1px 1px black;
+        // color: $white;
+        // height: 30%;
         align-items: center;
         font-size: 1rem;
       }
@@ -98,22 +95,24 @@
       .counter {
         display: flex;
         flex-direction: row;
-        align-items: end;
+        align-items: center;
         justify-content: space-between;
         // background-color: green;
-        border-bottom: 1px solid white;
-        height: 60%;
+        border-bottom: 1px solid $main-color;
+        height: 8vh;
+        margin-bottom: 0.5rem;
 
         border-radius: 5px;
-        color: white;
+        // color: $main-color;
         h2 {
           font-size: 1.4rem;
-          text-shadow: 0px 0px 10px  white, 0px 0px 5px  white, 0px 0px 5px  white, 0px 0px 10px  white;
+          text-shadow: 0px 0px 10px white, 0px 0px 5px white, 0px 0px 5px white,
+            0px 0px 10px white;
           // height: 20%;
-          color: $main-color
+          color: $main-color;
         }
         button {
-          color: $white;
+          color: $main-color;
           height: 100%;
           width: 30%;
           border: none;
@@ -123,9 +122,12 @@
         }
 
         button:hover {
-          background-color: $white;
-          color: $main-color;
+          background-color: $main-color;
+          color: $white;
         }
+      }
+      .counter:hover {
+        border: solid 1px $main-color;
       }
     }
   }
@@ -135,24 +137,27 @@
   //1024
 
   .extraBoxx {
-    height: 60%;
-    width: 25%;
-    margin: none;
+    // height: 60%;
+    width: 20%;
+    margin: 0;
     display: flex;
     flex-direction: column;
+    // background-color: red;
 
     .box {
       // background-color: red;
       border: none;
       // background-color   : white;
-      width: 80%;
+      width: 100%;
       // height          : 100%;
       justify-content: center;
+      margin: 0;
 
       .inputBox {
         display: flex;
 
         select {
+          font-size: 1rem;
         }
       }
     }
@@ -165,7 +170,7 @@
 
       .counterBoxx {
         // background: cyan;
-        margin: 1px 0;
+        // margin: 1px 0;
 
         label {
           // background: red;
@@ -174,8 +179,8 @@
 
         .counter {
           // background: darkgreen;
-          button {
-          }
+          height: 5vh;
+         
         }
       }
     }

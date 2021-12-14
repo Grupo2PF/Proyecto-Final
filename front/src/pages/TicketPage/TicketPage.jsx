@@ -79,7 +79,10 @@ export default function TicketPage() {
         icon: "success",
         button: "Aceptar",
       }).then(() => {
-        history.push("/");
+        history.push({
+          pathname: `/pay`,
+          state: { ...offerProps },
+        });
       });
     } else {
       swal({

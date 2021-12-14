@@ -69,7 +69,7 @@ export default function SearchBar() {
         d.city.toLowerCase().includes(value.originCity.toLowerCase()) ||
         d.airport.toLowerCase().includes(value.originCity.toLowerCase())
     );
-    const airports: any = cities.map((d: any) => d.airport);
+    const airports: any = cities.map((d: any) => d);
     setFilterOptional(airports.slice(0, 5));
   }
   function filterCompletedBack() {
@@ -78,7 +78,7 @@ export default function SearchBar() {
         d.city.toLowerCase().includes(value.destinyCity.toLowerCase()) ||
         d.airport.toLowerCase().includes(value.destinyCity.toLowerCase())
     );
-    const airportsB: any = citiesB.map((d: any) => d.airport);
+    const airportsB: any = citiesB.map((d: any) => d);
     setFilterOptionalBack(airportsB.slice(0, 5));
   }
 
@@ -141,6 +141,8 @@ export default function SearchBar() {
   ///////// Click enviar formulario /////////
   function handleClick(e: any) {
     e.preventDefault();
+
+
     const cities: any = json.filter((d) =>
       d.airport.toLowerCase().includes(value.originCity.toLowerCase())
     );
@@ -148,7 +150,10 @@ export default function SearchBar() {
       d.airport.toLowerCase().includes(value.destinyCity.toLowerCase())
     );
 
-    if (cities.length !== 0 && citiesBack.length !== 0) {
+
+
+
+    if (cities.length === 1 && citiesBack.length === 1) {
       // const origin: any = json.filter(data => data.airport === value.originCity)
       // const back: any = json.filter(data => data.airport === value.destinyCity)
 
@@ -164,6 +169,7 @@ export default function SearchBar() {
         adult: value.adult,
       };
 
+      console.log('cities');
       console.log(cities);
 
       if (value.journeyType === false) {
@@ -209,12 +215,15 @@ export default function SearchBar() {
     }
 
     function sendpack() {
-      if(value.journeyType){history.push(
-        `/offers?origin=${cities[0].iata}&destination=${citiesBack[0].iata}&dDate=${value.departureDate}&rDate=${value.returnDate}&adults=${value.adult}&childs=${value.kid}&baby=${value.baby}&cabin=${value.class}`
-      );}else{
-      history.push(
-        `/offers?origin=${cities[0].iata}&destination=${citiesBack[0].iata}&dDate=${value.departureDate}&adults=${value.adult}&childs=${value.kid}&baby=${value.baby}&cabin=${value.class}`
-      );}
+      if (value.journeyType) {
+        history.push(
+          `/offers?origin=${cities[0].iata}&destination=${citiesBack[0].iata}&dDate=${value.departureDate}&rDate=${value.returnDate}&adults=${value.adult}&childs=${value.kid}&baby=${value.baby}&cabin=${value.class}`
+        );
+      } else {
+        history.push(
+          `/offers?origin=${cities[0].iata}&destination=${citiesBack[0].iata}&dDate=${value.departureDate}&adults=${value.adult}&childs=${value.kid}&baby=${value.baby}&cabin=${value.class}`
+        );
+      }
     }
   }
   ////////////////////////////////////////////
@@ -292,15 +301,16 @@ export default function SearchBar() {
               {autocompleteVal.originCity ? (
                 <div className={styles.ulBox}>
                   <ul role="listbox">
-                    {value.originCity.length > 0
+                    {value.originCity.length > 0 &&
+                    value.destinyCity.length < 20
                       ? filterOptional.map((d: any) => (
                           <li>
                             {" "}
                             <button
-                              name={d}
+                              name={`${d.airport}`}
                               onClick={(e) => handleSelectCountry(e)}
                             >
-                              {d}
+                              {`${d.airport}, ${d.city}`}
                             </button>
                           </li>
                         ))
@@ -340,15 +350,16 @@ export default function SearchBar() {
               {autocompleteVal.destinyCity ? (
                 <div className={styles.ulBox}>
                   <ul role="listbox">
-                    {value.destinyCity.length > 0
+                    {value.destinyCity.length > 0 &&
+                    value.destinyCity.length < 20
                       ? filterOptionalBack.map((d: any) => (
                           <li>
                             {" "}
                             <button
-                              name={d}
+                              name={`${d.airport}`}
                               onClick={(e) => handleSelectCountryBack(e)}
                             >
-                              {d}
+                              {`${d.airport}, ${d.city}`}
                             </button>
                           </li>
                         ))
@@ -414,13 +425,12 @@ export default function SearchBar() {
               </div>
             </div>
           </div>
-
-          <ExtraBox
-            handleChange={handleChange}
-            setValue={setValue}
-            value={value}
-          />
         </div>
+        <ExtraBox
+          handleChange={handleChange}
+          setValue={setValue}
+          value={value}
+        />
       </form>
       <div className={styles.botonBox}>
         <button className={styles.boton} onClick={handleClick}>
@@ -440,9 +450,10 @@ const Errorr: FC<Props> = ({ error, setError, msjErrorTitle, msjErrorP }) => {
           className={styles.exclamation}
           icon={faExclamationTriangle}
         />
-
-        <h2>{msjErrorTitle}</h2>
-        <p>{msjErrorP}</p>
+        <div className={styles.textBox}>
+          <h2>{msjErrorTitle}</h2>
+          <p>{msjErrorP}</p>
+        </div>
         <button onClick={() => setError(false)}>Aceptar</button>
       </div>
     </div>

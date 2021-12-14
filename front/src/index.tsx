@@ -6,6 +6,7 @@ import  store  from "./redux/store/index";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route } from "react-router-dom";
 
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

@@ -32,8 +32,12 @@ export default function UserProfile(documentPath) {
   }, [loading, user]);
 
   useEffect(() => {
+<<<<<<< HEAD
 
     if (yetAvailable.cabin) { 
+=======
+    if (yetAvailable.cabin) {
+>>>>>>> origin/Fer
       setCargando(false);
       swal({
         title: "El vuelo esta disponible!",
@@ -42,6 +46,7 @@ export default function UserProfile(documentPath) {
         buttons: true,
         dangerMode: true,
       })
+<<<<<<< HEAD
       .then((willDelete) => {
         if (willDelete) {
           dispatch(resetUserProfile());
@@ -51,6 +56,17 @@ export default function UserProfile(documentPath) {
         });
         }
       })
+=======
+          .then((willDelete) => {
+            if (willDelete) {
+              dispatch(resetUserProfile());
+              history.push({
+                pathname: `/offer-detail/${yetAvailable.offers}`,
+                state: { ...fav[0] },
+              });
+            }
+          })
+>>>>>>> origin/Fer
     }else if(yetAvailable === "error"){
       swal({
         title: "El vuelo ya no esta disponible!",
@@ -58,23 +74,27 @@ export default function UserProfile(documentPath) {
         icon: "error",
         button: "Volver",
       })
+<<<<<<< HEAD
       .then((value) => {
       setCargando(false);
       dispatch(resetUserProfile());
       dispatch(getFavs(user.uid));
       });
+=======
+          .then((value) => {
+            setCargando(false);
+            dispatch(resetUserProfile());
+            dispatch(getFavs(user.uid));
+          });
+>>>>>>> origin/Fer
     }
   }, [yetAvailable]);
-
-
 
   useEffect(() => {
     return () => {
       dispatch(resetUserProfile());
     };
   }, []);
-
-
 
   const getUser = () => {
     db.collection("users").onSnapshot((querySnapshot) => {
@@ -99,16 +119,16 @@ export default function UserProfile(documentPath) {
       if (isConfirm) {
         swal("Exito!", "La cuenta ah sido borrada!", "success");
         db.collection("users")
-          .doc(usuario[0].id)
-          .delete()
-          .then((r) =>
-            firebase
-              .auth()
-              .currentUser.delete()
-              .catch(function(error) {
-                swal("Error!", "No se pudo borrar la cuenta!", "error");
-              })
-          );
+            .doc(usuario[0].id)
+            .delete()
+            .then((r) =>
+                firebase
+                    .auth()
+                    .currentUser.delete()
+                    .catch(function(error) {
+                      swal("Error!", "No se pudo borrar la cuenta!", "error");
+                    })
+            );
       } else {
         swal("Cancelado", "Su Cuenta no fue borrada", "error");
       }
@@ -120,7 +140,7 @@ export default function UserProfile(documentPath) {
     setCargando(true);
     const filter = favs.filter((fav) => fav.offers === e.target.value)
     setFav(filter);
-     dispatch(isAvailable(filter))
+    dispatch(isAvailable(filter))
   };
 
   const borrarFav = (e) => {
@@ -135,102 +155,76 @@ export default function UserProfile(documentPath) {
       if (isConfirm) {
         // swal("Eliminado!", "El vuelo ha sido eliminado", "success");
         db.collection("saves")
-          .doc(e.target.value)
-          .delete()
-          .then(() => {
-            swal(
-              "Exito!",
-              "el favorito ha sido borrado exitosamente",
-              "success"
-            );
-           dispatch(getFavs(user.uid));
-          })
-          .catch((error) => {
-            swal("Error!", "No se pudo borrar la cuenta!", "error");
-          });
+            .doc(e.target.value)
+            .delete()
+            .then(() => {
+              swal(
+                  "Exito!",
+                  "el favorito ha sido borrado exitosamente",
+                  "success"
+              );
+              dispatch(getFavs(user.uid));
+            })
+            .catch((error) => {
+              swal("Error!", "No se pudo borrar la cuenta!", "error");
+            });
       } else {
         swal("Cancelado", "El favorito no ha sido eliminado", "error");
       }
     });
   };
 
-  const buscarParecidos= (e) => {
+  const buscarParecidos = (e) => {
     e.preventDefault();
-    const filter = favs.filter((fav) => fav.offers === e.target.value)
-    history.push(`/offers?origin=${filter[0].origin}&destination=${filter[0].destination}&dDate=${filter[0].dDate}&adults=${filter[0].adults}&childs=${filter[0].childs}&baby=${filter[0].baby}&cabin=${filter[0].cabin}`)
-  }
+    const filter = favs.filter((fav) => fav.offers === e.target.value);
+    history.push(
+        `/offers?origin=${filter[0].origin}&destination=${filter[0].destination}&dDate=${filter[0].dDate}&adults=${filter[0].adults}&childs=${filter[0].childs}&baby=${filter[0].baby}&cabin=${filter[0].cabin}`
+    );
+  };
 
-  const render = () => { 
+  const render = () => {
     return (
-      <div className={styles.pageContainer}>
-      <GoHomeButton />
-      {usuario.map((dato) => {
-        return (
-          <div className={styles.userProfileContainer} key={dato.id}>
-            {/* Contenedor de imagen y nombre */}
+        <div className={styles.user}>
+          <GoHomeButton />
+          {usuario.map((dato) => {
+            return (
+                <div className={styles.userContainer} key={dato.id}>
+                  {/* Contenedor de imagen y nombre */}
+                  <div className={styles.userSectionImgAndName}>
+                    {/* Imagen */}
+                    <div className={styles.userSectionImg} title="FotoPerfil">
+                      {dato.photoURL ? (
+                          <img
+                              id="imgUserProfile"
+                              src={dato.photoURL}
+                              alt="Sin Imagen"
+                          />
+                      ) : (
+                          <img
+                              id="imgUserProfile"
+                              src={noImgProfile}
+                              alt="Sin Imagen"
+                          />
+                      )}
+                    </div>
 
-            <div className={styles.imgAndNameContainer}>
-              <div className={styles.ProfileImg} title="FotoPerfil">
-                {dato.photoURL ? (
-                  <img
-                    id="imgUserProfile"
-                    src={dato.photoURL}
-                    alt="Sin Imagen"
-                  />
-                ) : (
-                  <img
-                    className={styles.imgAndNameContainer}
-                    id="imgUserProfile"
-                    src={noImgProfile}
-                    alt="Sin Imagen"
-                  />
-                )}
-              </div>
-
-              <div className={styles.h1LogoutBox}>
-                <div className={styles.LogoutBox}>
-                  <button className={styles.btnLogout} onClick={logout}>
-                    <BiLogOut className={styles.icon} />
-                    <p>Cerrar sesión</p>
-                  </button>
-                </div>
-                <h1>
-                  {dato.name} {dato.lastName}
-                </h1>
-              </div>
-            </div>
-            {/* Contendor de tarjetas de opciones */}
-            <div className={styles.cardOptionsContainer}>
-              <div className={styles.card}>
-                <h1> Mis datos</h1>
-                <div className={styles.cardOptions}>
-                  <div className={styles.textBox}>
-                    <h3>Dni :</h3>
-                    <p> {dato.dni}</p>
+                    {/* Nombre */}
+                    <h1>
+                      {dato.name} {dato.lastName}
+                    </h1>
                   </div>
 
-                  <div className={styles.textBox}>
-                    <h3>Fecha de nacimiento :</h3>
-                    <p>{dato.bDate}</p>
-                  </div>
+                  {/* Contendor de tarjetas de opciones */}
+                  <div className={styles.cardsContainer}>
+                    <div className={styles.cards}>
+                      <h1> Mis datos</h1>
+                      <div className={styles.card}>
+                        <div className={styles.cardTextBox}>
+                          <h3>Dni: </h3>
+                          <p> {dato.dni}</p>
+                        </div>
 
-                  <div className={styles.textBox}>
-                    <h3>Mail :</h3>
-                    <p>{dato.email}</p>
-                  </div>
-
-                  <div className={styles.textBox}>
-                    <h3>Nº de Teléfono :</h3>
-                    <p>{dato.phone}</p>
-                  </div>
-                </div>
-                <div className={styles.btnUpdateBox}>
-                  <Link className={styles.btnLink} to="/user/update">
-                    Actualizar Cuenta
-                  </Link>
-                </div>
-              </div>
-
+<<<<<<< HEAD
               <div className={styles.card}>
                 <h1>Mis favs</h1>
                 <div
@@ -252,19 +246,52 @@ export default function UserProfile(documentPath) {
                             ¿Sigue disponible?
                           </button>
                           <button value= {fav.offers} onClick={buscarParecidos}>Buscar similares</button>
+=======
+                        <div className={styles.cardTextBox}>
+                          <h3>Mail :</h3>
+                          <p>{dato.email}</p>
+>>>>>>> origin/Fer
                         </div>
+
+                        <div className={styles.cardTextBox}>
+                          <h3>Nº de Teléfono :</h3>
+                          <p>{dato.phone}</p>
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
+                      </div>
+                      <div className={styles.cardsUpdate}>
+                        <Link
+                            className={styles.cardsUpdateButton}
+                            to="/user/update"
+                        >
+                          Actualizar Cuenta
+                        </Link>
+                      </div>
+                    </div>
 
-            <div className={styles.card}>
-              <h1>Mis tickets</h1>
-            </div>
+                    <div className={styles.cards}>
+                      <h1>Mis favs</h1>
+                      <div className={styles.cardsFavs}>
+                        {favs?.map((fav) => {
+                          console.log(favs);
+                          return (
+                              <div className={styles.cardFav} key={fav.id}>
+                                <div className={styles.cardFavButtonX}>
+                                  <button
+                                      className={styles.cardFavButtonDelete}
+                                      value={fav.iddelDoc}
+                                      onClick={borrarFav}
+                                  >
+                                    X
+                                  </button>
+                                </div>
 
+                                <div className={styles.cardFavCity}>
+                                  <p>
+                                    {fav.originCity} - {fav.destinationCity}
+                                  </p>
+                                </div>
+
+<<<<<<< HEAD
             <div className={styles.button}>
               <div className={styles.btn}>
                 <button type="submit" onClick={(e) => userDelete(e)}>
@@ -285,3 +312,61 @@ export default function UserProfile(documentPath) {
     </div>
   );
 }
+=======
+                                <div className={styles.cardFavJourneyAndPrice}>
+                                  <div className={styles.cardFavJourney}>
+                                    {fav.transfersD ? (
+                                        <p>Tipo: Ida y vuelta</p>
+                                    ) : (
+                                        <p>Tipo: Solo Ida</p>
+                                    )}
+                                  </div>
+                                  <div className={styles.cardFavPrice}>
+                                    <p>Precio: U$D{fav.price}</p>
+                                  </div>
+                                </div>
+                                <div className={styles.cardFavButtons}>
+                                  <button value={fav.offers} onClick={available}>
+                                    ¿Sigue disponible?
+                                  </button>
+                                  <button
+                                      value={fav.offers}
+                                      onClick={buscarParecidos}
+                                  >
+                                    Buscar similares
+                                  </button>
+                                </div>
+                              </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className={styles.cards}>
+                      <h1>Mis tickets</h1>
+                    </div>
+                  </div>
+                  <div className={styles.buttons}>
+                    <button
+                        className={styles.buttonsDelete}
+                        type="submit"
+                        onClick={(e) => userDelete(e)}
+                    >
+                      Eliminar cuenta
+                    </button>
+                    <button className={styles.buttonsLogOut} onClick={logout}>
+                      Cerrar sesión
+                    </button>
+                  </div>
+                </div>
+            );
+          })}
+        </div>
+    );
+  };
+  return <div>
+    {cargando && <Spinner />}
+    {usuario[0]?.photoURL? render():   <LoadingScreen />}
+  </div>
+}
+>>>>>>> origin/Fer

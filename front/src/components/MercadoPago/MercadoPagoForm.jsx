@@ -1,25 +1,19 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Card from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
-import useMercadoPago from "./useMercadoPago";
 import styles from "./MercadoPagoForm.module.scss";
 import { IoIosContact } from "react-icons/io";
 import { MdOutlinePassword, MdPayments } from "react-icons/md";
 import { FiAtSign } from "react-icons/fi";
 import { HiOutlineIdentification, HiOutlineDocumentText } from "react-icons/hi";
-import { BsCalendar3, BsCalendarDate, BsCreditCard } from "react-icons/bs";
+import {BsCalendar3, BsCalendarDate, BsCreditCard} from "react-icons/bs";
 import { AiOutlineBank } from "react-icons/ai";
-import {
-  cardExpirationMonthValidation,
-  cardExpirationYearValidation,
-  cardholderEmailValidation,
-  cardholderNameValidation,
-  cardNumberValidation,
-  cvcValidation,
-  identificationNumberValidation,
-  validateFormPayment,
-} from "./Validations";
-import GoHomeButton from "../GoHomeButton/GoHomeButton";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {auth, db} from "../../firebaseConfig";
+import {useHistory} from "react-router-dom";
+import useScript from "../../hooks/useScript";
+import {formConfig} from "./formConfig";
+import swal from "sweetalert";
 
 const INITIAL_STATE = {
   cvc: "",
@@ -29,23 +23,15 @@ const INITIAL_STATE = {
   cardholderName: "",
   cardNumber: "",
   issuer: "",
-  cardholderEmail: "",
-  identificationNumber: "",
 };
 
-export default function MercadoPagoForm() {
-  const [state, setState] = useState(INITIAL_STATE);
-  const resultPayment = useMercadoPago();
+const VITE_PUBLIC_KEY_MP = "TEST-0f046780-e30e-443a-b0c8-cc6d4fd9be99";
+const VITE_URL_PAYMENT_MP = "http://localhost:3001/mercadoPagob";
 
-  const [inputError, setInputError] = useState({
-    cvc: [false, ""],
-    cardExpirationMonth: [false, ""],
-    cardExpirationYear: [false, ""],
-    cardholderName: [false, ""],
-    cardNumber: [false, ""],
-    cardholderEmail: [false, ""],
-    identificationNumber: [false, ""],
-  });
+export default function MercadoPagoForm(props) {
+
+  const [state, setState] = useState(INITIAL_STATE);
+  /*const resultPayment = useMercadoPago();*/
 
   const handleInputChange = (e) => {
     setState({
@@ -54,299 +40,308 @@ export default function MercadoPagoForm() {
     });
   };
 
+  // En props esta toda la información necesaria
+  // puedes acceder a las props del vuelo mediante props.offer
+  // puedes acceder a las props de los pasajeros mediante props.passengers
+  console.log("Data completa: ", props);
+  console.log("Data del vuelo: ", props.offer.price);
+  console.log("Data de los pasajeros: ", props.passengers);
+
   const handleInputFocus = (e) => {
     setState({ ...state, focus: e.target.dataset.name || e.target.name });
   };
 
-  const resetForm = () => {
-    setState({
-      cvc: "",
-      cardExpirationMonth: "",
-      cardExpirationYear: "",
-      focus: "cardNumber",
-      cardholderName: "",
-      cardNumber: "",
-      issuer: "",
-      cardholderEmail: "",
-      identificationNumber: "",
-    });
-    setInputError({
-      cvc: [false, ""],
-      cardExpirationMonth: [false, ""],
-      cardExpirationYear: [false, ""],
-      cardholderName: [false, ""],
-      cardNumber: [false, ""],
-      cardholderEmail: [false, ""],
-      identificationNumber: [false, ""],
+  const [user, loading, error] = useAuthState(auth);
+  const [usuario, setUsuario] = useState([]);
+  const [resultPayment, setResultPayment] = useState(undefined);
+  const history = useHistory();
+
+  const { MercadoPago } = useScript(
+      "https://sdk.mercadopago.com/js/v2",
+      "MercadoPago"
+  );
+
+  const savedTicket = async (resultPayment) => {
+    try {
+      await db.collection("saved_tickets").add({
+        ...resultPayment,
+        date: new Date(),
+        user: user.email,
+        userId: user.uid,
+        ...props.offer,
+      }).then(() => {
+        console.log("Ticket guardado");
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const getUser = () => {
+    db.collection("users").onSnapshot((querySnapshot) => {
+      const docs = [];
+      querySnapshot.forEach((doc) => {
+        docs.push({ ...doc.data(), id: doc.id });
+      });
+      const filtrado = docs.filter((doc) => doc.uid === user.uid);
+      setUsuario(filtrado);
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateFormPayment(state, inputError, setInputError)) {
-      resetForm();
-      document.form1.reset();
+  useEffect(() => {
+    if (MercadoPago) {
+      const mp = new MercadoPago(VITE_PUBLIC_KEY_MP);
+      const cardForm = mp.cardForm({
+        amount: props.offer.price,
+        autoMount: true,
+        form: formConfig,
+        callbacks: {
+          onFormMounted: (error) => {
+            if (error)
+              return console.warn(
+                  "Form Mounted handling error: ",
+                  error
+              );
+          },
+
+          onSubmit: (event) => {
+            event.preventDefault();
+
+            const {
+              paymentMethodId: payment_method_id,
+              issuerId: issuer_id,
+              cardholderEmail: email,
+              transaction_amount: amount,
+              token,
+              installments,
+              identificationNumber: identification_number,
+              identificationType: identification_type,
+            } = cardForm.getCardFormData();
+
+            fetch(`http://localhost:3001/process-payment`,
+                {
+                  // entry point backend
+                  method: "POST",
+                  headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Request-Method":
+                        "GET, POST, DELETE, PUT, OPTIONS",
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    transaction_amount: 1,
+                    description: props.offer.originCity + " - " + props.offer.destinationCity,
+                    payment_method_id,
+                    issuer_id,
+                    email,
+                    amount,
+                    token,
+                    installments: Number(installments),
+                    identification_number,
+                    identification_type,
+                    payer: {
+                      email,
+                      identification: {
+                        type: identification_type,
+                        number: identification_number,
+                      },
+                    },
+                  })
+                }
+            )
+                .then((res) => res.json())
+                .then(async (data) => {
+                      getUser()
+                      setResultPayment(data);
+                      await savedTicket(data);
+                      await swal({
+                        title: "¡Pago realizado!",
+                        text: "¡Gracias por comprar con nosotros!",
+                        icon: "success",
+                        button: "Aceptar",
+                      });
+                    }
+                ).then(r =>
+                history.push("/")
+            )
+                .catch((err) => {
+                  console.log(err);
+                });
+          },
+          onFetching: (resource) => {
+            // Animate progress bar
+            const progressBar =
+                document.querySelector(".progress-bar");
+            progressBar.removeAttribute("value");
+
+            return () => {
+              progressBar.setAttribute("value", "0");
+            };
+          },
+        },
+      });
     }
-  };
+  }, [MercadoPago]);
+
 
   return (
-    <div className={styles.paymentContainer}>
-      <GoHomeButton/>
-      <div className={styles.paymentCard}>
-
-        <h1>Payment Process</h1>
-        <Card
-          cvc={state.cvc}
-          expiry={state.cardExpirationMonth + state.cardExpirationYear}
-          name={state.cardholderName}
-          number={state.cardNumber}
-          focused={state.focus}
-          brand={state.issuer}
-        />
-      </div>
-
-      <div>
-
-      </div>
-
-      <form
-        className={styles.paymentForm}
-        onSubmit={(e) => handleSubmit(e)}
-        id="form-checkout"
-        name='form1'
-      >
-        <div className={styles.paymentFormDiv}>
-          <BsCreditCard
-            className={
-              inputError.cardNumber[0]
-                ? styles.paymentFormDivIcon +
-                  " " +
-                  styles.paymentFormDivIconError
-                : styles.paymentFormDivIcon
-            }
-          />
-          <input
-            maxLength={16}
-            className={styles.paymentFormInput}
-            type="tel"
-            name="cardNumber"
-            id="form-checkout__cardNumber"
-            onChange={handleInputChange}
-            onFocus={handleInputFocus}
-            onKeyUp={(e) => cardNumberValidation(e, inputError, setInputError)}
-          />
-          {inputError.cardNumber[0] && (
-            <span className={styles.paymentFormDivErrorMessage}>
-              {inputError.cardNumber[1]}
-            </span>
-          )}
-        </div>
-        <div className={styles.paymentFormDiv}>
-          <IoIosContact
-            className={
-              inputError.cardholderName[0]
-                ? styles.paymentFormDivIcon +
-                  " " +
-                  styles.paymentFormDivIconError
-                : styles.paymentFormDivIcon
-            }
-          />
-          <input
-            className={styles.paymentFormInput}
-            maxLength={40}
-            type="text"
-            name="cardholderName"
-            id="form-checkout__cardholderName"
-            onChange={handleInputChange}
-            onFocus={handleInputFocus}
-            onKeyUp={(e) =>
-              cardholderNameValidation(e, inputError, setInputError)
-            }
-          />
-          {inputError.cardholderName[0] && (
-            <span className={styles.paymentFormDivErrorMessage}>
-              {inputError.cardholderName[1]}
-            </span>
-          )}
-        </div>
-        <div className={styles.paymentFormDatos}>
-          <div className={styles.paymentFormDatosInputs}>
-            <div className={styles.paymentFormDiv}>
-              <BsCalendarDate
-                className={
-                  inputError.cardExpirationMonth[0]
-                    ? styles.paymentFormDivIcon +
-                      " " +
-                      styles.paymentFormDivIconError
-                    : styles.paymentFormDivIcon
-                }
-              />
-              <input
-                maxLength={2}
-                className={styles.paymentFormInput}
-                type="tel"
-                name="cardExpirationMonth"
-                id="form-checkout__cardExpirationMonth"
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onKeyUp={(e) =>
-                  cardExpirationMonthValidation(e, inputError, setInputError)
-                }
-              />
-            </div>
-            <div className={styles.paymentFormDiv}>
-              <BsCalendar3
-                className={
-                  inputError.cardExpirationYear[0]
-                    ? styles.paymentFormDivIcon +
-                      " " +
-                      styles.paymentFormDivIconError
-                    : styles.paymentFormDivIcon
-                }
-              />
-              <input
-                maxLength={2}
-                className={styles.paymentFormInput}
-                type="tel"
-                name="cardExpirationYear"
-                id="form-checkout__cardExpirationYear"
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onKeyUp={(e) =>
-                  cardExpirationYearValidation(e, inputError, setInputError)
-                }
-              />
-            </div>
-            <div className={styles.paymentFormDiv}>
-              <MdOutlinePassword
-                className={
-                  inputError.cvc[0]
-                    ? styles.paymentFormDivIcon +
-                      " " +
-                      styles.paymentFormDivIconError
-                    : styles.paymentFormDivIcon
-                }
-              />
-              <input
-                maxLength={3}
-                className={styles.paymentFormInput}
-                type="tel"
-                name="cvc"
-                id="form-checkout__securityCode"
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onKeyUp={(e) => cvcValidation(e, inputError, setInputError)}
-              />
-            </div>
+      <div className={styles.payPageContainer}>
+        <div className={styles.paymentContainer}>
+          <div className={styles.paymentCard}>
+            {/* Boton de volver al home */}
+            <h1>Payment Process</h1>
+            <Card
+                cvc={state.cvc}
+                expiry={state.cardExpirationMonth + state.cardExpirationYear}
+                name={state.cardholderName}
+                number={state.cardNumber}
+                focused={state.focus}
+                brand={state.issuer}
+            />
           </div>
-          <div className={styles.paymentFormDatosErrors}>
-            {inputError.cardExpirationYear[0] && (
-              <span className={styles.paymentFormDivErrorMessage}>
-                {inputError.cardExpirationYear[1]}
-              </span>
-            )}
-            {inputError.cvc[0] && (
-              <span className={styles.paymentFormDivErrorMessage}>
-                {inputError.cvc[1]}
-              </span>
-            )}
-            {inputError.cardExpirationMonth[0] && (
-              <span className={styles.paymentFormDivErrorMessage}>
-                {inputError.cardExpirationMonth[1]}
-              </span>
-            )}
-          </div>
+
+          {/* Numero de la tarjeta */}
+          <form id="form-checkout" className={styles.paymentForm}>
+            <div className={styles.paymentFormDiv}>
+              <BsCreditCard className={styles.paymentFormDivIcon} />
+              <input
+                  className={styles.paymentFormInput}
+                  maxLength={16}
+                  type="tel"
+                  name="cardNumber"
+                  id="form-checkout__cardNumber"
+                  onChange={handleInputChange}
+                  onFocus={handleInputFocus}
+              />
+            </div>
+
+            {/*  Nombre del titular */}
+            <div className={styles.paymentFormDiv}>
+              <IoIosContact className={styles.paymentFormDivIcon} />
+              <input
+                  className={styles.paymentFormInput}
+                  maxLength={40}
+                  type="text"
+                  name="cardholderName"
+                  id="form-checkout__cardholderName"
+                  onChange={handleInputChange}
+                  onFocus={handleInputFocus}
+              />
+            </div>
+
+            {/* Mes y año de expiracion y cvc */}
+            <div className={styles.paymentFormDatos}>
+              {/* Mes de expiracion */}
+              <div className={styles.paymentFormDiv}>
+                <BsCalendarDate className={styles.paymentFormDivIcon} />
+                <input
+                    maxLength={2}
+                    className={styles.paymentFormInput}
+                    type="tel"
+                    name="cardExpirationMonth"
+                    id="form-checkout__cardExpirationMonth"
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                />
+              </div>
+
+              {/* Año de expiracion */}
+              <div className={styles.paymentFormDiv}>
+                <BsCalendar3 className={styles.paymentFormDivIcon} />
+                <input
+                    maxLength={2}
+                    className={styles.paymentFormInput}
+                    type="tel"
+                    name="cardExpirationYear"
+                    id="form-checkout__cardExpirationYear"
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                />
+              </div>
+
+              {/* Codigo de seguridad */}
+              <div className={styles.paymentFormDiv}>
+                <MdOutlinePassword className={styles.paymentFormDivIcon} />
+                <input
+                    maxLength={3}
+                    className={styles.paymentFormInput}
+                    type="tel"
+                    name="cvc"
+                    id="form-checkout__securityCode"
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                />
+              </div>
+            </div>
+
+            {/* Email */}
+            <div className={styles.paymentFormDiv}>
+              <FiAtSign className={styles.paymentFormDivIcon} />
+              <input
+                  className={styles.paymentFormInput}
+                  type="email"
+                  name="cardholderEmail"
+                  id="form-checkout__cardholderEmail"
+                  onFocus={handleInputFocus}
+              />
+            </div>
+
+            {/* Selector BANCO */}
+            <div className={styles.paymentSelectDiv}>
+              <AiOutlineBank className={styles.paymentFormDivIcon} />
+              <select
+                  className={styles.paymentSelect}
+                  name="issuer"
+                  id="form-checkout__issuer"
+                  on
+              />
+            </div>
+            {/* Selector tipo de DNI */}
+            <div className={styles.paymentSelectDiv}>
+              <HiOutlineDocumentText className={styles.paymentFormDivIcon} />
+              <select
+                  className={styles.paymentSelect}
+                  name="identificationType"
+                  id="form-checkout__identificationType"
+              />
+            </div>
+
+            {/* DNI */}
+
+            <div className={styles.paymentFormDiv}>
+              <HiOutlineIdentification className={styles.paymentFormDivIcon} />
+              <input
+                  maxLength={10}
+                  className={styles.paymentFormInput}
+                  type="text"
+                  name="identificationNumber"
+                  id="form-checkout__identificationNumber"
+              />
+            </div>
+
+            {/* Selector CUOTAS */}
+
+            <div className={styles.paymentSelectDiv}>
+              <MdPayments className={styles.paymentFormDivIcon} />
+              <select
+                  className={styles.paymentSelect}
+                  name="installments"
+                  id="form-checkout__installments"
+              />
+            </div>
+
+            <div className={styles.paymentFormDivButton}>
+              <button type="submit" id="form-checkout__submit">
+                Pagar
+              </button>
+            </div>
+
+            <progress value="0" className="progress-bar">
+              Cargando...
+            </progress>
+          </form>
+          {resultPayment && console.log(resultPayment)}
         </div>
-        <div className={styles.paymentFormDiv}>
-          <FiAtSign
-            className={
-              inputError.cardholderEmail[0]
-                ? styles.paymentFormDivIcon +
-                  " " +
-                  styles.paymentFormDivIconError
-                : styles.paymentFormDivIcon
-            }
-          />
-          <input
-            className={styles.paymentFormInput}
-            type="email"
-            name="cardholderEmail"
-            id="form-checkout__cardholderEmail"
-            onFocus={handleInputFocus}
-            onChange={handleInputChange}
-            onKeyUp={(e) =>
-              cardholderEmailValidation(e, inputError, setInputError)
-            }
-          />
-          {inputError.cardholderEmail[0] && (
-            <span className={styles.paymentFormDivErrorMessage}>
-              {inputError.cardholderEmail[1]}
-            </span>
-          )}
-        </div>
-        <div className={styles.paymentSelectDiv}>
-          <AiOutlineBank className={styles.paymentFormDivIcon} />
-          <select
-            className={styles.paymentSelect}
-            name="issuer"
-            id="form-checkout__issuer"
-            on
-          ></select>
-        </div>
-        <div className={styles.paymentSelectDiv}>
-          <HiOutlineDocumentText className={styles.paymentFormDivIcon} />
-          <select
-            className={styles.paymentSelect}
-            name="identificationType"
-            id="form-checkout__identificationType"
-          ></select>
-        </div>
-        <div className={styles.paymentFormDiv}>
-          <HiOutlineIdentification
-            className={
-              inputError.identificationNumber[0]
-                ? styles.paymentFormDivIcon +
-                  " " +
-                  styles.paymentFormDivIconError
-                : styles.paymentFormDivIcon
-            }
-          />
-          <input
-            maxLength={10}
-            className={styles.paymentFormInput}
-            type="text"
-            name="identificationNumber"
-            id="form-checkout__identificationNumber"
-            onChange={handleInputChange}
-            onFocus={handleInputFocus}
-            onKeyUp={(e) =>
-              identificationNumberValidation(e, inputError, setInputError)
-            }
-          />
-          {inputError.identificationNumber[0] && (
-            <span className={styles.paymentFormDivErrorMessage}>
-              {inputError.identificationNumber[1]}
-            </span>
-          )}
-        </div>
-        <div className={styles.paymentSelectDiv}>
-          <MdPayments className={styles.paymentFormDivIcon} />
-          <select
-            className={styles.paymentSelect}
-            name="installments"
-            id="form-checkout__installments"
-          ></select>
-        </div>
-        <div className={styles.paymentFormDivButton}>
-          <button type="submit" id="form-checkout__submit">
-            Pagar
-          </button>
-        </div>
-        {/* <progress value="0" className={styles.progressBar}>
-          Cargando...
-        </progress> */}
-      </form>
-      {resultPayment && <p>{JSON.stringify(resultPayment)}</p>}
-    </div>
+      </div>
   );
 }
