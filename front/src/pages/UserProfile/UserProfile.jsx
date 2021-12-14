@@ -63,7 +63,7 @@ export default function UserProfile(documentPath) {
     e.preventDefault();
     swal({
       title: "Estas Seguro?",
-      text: "Si confirmas la cuenta sera borrada y no se podrá recuperar.",
+      text: "Si confirmas, la cuenta sera borrada y no se podrá recuperar.",
       icon: "warning",
       buttons: true,
       dangerMode: true,
