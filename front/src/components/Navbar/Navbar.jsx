@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
+  const [userdelback, setUserdelback] = useState(null);
 
   useEffect(async ()=> {
     await auth.onAuthStateChanged(currentUser => {
@@ -20,6 +21,21 @@ export default function Navbar() {
     });
   }, []);
 
+  useEffect(() => {
+    getUser();
+  }, [user]);
+
+  const getUser = () => {
+    db.collection("users").onSnapshot((querySnapshot) => {
+      const docs = [];
+      querySnapshot.forEach((doc) => {
+        docs.push({ ...doc.data(), id: doc.id });
+      });
+      const filtrado = docs.filter((doc) => doc.email === user?.email);
+      setUserdelback(filtrado[0]?.photoURL);
+    });
+  };
+
   return (
     <div className={styles.navBar}>
       <nav className={styles.nav}>
@@ -30,7 +46,8 @@ export default function Navbar() {
           {
             auth.currentUser ?
               <div className={styles.user}>
-                <FontAwesomeIcon icon={faUserCircle} />
+                <img src={userdelback} alt="" />
+                {/* <FontAwesomeIcon icon={faUserCircle} /> */}
                 <Link className={styles.userLink}  to="/user">
                   <span>Perfil</span>
                 </Link>
@@ -38,9 +55,7 @@ export default function Navbar() {
                   <span onClick={logout}>Cerrar Sesión</span>
                 </Link>
               </div>
-
               :
-
               <div className={styles.user}>
                 <Link className={styles.userLink} to="/login" >
                   <span>Iniciar Sesión</span>

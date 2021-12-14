@@ -1,8 +1,8 @@
 import styles from "./UserProfile.module.scss";
 import noImgProfile from "../../assets/noImgProfile2.jpg";
-import { BiLogOut } from "react-icons/bi";
+
 import { Link, useHistory } from "react-router-dom";
-import { createRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, db, logout } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
@@ -10,7 +10,6 @@ import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import swal from "sweetalert";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
-// import FavCard from "./favCard";
 import { getFavs, isAvailable, resetUserProfile } from "../../redux/actions";
 import Spinner from "../../components/Spinner/Spinner";
 
@@ -223,11 +222,11 @@ export default function UserProfile(documentPath) {
                       <h1>Mis favs</h1>
                       <div className={styles.cardsFavs}>
                         {favs?.map((fav) => {
-                          console.log(favs);
                           return (
                               <div className={styles.cardFav} key={fav.id}>
-                                <div className={styles.cardFavButtonX}>
+                                <div key={fav.id} className={styles.cardFavButtonX}>
                                   <button
+                                      key={fav.id}
                                       className={styles.cardFavButtonDelete}
                                       value={fav.iddelDoc}
                                       onClick={borrarFav}
@@ -236,29 +235,30 @@ export default function UserProfile(documentPath) {
                                   </button>
                                 </div>
 
-                                <div className={styles.cardFavCity}>
-                                  <p>
+                                <div key={fav.id} className={styles.cardFavCity}>
+                                  <p key={fav.id} >
                                     {fav.originCity} - {fav.destinationCity}
                                   </p>
                                 </div>
 
-                                <div className={styles.cardFavJourneyAndPrice}>
-                                  <div className={styles.cardFavJourney}>
+                                <div key={fav.id} className={styles.cardFavJourneyAndPrice}>
+                                  <div key={fav.id} className={styles.cardFavJourney}>
                                     {fav.transfersD ? (
-                                        <p>Tipo: Ida y vuelta</p>
+                                        <p key={fav.id}>Tipo: Ida y vuelta</p>
                                     ) : (
-                                        <p>Tipo: Solo Ida</p>
+                                        <p key={fav.id}>Tipo: Solo Ida</p>
                                     )}
                                   </div>
-                                  <div className={styles.cardFavPrice}>
+                                  <div key={fav.id} className={styles.cardFavPrice}>
                                     <p>Precio: U$D{fav.price}</p>
                                   </div>
                                 </div>
-                                <div className={styles.cardFavButtons}>
-                                  <button value={fav.offers} onClick={available}>
+                                <div key={fav.id} className={styles.cardFavButtons}>
+                                  <button key={fav.id} value={fav.offers} onClick={available}>
                                     ¿Sigue disponible?
                                   </button>
                                   <button
+                                  key={fav.id}
                                       value={fav.offers}
                                       onClick={buscarParecidos}
                                   >
@@ -275,7 +275,7 @@ export default function UserProfile(documentPath) {
                       <h1>Mis tickets</h1>
                     </div>
                   </div>
-                  <div className={styles.buttons}>
+                  <div key={fav.id} className={styles.buttons}>
                     <button
                         className={styles.buttonsDelete}
                         type="submit"
@@ -295,6 +295,6 @@ export default function UserProfile(documentPath) {
   };
   return <div>
     {cargando && <Spinner />}
-    {usuario[0]?.photoURL? render():   <LoadingScreen />}
+    {usuario[0]?.name? render():   <LoadingScreen />}
   </div>
 }

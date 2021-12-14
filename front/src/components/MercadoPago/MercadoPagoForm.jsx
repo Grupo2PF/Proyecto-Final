@@ -70,6 +70,11 @@ export default function MercadoPagoForm(props) {
         userId: user.uid,
         ...props.offer,
       }).then(() => {
+        console.log({...resultPayment,
+          date: new Date(),
+          user: user.email,
+          userId: user.uid,
+          ...props.offer})
         console.log("Ticket guardado");
       })
     } catch (error) {
@@ -202,6 +207,7 @@ export default function MercadoPagoForm(props) {
 
           {/* Numero de la tarjeta */}
           <form id="form-checkout" className={styles.paymentForm}>
+            onSubmit= {console.log()}
             <div className={styles.paymentFormDiv}>
               <BsCreditCard className={styles.paymentFormDivIcon} />
               <input
