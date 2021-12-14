@@ -1,6 +1,6 @@
 @import "../../scss/variables";
 
-.pageContainer {
+.user {
   background: url("../../assets/planes/plane-3.webp");
   background-repeat: no-repeat;
   background-size: cover;
@@ -13,7 +13,6 @@
   min-height: 100vh;
   max-width: 100vw;
   position: relative;
-
   &::after {
     content: "";
     position: absolute;
@@ -24,352 +23,252 @@
     background: rgba(0, 0, 0, 0.5);
   }
 
-  .userProfileContainer {
+  &Container {
     background-attachment: fixed;
     background-position: center;
     display: flex;
     align-items: center;
     position: relative;
     background-color: $white;
-    width: 100%;
+    width: 90%;
     flex-direction: column;
     justify-content: space-around;
-    // padding: 1rem 0;
     height: auto;
-    width: 100vw;
-    margin-top: 12vh;
-    // border-radius: 24px;
+    margin: 12vh 0;
     z-index: 10;
+    border-radius: 20px;
   }
 
-  .imgAndNameContainer {
-    width: 100%;
-    // height: 30vh;
-    display: flex;
-    flex-direction: row;
-    // align-items: center;
-    // justify-content: space-around;
-    margin-bottom: 0.5rem ;
-    // background-color: blue;
-
-    .ProfileImg {
+  &Section {
+    &ImgAndName {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      margin: 2rem 0;
+      gap: 2rem;
       img {
         width: 9rem;
         height: 9rem;
-        // border-radius: 50%;
+        border-radius: 50%;
       }
-    }
-    .h1LogoutBox {
-      height: initial;
-      width: 100%;
-      flex-direction: column;
-      justify-content: center;
-      // background-color: red;
-      h1 {
-        // justify-content: center;
-        padding: 0 0.5rem;
-        font-size: 30px;
-        width: 100%;
-        height: 70%;
-        height: auto;
-        // background-color: blue;
-      }
-      .LogoutBox {
-        // width: 90%;
-        // height: 50%;
-        display: flex;
-        justify-content: flex-end;
-        // align-items: center;
-        padding: 0 0.5rem;
-        // background-color: green;
-        .btnLogout {
-          border: none;
-          background-color: transparent;
-          padding: 5px;
-
-          .icon {
-            transition: 0.1s;
-            color: $gray;
-            font-size: 2rem;
-          }
-          .icon:hover {
-            color: red;
-            filter: drop-shadow(1px 1px 2px black);
-          }
-        }
-      }
-
-      .cardOptionsFavs {
-        justify-content: center;
-        align-items: center;
-      }
-
-      .btnUpdateBox {
-        // background-color: red;
-        width: 100%;
-        display: flex;
-        justify-content: end;
-        .btnLink {
-          background-color: $main-color;
-          border-radius: 3px;
-          border: 1px solid $main-color;
-          font-size: 0.8rem;
-          color: $white;
-          text-decoration: none;
-          padding: 5px;
-          // box-shadow: 0px 0px 6px black;
-          transition: 0.3s;
-        }
-
-        .btnLink:hover {
-          box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
-        }
-        .btnLink:active {
-          box-shadow: 1px 1px 3px black inset;
-        }
-      }
-    }
-
-      p {
-        transition: 0.5s;
-        display: none;
+      h1{
+        margin: 0 0 2rem 0;
+        font-weight: $bold-font;
+        font-size: 1.8rem;
       }
     }
   }
 
-  .cardOptionsContainer {
+  .logOut {
+    &Box {
+      width: 100%;
+      display: flex;
+      padding: 0 0.5rem;
+      justify-content: flex-end;
+    }
+    &Button {
+      border: none;
+      background-color: transparent;
+      padding: 5px;
+      &Icon {
+        transition: 0.1s;
+        color: $gray;
+        font-size: 2rem;
+        &:hover {
+          color: #d10b0b;
+          filter: drop-shadow(1px 1px 2px black);
+        }
+      }
+    }
+  }
+}
+
+.cards {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+  border-top: 1px solid $gray;
+  min-height: 12rem;
+  h1{
+      margin: 0 0 2rem 0;
+      font-weight: $bold-font;
+      font-size: 1.5rem;
+  }
+  &Container {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 80%;
+  }
 
-    .card {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 0;
-      border-top: 1px solid $gray;
-      min-height: 12rem;
-
-      h1 {
-        border-bottom: 1px solid $main-color;
-        // margin-bottom: 1rem;
-        font-size: 25px;
+  &Update {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    &Button {
+      background-color: $main-color;
+      border-radius: 3px;
+      border: 1px solid $main-color;
+      font-size: 0.8rem;
+      color: $white;
+      text-decoration: none;
+      padding: 5px;
+      transition: 0.3s;
+      &:hover {
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
       }
-
-      .cardOptions {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: space-evenly;
-        // background-color: red;
-        height: 30vh;
-
-        .textBox {
-          display: flex;
-          // background-color: coral;
-
-          h3 {
-          }
-          p {
-            margin: 0 0.5rem;
-          }
-        }
-      }
-
-      .cardOptionsFavs {
-        justify-content: center;
-        align-items: center;
-      }
-
-      .btnUpdateBox {
-        // background-color: red;
-        width: 100%;
-        display: flex;
-        justify-content: end;
-        .btnLink {
-          background-color: $main-color;
-          border-radius: 3px;
-          border: 1px solid $main-color;
-          font-size: 0.8rem;
-          color: $white;
-          text-decoration: none;
-          padding: 5px;
-          // box-shadow: 0px 0px 6px black;
-          transition: 0.3s;
-        }
-
-        .btnLink:hover {
-          box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
-        }
-        .btnLink:active {
-          box-shadow: 1px 1px 3px black inset;
-        }
+      &:active {
+        box-shadow: 1px 1px 3px black inset;
       }
     }
-
-    .button {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
+  }
+  &Favs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    gap: 4rem;
+  }
+}
+.card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  &TextBox {
+    display: flex;
+    p {
+      margin: 0 0.5rem;
+    }
+  }
+}
+.cardFav {
+  border-radius: 0.8rem;
+  box-shadow: 5px 5px 10px rgba(148, 148, 148, 0.5);
+  font-size: 2.4rem;
+  padding: 0.4rem 2rem 2rem 2rem;
+  max-height: 10rem;
+  max-width: 100%;
+  &City {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    position: relative;
+    bottom: 1.1rem;
+    right: 1.2rem;
+    p {
+      font-weight: $bold-font;
+    }
+  }
+  &Button {
+    &X {
       width: 100%;
-      height: auto;
-      padding: 1rem 0;
+      display: flex;
       position: relative;
-      flex-wrap: wrap;
-
-      p {
-        display: none;
-      }
-
-      .btn {
-        width: 100%;
-        height: 2rem;
-        // font-size: x-large;
-        // background: #fe3838;
-        // border-radius: 10px;
-        // border: #fe3838 1px solid;
-        flex: none;
-        order: 0;
-        flex-grow: 0;
-        // margin: 0px 50px;
-        display: flex;
-        align-items: end;
-        justify-content: end;
-        border-top: 1px solid $gray;
-
-        // background-color: red;
-        button {
-          color: #fe3838;
-          background-color: transparent;
-          border: none;
-          transition: 0.3s;
-          
-        }
-
-        button:hover {
-          cursor: pointer;
-          // background: #a30b0b;
-          text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
-        }
-      }
+      left: 1.5rem;
+      justify-content: flex-end;
+    }
+    &Delete {
+      background-color: #d10b0b;
+      color: $white;
+      border: none;
+      display: flex;
+      align-items: center;
+      border-radius: 50%;
+      padding: 0.1rem 0.3rem;
     }
   }
-
-
-@media screen and(min-width: $tablet-width) {
-  //1024px
-
-  .pageContainer {
-    // background-color: red;
-
-    .imgAndNameContainer {
-      .ProfileImg {
-        img {
-          width: 15rem;
-          height: 15rem;
-        }
-      }
-      .LogoutBox {
-        height: 50%;
-        display: flex;
-        .btnLogout{
-          height: initial;
-          height: 50%;
-        }
+  &JourneyAndPrice {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 0 0 1rem 0;
+  }
+  &Journey {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 0.4rem;
+  }
+  &Price {
+    display: flex;
+    justify-content: center;
+  }
+  &Buttons {
+    display: flex;
+    justify-content: space-around;
+    grid-gap: 1rem;
+    width: 100%;
+    padding: 0 0 1rem 0;
+    button {
+      padding: 0.4rem;
+      font-size: 0.8rem;
+      width: 50%;
+      background-color: $main-color;
+      color: $white;
+      border-radius: 10px;
+      border: 2px solid $main-color;
+      cursor: pointer;
+      &:hover {
+        border: 2px solid $black;
       }
     }
   }
 }
 
-@media screen and(min-width: $tablet-width) {
-  .LogoutBox {
-    // background-color: red;
-   
 
-    .btnLogout:hover {
-      // color:green;
-      transition: 0.5s;
-      height: initial;
-      p {
-        display: flex;
-        position: absolute;
-        right: 2rem;
-        border: solid 1px gray;
-        padding: 2px;
-        border-radius: 2px;
-      }
-    }
-  }
-}
 
-.favCard {
-border: solid 1px black;
-border-radius: 1rem;
-width: 18rem;
-height: 7rem;
-margin: 0.5rem;
-}
-
-.favCardContainer{
-  margin-top: 1rem;
-  height: 10rem;
-  width: 85%;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-
-.journey{
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin-bottom: 0.4rem;
-}
-
-.cities{
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  font-weight: $medium-font
-}
-.delete{
-  background-color: transparent;
-  border: none;
-  display: flex;
-  margin-top: -1rem;
-  margin-left: 16.8rem
-}
-.delete:hover{
-  transition: 0.5s;
-  cursor: pointer;
-  color: red;
-}
-
-.price{
-  display: flex;
-  justify-content: center;
-}
 
 .buttons{
+  width: 100%;
+  height: 2rem;
   display: flex;
-  margin-top: 0.7rem;
+  align-items: center;
   justify-content: center;
-  justify-content: space-evenly;
-  
-  button{
-    padding: 0.15rem;
-    font-size: 0.8rem;
-    background-color: $main-color;
-    color : $white;
-    border-radius: 3px;
-    border: 2px solid $main-color;
+  margin: 2rem;
+  gap: 2rem;
+  &Delete {
+    color: $white;
+    background-color: #d10b0b;
+    border: none;
+    transition: 0.3s;
+    padding: 0.5rem 0.5rem;
+    border-radius: 10px;
+    &hover {
+      cursor: pointer;
+      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    }
   }
-  button:hover{
-    cursor: pointer;
-    border: 2px solid $black;
+  &LogOut{
+    color: $black;
+    background-color: $white;
+    border: 1px solid $gray;
+    transition: 0.3s;
+    padding: 0.5rem 0.5rem;
+    border-radius: 10px;
+    &hover {
+      cursor: pointer;
+      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    }  
+  }
+}
+
+@media screen and (min-width: $tablet-width) {
+  .userContainer{
+      width: 70%;
+  }
+    .cards {
+    &Favs {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 3rem;
+    }
   }
 }
