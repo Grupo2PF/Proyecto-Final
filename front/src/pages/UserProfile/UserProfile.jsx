@@ -1,8 +1,7 @@
 import styles from "./UserProfile.module.scss";
 import noImgProfile from "../../assets/noImgProfile2.jpg";
-import { BiLogOut } from "react-icons/bi";
 import { Link, useHistory } from "react-router-dom";
-import { createRef, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { auth, db, logout } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
@@ -14,7 +13,8 @@ import {getFavs, getTickets, isAvailable, resetUserProfile} from "../../redux/ac
 import Spinner from "../../components/Spinner/Spinner";
 
 export default function UserProfile(documentPath) {
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
   const dispatch = useDispatch();
   const favs = useSelector((state) => state.favs);
@@ -30,7 +30,9 @@ export default function UserProfile(documentPath) {
     getUser();
     dispatch(getFavs(user.uid));
     dispatch(getTickets(user.uid));
-  }, [loading, user]);
+    dispatch(getTickets(user.uid));
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, user, dispatch , history]);
 
   useEffect(() => {
     if (yetAvailable.cabin) {
@@ -64,12 +66,14 @@ export default function UserProfile(documentPath) {
             dispatch(getFavs(user.uid));
           });
     }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yetAvailable]);
 
   useEffect(() => {
     return () => {
       dispatch(resetUserProfile());
     };
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getUser = () => {
@@ -196,12 +200,12 @@ export default function UserProfile(documentPath) {
                       <h1> Mis datos</h1>
                       <div className={styles.card}>
                         <div className={styles.cardTextBox}>
-                          <h3>Dni: </h3>
+                          <h3>DNI : </h3>
                           <p> {dato.dni}</p>
                         </div>
 
                         <div className={styles.cardTextBox}>
-                          <h3>Mail :</h3>
+                          <h3>Correo :</h3>
                           <p>{dato.email}</p>
                         </div>
 
@@ -209,28 +213,34 @@ export default function UserProfile(documentPath) {
                           <h3>Nº de Teléfono :</h3>
                           <p>{dato.phone}</p>
                         </div>
+
+                        <div className={styles.cardTextBox}>
+                          <h3>Dirección :</h3>
+                          <p>{dato.address}</p>
+                        </div>
                       </div>
                       <div className={styles.cardsUpdate}>
                         <Link
                             className={styles.cardsUpdateButton}
                             to="/user/update"
                         >
-                          Actualizar Cuenta
+                          Actualizar datos
                         </Link>
                       </div>
                     </div>
 
                     <div className={styles.cards}>
-                      <h1>Mis favs</h1>
+                      <h1>Favoritos</h1>
                       <div className={styles.cardsFavs}>
                         {favs?.map((fav) => {
-                          console.log(favs);
+                          // console.log(favs);
                           return (
                               <div className={styles.cardFav} key={fav.id}>
                                 <div className={styles.cardFavButtonX}>
                                   <button
                                       className={styles.cardFavButtonDelete}
                                       value={fav.iddelDoc}
+                                      key={fav.iddelDoc}
                                       onClick={borrarFav}
                                   >
                                     X
@@ -246,13 +256,13 @@ export default function UserProfile(documentPath) {
                                 <div className={styles.cardFavJourneyAndPrice}>
                                   <div className={styles.cardFavJourney}>
                                     {fav.transfersD ? (
-                                        <p>Tipo: Ida y vuelta</p>
+                                        <p><span>Tipo:</span> Ida y vuelta</p>
                                     ) : (
-                                        <p>Tipo: Solo Ida</p>
+                                        <p><span>Tipo:</span> Solo Ida</p>
                                     )}
                                   </div>
                                   <div className={styles.cardFavPrice}>
-                                    <p>Precio: U$D{fav.price}</p>
+                                    <p><span>Precio:</span> U$D{fav.price}</p>
                                   </div>
                                 </div>
                                 <div className={styles.cardFavButtons}>
@@ -261,6 +271,7 @@ export default function UserProfile(documentPath) {
                                   </button>
                                   <button
                                       value={fav.offers}
+                                      key={fav.offers}
                                       onClick={buscarParecidos}
                                   >
                                     Buscar similares
@@ -273,11 +284,13 @@ export default function UserProfile(documentPath) {
                     </div>
 
                     <div className={styles.cards}>
-                      <h1>Mis tickets</h1>
+                      <h1>Compras</h1>
+                      <div className={styles.cardsFavs}>
                       {tickets?.map((ticket) => {
-                        console.log(tickets);
+                        // console.log(tickets);
                         return (
-                            <div className={styles.cardFav} key={ticket.id}>
+                            <div className={styles.cardFav + " " + styles.ticketCard} key={ticket.id}>
+                              <h3>Ticket  comprado</h3>
                               <div className={styles.cardFavCity}>
                                 <p>
                                   {ticket.originCity} - {ticket.destinationCity}
@@ -287,38 +300,40 @@ export default function UserProfile(documentPath) {
                               <div className={styles.cardFavJourneyAndPrice}>
                                 <div className={styles.cardFavJourney}>
                                   {ticket.transfersD ? (
-                                      <p>Tipo: Ida y vuelta</p>
+                                      <p><span>Tipo:</span> Ida y vuelta</p>
                                   ) : (
-                                      <p>Tipo: Solo Ida</p>
+                                      <p><span>Tipo:</span> Solo Ida</p>
                                   )}
                                 </div>
                                 <div className={styles.cardFavPrice}>
-                                  <p>Precio: U$D{ticket.price}</p>
+                                  <p><span>Precio:</span> U$D{ticket.price}</p>
                                 </div>
                               </div>
 
                               <div className={styles.cardFavJourneyAndPrice}>
                                 <div className={styles.cardFavJourney}>
-                                  <p>Estado del Pago: {ticket.status}</p>
+                                  <p><span>Estado del Pago:</span> {ticket.status}</p>
                                 </div>
                                 <div className={styles.cardFavPrice}>
-                                  <p>Detalles: {ticket.status_detail}</p>
+                                  <p><span>Detalles:</span> {ticket.status_detail}</p>
                                 </div>
                               </div>
                             </div>
                         );
                       })}
                     </div>
+                    </div>
                   </div>
                   <div className={styles.buttons}>
                     <button
                         className={styles.buttonsDelete}
                         type="submit"
+                        key="submit"
                         onClick={(e) => userDelete(e)}
                     >
                       Eliminar cuenta
                     </button>
-                    <button className={styles.buttonsLogOut} onClick={logout}>
+                    <button className={styles.buttonsLogOut} key="button" onClick={logout}>
                       Cerrar sesión
                     </button>
                   </div>
