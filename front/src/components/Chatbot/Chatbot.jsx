@@ -1,15 +1,30 @@
 import ChatBot from "react-simple-chatbot";
 import { ThemeProvider } from "styled-components";
 import styles from "./chatbot.module.scss"
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import botImg from "../../assets/chatBot/chat_bot.jpg";
+import { db, auth } from "../../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Chat() {
 
   const [visibility, setVisibility] = useState(false);
+  const [usuario, setUsuario] = useState([]);
+  const [user, loading, error] = useAuthState(auth);
+  
+  useEffect(() => {
+    getUser();
+  },[user])
+
+  const getUser = () => {
+    console.log(user?.displayName);
+   setUsuario(user?.displayName);
+    
+  };
 
   const handleClick = () => {
+    getUser();
     setVisibility(!visibility);
   }
 
@@ -28,7 +43,7 @@ export default function Chat() {
   const steps = [
     {
       id: "1",
-      message: "Hola! ¿Como te llamas?",
+      message: "Hola!" + " " + user?.displayName,
       trigger: "2",
       delay: false
     },
@@ -39,7 +54,7 @@ export default function Chat() {
     },
     {
       id: "3",
-      message: "Bienvenido {previousValue}. ¿en que puedo ayudarte?",
+      message: `Bienvenido ${usuario}. ¿en que puedo ayudarte?`,
       trigger: "4",
       delay: false
     },
@@ -99,6 +114,7 @@ export default function Chat() {
     },
   ];
 
+  
   return (
     <div className={styles.container}>
     <div className={visibility? styles.visible : styles.hidden}>

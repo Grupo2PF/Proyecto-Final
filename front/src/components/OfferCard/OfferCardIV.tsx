@@ -6,11 +6,12 @@ import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
 import { getSeats, sendFavs } from "../../redux/actions/";
 import {auth} from "../../firebaseConfig";
-import { useLocation, Link} from "react-router-dom";
+import {useLocation, Link, useHistory} from "react-router-dom";
 
 export default function OfferCardIV(props: any): JSX.Element {
   const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
 
   // const handleBuy = (e: any) => {
   //   const id = props.offers;
@@ -63,9 +64,22 @@ export default function OfferCardIV(props: any): JSX.Element {
      ...props
     }
     console.log(info);
-    dispatch(sendFavs(info));
+      if (dispatch(sendFavs(info))) {
+        // @ts-ignore
+        swal({
+          title: "Se ha agregado a favoritos",
+          text: "El vuelo se ha agregado a tus favoritos",
+          icon: "success",
+        }).then(() => console.log("added"));
+      }
   }else{
-    alert("Debes iniciar sesión para poder agregar a favoritos")
+      // @ts-ignore
+      swal({
+        title: "Debes iniciar sesión",
+        text: "Para poder agregar a favoritos debes estar registrado",
+        icon: "warning",
+        dangerMode: true,
+      }).then(() => history.push("/login"));
   }
 }
 

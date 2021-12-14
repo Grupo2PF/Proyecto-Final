@@ -14,15 +14,15 @@ export const formConfig = {
     },
     cardExpirationMonth: {
         id: "form-checkout__cardExpirationMonth",
-        placeholder: "Mes",
+        placeholder: "Mes de vencimiento",
     },
     cardExpirationYear: {
         id: "form-checkout__cardExpirationYear",
-        placeholder: "Año",
+        placeholder: "Año de vencimiento",
     },
     securityCode: {
         id: "form-checkout__securityCode",
-        placeholder: "CVC",
+        placeholder: "Código de seguridad",
     },
     installments: {
         id: "form-checkout__installments",
