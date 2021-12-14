@@ -13,7 +13,6 @@ import {getFavs, getTickets, isAvailable, resetUserProfile} from "../../redux/ac
 import Spinner from "../../components/Spinner/Spinner";
 
 export default function UserProfile(documentPath) {
-  // const [user, loading, error] = useAuthState(auth);
   const [user, loading] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
   const dispatch = useDispatch();
@@ -231,9 +230,9 @@ export default function UserProfile(documentPath) {
                         {favs?.map((fav) => {
                           return (
                               <div className={styles.cardFav} key={fav.id}>
-                                <div key={fav.id} className={styles.cardFavButtonX}>
+                                <div  className={styles.cardFavButtonX}>
                                   <button
-                                      key={fav.id}
+                                      key={fav.iddelDoc}
                                       className={styles.cardFavButtonDelete}
                                       value={fav.iddelDoc}
                                       onClick={borrarFav}
@@ -242,14 +241,14 @@ export default function UserProfile(documentPath) {
                                   </button>
                                 </div>
 
-                                <div key={fav.id} className={styles.cardFavCity}>
-                                  <p key={fav.id} >
+                                <div  className={styles.cardFavCity}>
+                                  <p  >
                                     {fav.originCity} - {fav.destinationCity}
                                   </p>
                                 </div>
 
-                                <div key={fav.id} className={styles.cardFavJourneyAndPrice}>
-                                  <div key={fav.id} className={styles.cardFavJourney}>
+                                <div  className={styles.cardFavJourneyAndPrice}>
+                                  <div className={styles.cardFavJourney}>
                                     {fav.transfersD ? (
                                         <p><span>Tipo:</span> Ida y vuelta</p>
                                     ) : (
@@ -260,12 +259,12 @@ export default function UserProfile(documentPath) {
                                     <p><span>Precio:</span> U$D{fav.price}</p>
                                   </div>
                                 </div>
-                                <div key={fav.id} className={styles.cardFavButtons}>
-                                  <button key={fav.id} value={fav.offers} onClick={available}>
+                                <div  className={styles.cardFavButtons}>
+                                  <button  key={fav.mode} value={fav.offers} onClick={available}>
                                     ¿Sigue disponible?
                                   </button>
                                   <button
-                                  key={fav.id}
+                                      key={fav.offers}
                                       value={fav.offers}
                                       onClick={buscarParecidos}
                                   >
@@ -319,7 +318,7 @@ export default function UserProfile(documentPath) {
                     </div>
                     </div>
                   </div>
-                  <div key={fav.id} className={styles.buttons}>
+                  <div  className={styles.buttons}>
                     <button
                         className={styles.buttonsDelete}
                         type="submit"

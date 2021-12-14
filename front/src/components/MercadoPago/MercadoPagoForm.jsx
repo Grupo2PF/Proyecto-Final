@@ -205,9 +205,7 @@ export default function MercadoPagoForm(props) {
             />
           </div>
 
-          {/* Numero de la tarjeta */}
           <form id="form-checkout" className={styles.paymentForm}>
-            onSubmit= {console.log()}
             <div className={styles.paymentFormDiv}>
               <BsCreditCard className={styles.paymentFormDivIcon} />
               <input

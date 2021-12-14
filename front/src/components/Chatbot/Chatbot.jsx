@@ -5,15 +5,14 @@ import {useState, useEffect} from "react";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import botImg from "../../assets/chatBot/chat_bot.jpg";
 import { db, auth } from "../../firebaseConfig";
-import { useAuthState } from "react-firebase-hooks/auth";
 import Chatbotlogout from "./Chatbotlogout";
 export default function Chatbot() {
   const [user, setUser] = useState(null);
   const [userdelback, setUserdelback] = useState(null);
   const [visibility, setVisibility] = useState(false);
 
-  useEffect(async ()=> {
-    await auth.onAuthStateChanged(currentUser => {
+  useEffect( ()=> {
+    auth.onAuthStateChanged(currentUser => {
       if (currentUser) {
         setUser(currentUser);
       } else {
@@ -22,9 +21,7 @@ export default function Chatbot() {
     });
   }, []);
 
-  useEffect(() => {
-    getUser();
-  }, [user]);
+ 
 
   const getUser = () => {
     db.collection("users").onSnapshot((querySnapshot) => {
@@ -34,9 +31,12 @@ export default function Chatbot() {
       });
       const filtrado = docs.filter((doc) => doc.email === user?.email);
       setUserdelback(filtrado[0]?.name);
-      console.log(filtrado[0]?.name);
     });
   };
+  useEffect(() => {
+    getUser();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleClick = () => {
     getUser();

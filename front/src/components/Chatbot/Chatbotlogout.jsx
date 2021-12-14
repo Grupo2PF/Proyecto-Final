@@ -4,16 +4,14 @@ import styles from "./chatbot.module.scss";
 import { useState, useEffect } from "react";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import botImg from "../../assets/chatBot/chat_bot.jpg";
-import { db, auth } from "../../firebaseConfig";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebaseConfig";
 
 export default function Chatbotlogout() {
   const [user, setUser] = useState(null);
-  const [userdelback, setUserdelback] = useState(null);
   const [visibility, setVisibility] = useState(false);
 
-  useEffect(async () => {
-    await auth.onAuthStateChanged((currentUser) => {
+  useEffect(() => {
+    auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
         setUser(currentUser);
       } else {
@@ -23,23 +21,11 @@ export default function Chatbotlogout() {
   }, []);
 
   useEffect(() => {
-    getUser();
   }, [user]);
 
-  const getUser = () => {
-    db.collection("users").onSnapshot((querySnapshot) => {
-      const docs = [];
-      querySnapshot.forEach((doc) => {
-        docs.push({ ...doc.data(), id: doc.id });
-      });
-      const filtrado = docs.filter((doc) => doc.email === user?.email);
-      setUserdelback(filtrado[0]?.name);
-      console.log(filtrado[0]?.name);
-    });
-  };
+
 
   const handleClick = () => {
-    getUser();
     setVisibility(!visibility);
   };
 

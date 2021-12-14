@@ -10,8 +10,8 @@ export default function Navbar() {
   const [user, setUser] = useState(null);
   const [userdelback, setUserdelback] = useState(null);
 
-  useEffect(async () => {
-    await auth.onAuthStateChanged((currentUser) => {
+  useEffect( () => {
+     auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
         setUser(currentUser);
       } else {
@@ -22,6 +22,7 @@ export default function Navbar() {
 
   useEffect(() => {
     getUser();
+     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const getUser = () => {
@@ -41,28 +42,6 @@ export default function Navbar() {
         <Link to="/">
           <img src={logo} alt="" />
         </Link>
-<<<<<<< HEAD
-        <div className={styles.user}>
-          {
-            auth.currentUser ?
-              <div className={styles.user}>
-                <img src={userdelback} alt="" />
-                {/* <FontAwesomeIcon icon={faUserCircle} /> */}
-                <Link className={styles.userLink}  to="/user">
-                  <span>Perfil</span>
-                </Link>
-                <Link className={styles.userLink}  to="/">
-                  <span onClick={logout}>Cerrar Sesión</span>
-                </Link>
-              </div>
-              :
-              <div className={styles.user}>
-                <Link className={styles.userLink} to="/login" >
-                  <span>Iniciar Sesión</span>
-                </Link>
-                <Link className={styles.userLink} to="/register" >
-                  <span>Registrarse</span>
-=======
         {/* <div className={styles.user}> */}
           {auth.currentUser ? (
             <div className={styles.user}>
@@ -72,7 +51,6 @@ export default function Navbar() {
                 </Link>
                 <Link className={styles.userLink} to="/user">
                   <span>Perfil</span>
->>>>>>> origin/Angel-Front
                 </Link>
               </div>
               <Link className={styles.userLink} to="/">
