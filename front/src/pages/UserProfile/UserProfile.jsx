@@ -29,6 +29,8 @@ export default function UserProfile(documentPath) {
     getUser();
     dispatch(getFavs(user.uid));
     dispatch(getTickets(user.uid));
+    dispatch(getTickets(user.uid));
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, user, dispatch , history]);
 
   useEffect(() => {
@@ -63,12 +65,14 @@ export default function UserProfile(documentPath) {
             dispatch(getFavs(user.uid));
           });
     }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yetAvailable]);
 
   useEffect(() => {
     return () => {
       dispatch(resetUserProfile());
     };
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getUser = () => {
@@ -235,6 +239,7 @@ export default function UserProfile(documentPath) {
                                       key={fav.iddelDoc}
                                       className={styles.cardFavButtonDelete}
                                       value={fav.iddelDoc}
+                                      key={fav.iddelDoc}
                                       onClick={borrarFav}
                                   >
                                     X
@@ -266,6 +271,7 @@ export default function UserProfile(documentPath) {
                                   <button
                                       key={fav.offers}
                                       value={fav.offers}
+                                      key={fav.offers}
                                       onClick={buscarParecidos}
                                   >
                                     Buscar similares
@@ -322,11 +328,12 @@ export default function UserProfile(documentPath) {
                     <button
                         className={styles.buttonsDelete}
                         type="submit"
+                        key="submit"
                         onClick={(e) => userDelete(e)}
                     >
                       Eliminar cuenta
                     </button>
-                    <button className={styles.buttonsLogOut} onClick={logout}>
+                    <button className={styles.buttonsLogOut} key="button" onClick={logout}>
                       Cerrar sesión
                     </button>
                   </div>

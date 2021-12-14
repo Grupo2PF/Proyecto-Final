@@ -23,7 +23,7 @@ function Reset() {
   useEffect(() => {
     if (loading) return;
     if (user) history.replace("/user/update");
-  }, [user, loading,history]);
+  }, [user, loading, history]);
 
   return (
     <section className={styles.resetPage}>

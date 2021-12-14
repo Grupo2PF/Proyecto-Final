@@ -169,6 +169,7 @@ export default function UpdateUserProfile() {
     if (loading) return;
     if (!user) return history.replace("/");
     getUser();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading, history]);
 
   return (
