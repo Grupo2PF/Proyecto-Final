@@ -32,12 +32,7 @@ export default function UserProfile(documentPath) {
   }, [loading, user]);
 
   useEffect(() => {
-<<<<<<< HEAD
-
-    if (yetAvailable.cabin) { 
-=======
     if (yetAvailable.cabin) {
->>>>>>> origin/Fer
       setCargando(false);
       swal({
         title: "El vuelo esta disponible!",
@@ -46,17 +41,6 @@ export default function UserProfile(documentPath) {
         buttons: true,
         dangerMode: true,
       })
-<<<<<<< HEAD
-      .then((willDelete) => {
-        if (willDelete) {
-          dispatch(resetUserProfile());
-        history.push({
-          pathname: `/offer-detail/${yetAvailable.offers}`,
-          state: { ...fav[0] },
-        });
-        }
-      })
-=======
           .then((willDelete) => {
             if (willDelete) {
               dispatch(resetUserProfile());
@@ -66,7 +50,6 @@ export default function UserProfile(documentPath) {
               });
             }
           })
->>>>>>> origin/Fer
     }else if(yetAvailable === "error"){
       swal({
         title: "El vuelo ya no esta disponible!",
@@ -74,19 +57,11 @@ export default function UserProfile(documentPath) {
         icon: "error",
         button: "Volver",
       })
-<<<<<<< HEAD
-      .then((value) => {
-      setCargando(false);
-      dispatch(resetUserProfile());
-      dispatch(getFavs(user.uid));
-      });
-=======
           .then((value) => {
             setCargando(false);
             dispatch(resetUserProfile());
             dispatch(getFavs(user.uid));
           });
->>>>>>> origin/Fer
     }
   }, [yetAvailable]);
 
@@ -224,33 +199,9 @@ export default function UserProfile(documentPath) {
                           <p> {dato.dni}</p>
                         </div>
 
-<<<<<<< HEAD
-              <div className={styles.card}>
-                <h1>Mis favs</h1>
-                <div
-                  className={styles.cardOptions + " " + styles.cardOptionsFavs}
-                >
-                  <div className={styles.favCardContainer}>
-                    {favs?.map((fav) => {
-          
-                      return (
-                        <div className={styles.favCard} key={fav.id}>
-                          <div className={styles.cities}><p>{fav.originCity}</p>
-                          <p>{fav.destinationCity}</p></div>
-                          <button className={styles.delete}value={fav.iddelDoc} onClick={borrarFav}>
-                            X
-                          </button>
-                          <div className={styles.journey}>{fav.transfersD? <p>IDA Y VUELTA</p>:<p>IDA</p> }</div>
-                          <div className={styles.price}>{`U$D${fav.price}`}</div>
-                         <div className={styles.buttons}> <button value={fav.offers} onClick={available}>
-                            ¿Sigue disponible?
-                          </button>
-                          <button value= {fav.offers} onClick={buscarParecidos}>Buscar similares</button>
-=======
                         <div className={styles.cardTextBox}>
                           <h3>Mail :</h3>
                           <p>{dato.email}</p>
->>>>>>> origin/Fer
                         </div>
 
                         <div className={styles.cardTextBox}>
@@ -291,28 +242,6 @@ export default function UserProfile(documentPath) {
                                   </p>
                                 </div>
 
-<<<<<<< HEAD
-            <div className={styles.button}>
-              <div className={styles.btn}>
-                <button type="submit" onClick={(e) => userDelete(e)}>
-                  Eliminar cuenta
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-    )
-  }
-  return (
-    <div>
-      {cargando && <Spinner />}
-      {usuario[0]?.photoURL? render():   <LoadingScreen />}
-    </div>
-  );
-}
-=======
                                 <div className={styles.cardFavJourneyAndPrice}>
                                   <div className={styles.cardFavJourney}>
                                     {fav.transfersD ? (
@@ -369,4 +298,3 @@ export default function UserProfile(documentPath) {
     {usuario[0]?.photoURL? render():   <LoadingScreen />}
   </div>
 }
->>>>>>> origin/Fer

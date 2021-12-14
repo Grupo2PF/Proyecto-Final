@@ -1,20 +1,5 @@
 import axios from "axios";
-<<<<<<< HEAD
-import swal from "sweetalert";
-import {
-  GET_FLIGHT,
-  GET_SEATS,
-  SET_LOADING,
-  GET_FLIGHT_URL,
-  RESET,
-  SEND_FAVS,
-  GET_FAVS,
-  IS_AVAILABLE,
-  RESET_FAVS_Y_AVAILABLES,
-} from "../actionTypes";
-=======
 import { GET_FLIGHT, GET_SEATS, SET_LOADING, GET_FLIGHT_URL, RESET, SEND_FAVS, GET_FAVS, IS_AVAILABLE, RESET_FAVS_Y_AVAILABLES, GET_PAY } from "../actionTypes";
->>>>>>> origin/Fer
 
 type Swal = {
   title: string;
@@ -103,7 +88,6 @@ export function getSeats(payload: any) {
   };
 }
 
-<<<<<<< HEAD
 export function resetState() {
   return async function(dispatch: any) {
     return dispatch({
@@ -111,7 +95,6 @@ export function resetState() {
     });
   };
 }
-=======
   export function getPay(payload: any) {
     console.log(payload);
     return async function (dispatch: any) {
@@ -122,23 +105,6 @@ export function resetState() {
     }
   }
 
-    export function getSeats(payload: any) {
-      return async function (dispatch: any) {
-        try { 
-          console.log(payload);
-          const info = await axios.get(`http://localhost:3001/${payload}/seats`);
-          console.log("respuesta de la api");
-          console.log(info.data);
-          return dispatch({
-            type: GET_SEATS,
-            payload: info.data,
-          });
-        } catch (err) {
-          console.log(err);
-        }
-      };
-    }
->>>>>>> origin/Fer
 
 export function resetUserProfile() {
   return async function(dispatch: any) {
