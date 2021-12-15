@@ -1,17 +1,14 @@
-import React, { useEffect, useState, FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import React, { useEffect, useState, FC } from "react";
+import React, { useState, FC } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getFlight, setLoading } from "../../redux/actions";
 import styles from "./Searchbar.module.scss";
 import json from "../../assets/IATA.json";
-import LoadingScreen from "../LoadingScreen/LoadingScreen";
+// import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBaby,
-  faChild,
   faExclamationTriangle,
-  faHouseUser,
-  faMale,
-  faMapMarkerAlt,
   faPlane,
   faPlaneArrival,
   faPlaneDeparture,
@@ -23,7 +20,7 @@ import { useHistory } from "react-router-dom";
 export default function SearchBar() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const loading: boolean = useSelector((state: any) => state.loading);
+  // const loading: boolean = useSelector((state: any) => state.loading);
   const [error, setError] = useState(false);
   const [msjError, setMsjError] = useState({ title: "", p: "" });
   // const [extraBox, setExtraBox] = useState(false)
@@ -142,7 +139,6 @@ export default function SearchBar() {
   function handleClick(e: any) {
     e.preventDefault();
 
-
     const cities: any = json.filter((d) =>
       d.airport.toLowerCase().includes(value.originCity.toLowerCase())
     );
@@ -169,18 +165,16 @@ export default function SearchBar() {
         adult: value.adult,
       };
 
-      console.log('cities');
-      console.log(cities);
+
 
       if (value.journeyType === false) {
         if (value.departureDate) {
-          console.log("Se envia para buscar solo ida");
-          console.log(toSend);
+
           dispatch(setLoading(true));
           dispatch(getFlight(toSend));
           sendpack();
         } else {
-          console.log("falte llenar la fecha de salida");
+
           setMsjError({
             title: "Debes ingresar una fecha de origen",
             p: "Selecciona una fecha de ida",
@@ -189,13 +183,11 @@ export default function SearchBar() {
         }
       } else if (value.journeyType === true) {
         if (value.returnDate) {
-          console.log("Se envia para ida y vuelta");
-          console.log(toSend);
+
           dispatch(setLoading(true));
           dispatch(getFlight(toSend));
           sendpack();
         } else {
-          console.log("falta llenar la fecha de vuelta");
           setMsjError({
             title: "Debes ingresar una fecha de vuelta",
             p: "Selecciona una fecha de regreso",
@@ -203,10 +195,8 @@ export default function SearchBar() {
           setError(true);
         }
       }
-      // console.log(toSend)
-      // dispatch(getFlight(toSend));
+
     } else {
-      console.log(cities);
       setMsjError({
         title: "Ingrese un origen y destino valido",
         p: "Puedes usar el autocompletar para buscar lugares especificos",
@@ -240,14 +230,13 @@ export default function SearchBar() {
     return `${yyyy}-${mm}-${dd}`;
   };
 
-  // console.log(dd, mm, yyyy)
-  ////////////////////////////////////////////
+
 
   ///////// Logica de habilitar viaje de vuelta /////////
 
   const isDisable: Function = () => {
     // return value.journeyType === false && value.departureDate.length !=0
-    if (value.journeyType === true && value.departureDate.length != 0) {
+    if (value.journeyType === true && value.departureDate.length !== 0) {
       return false;
     } else {
       return true;
@@ -303,8 +292,8 @@ export default function SearchBar() {
                   <ul role="listbox">
                     {value.originCity.length > 0 &&
                     value.destinyCity.length < 20
-                      ? filterOptional.map((d: any) => (
-                          <li>
+                      ? filterOptional.map((d: any,index) => (
+                          <li key={index} >
                             {" "}
                             <button
                               name={`${d.airport}`}
@@ -352,8 +341,8 @@ export default function SearchBar() {
                   <ul role="listbox">
                     {value.destinyCity.length > 0 &&
                     value.destinyCity.length < 20
-                      ? filterOptionalBack.map((d: any) => (
-                          <li>
+                      ? filterOptionalBack.map((d: any,index) => (
+                          <li key={index}>
                             {" "}
                             <button
                               name={`${d.airport}`}

@@ -6,9 +6,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import style from "./AboutUs.module.scss";
-// import noimg from "./photo/noimg2.jpg";
 import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
-// import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 export default function AboutUs() {
@@ -96,26 +94,22 @@ const Template: FC<Props> = ({
   <div className={image}>
     <div className={style.linkBox}>
       {portafolio ? (
-        <a target="_blank" href={portafolio} rel="noopener noreferrer">
+        <a target="_blank" href={portafolio} rel="noreferrer" >
           {" "}
           <FontAwesomeIcon icon={faBriefcase} />
         </a>
-      ) : (
-        false
-      )}
+      ) : false}
       {instagram ? (
-        <a target="_blank" href={instagram} rel="noopener noreferrer">
+        <a target="_blank" href={instagram} rel="noreferrer">
           {" "}
           <FontAwesomeIcon icon={faInstagram} />
         </a>
-      ) : (
-        false
-      )}
-      <a target="_blank" href={linkedin} rel="noopener noreferrer">
+      ) : false}
+      <a target="_blank" href={linkedin} rel="noreferrer">
         {" "}
         <FontAwesomeIcon icon={faLinkedinIn} />
       </a>
-      <a target="_blank" href={github} rel="noopener noreferrer">
+      <a target="_blank" href={github} rel="noreferrer">
         {" "}
         <FontAwesomeIcon icon={faGithub} />
       </a>

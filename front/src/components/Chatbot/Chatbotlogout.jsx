@@ -1,18 +1,20 @@
 import ChatBot from "react-simple-chatbot";
 import { ThemeProvider } from "styled-components";
-import styles from "./chatbot.module.scss"
-import {useState, useEffect} from "react";
+import styles from "./chatbot.module.scss";
+import { useState, useEffect } from "react";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import botImg from "../../assets/chatBot/chat_bot.jpg";
 import { db, auth } from "../../firebaseConfig";
-import Chatbotlogout from "./Chatbotlogout";
-export default function Chatbot() {
+
+export default function Chatbotlogout() {
   const [user, setUser] = useState(null);
+  /* eslint-disable */
   const [userdelback, setUserdelback] = useState(null);
+  /* eslint-enable */
   const [visibility, setVisibility] = useState(false);
 
-  useEffect( ()=> {
-    auth.onAuthStateChanged(currentUser => {
+  useEffect(() => {
+    auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
         setUser(currentUser);
       } else {
@@ -22,7 +24,7 @@ export default function Chatbot() {
   }, []);
 
   useEffect(() => {
-    getUser();// eslint-disable-next-line
+    getUser(); // eslint-disable-next-line
   }, [user]);
 
   const getUser = () => {
@@ -33,19 +35,18 @@ export default function Chatbot() {
       });
       const filtrado = docs.filter((doc) => doc.email === user?.email);
       setUserdelback(filtrado[0]?.name);
-
     });
   };
 
   const handleClick = () => {
     getUser();
     setVisibility(!visibility);
-  }
+  };
 
   const theme = {
     background: "#f5f8fb",
     headerBgColor: "#3884FE",
-    headerzindex:"9999",
+    headerzindex: "9999",
     headerFontColor: "#fff",
     headerFontSize: "15px",
     botBubbleColor: "#3884FE",
@@ -57,9 +58,9 @@ export default function Chatbot() {
   const steps = [
     {
       id: "3",
-      message: userdelback? `Bienvenida/o ${userdelback}. ¿en que puedo ayudarte?`: `Bienvenido viajero. ¿en que puedo ayudarte?`,
+      message:`Bienvenido viajero!. ¿en que puedo ayudarte?`,
       trigger: "4",
-      delay: false
+      delay: false,
     },
     {
       id: "4",
@@ -80,35 +81,40 @@ export default function Chatbot() {
       message:
         "Para comprar un pasaje debes iniciar sesion, recuerda que debes ser mayor de edad, poseer una tarjeta de crédito/débito y aceptar los terminos y condiciones.",
       trigger: "10",
-      delay: false
+      delay: false,
     },
     {
       id: "6",
       component: (
-        <div> Dale click al siguiente <a href="http://localhost:3000/reset">link</a> </div>
+        <div>
+          {" "}
+          Dale click al siguiente <a href="http://localhost:3000/reset">
+            link
+          </a>{" "}
+        </div>
       ),
       trigger: "10",
-      delay: false
+      delay: false,
     },
     {
       id: "7",
       message:
         "Al ser MercadoPago nuestro procesador de pagos, aceptamos cualquier tarjeta de crédito o débito que adminta la plataforma",
       trigger: "10",
-      delay: false
+      delay: false,
     },
     {
       id: "8",
       message: "aun no se ha implementado esta funcionalidad",
       trigger: "10",
-      delay: false
+      delay: false,
     },
     {
       id: "9",
       message:
         "te recomiendo que visites la seccion de destinos populares donde podras encontrar los mejores lugares para visitar",
       trigger: "10",
-      delay: false
+      delay: false,
     },
     {
       id: "10",
@@ -117,11 +123,12 @@ export default function Chatbot() {
     },
   ];
 
-  const render = () => {
-    return (
-      <div className={styles.container}>
-      <div className={visibility? styles.visible : styles.hidden}>
-        <button className={styles.cerrar} onClick={handleClick} >X</button>
+  return (
+    <div className={styles.container}>
+      <div className={visibility ? styles.visible : styles.hidden}>
+        <button className={styles.cerrar} onClick={handleClick}>
+          X
+        </button>
         <ThemeProvider theme={theme}>
           <ChatBot
             botDelay={3000}
@@ -131,14 +138,9 @@ export default function Chatbot() {
           />
         </ThemeProvider>
       </div>
-      <button className={styles.chatButton} onClick={handleClick}> 
-      <BiMessageRoundedDetail className={styles.icon}/>
-       </button>   
-        </div>
-    );
-  };
-
-  return (
-   <div> {userdelback?render(): <Chatbotlogout/> }</div>
+      <button className={styles.chatButton} onClick={handleClick}>
+        <BiMessageRoundedDetail className={styles.icon} />
+      </button>
+    </div>
   );
 }

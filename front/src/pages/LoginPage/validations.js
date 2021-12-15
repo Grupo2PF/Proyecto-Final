@@ -5,16 +5,18 @@ export const regex = {
     /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
   password: /^.{6,12}$/, // 6 a 16 digitos.
   strictPassword:
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,12}$/,
+  /^.{6,}$/,
+  // strictPassword:
+  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,12}$/,
   // 6 caracteres, 1 letra minúscula, 1 letra mayúscula, 1 número y 1 caracter especial.
 };
 
 export const passwordValidation = (e, inputError, setInputError) => {
   const { id, value } = e.target;
-  if (value.length < 6 || value.length > 12) {
+  if (value.length < 6) {
     setInputError({
       ...inputError,
-      [id]: [true, "Debe tener como minimo 6 caracteres y máximo 12"],
+      [id]: [true, "Debe tener como minimo 6 caracteres"],
     });
     return;
   }
@@ -30,7 +32,7 @@ export const passwordValidation = (e, inputError, setInputError) => {
       ...inputError,
       [id]: [
         true,
-        "Debe contener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial",
+        "Debe tener como minimo 6 caracteres",
       ],
     });
     return;
@@ -107,7 +109,7 @@ export const validateForm = (email, password, setInputError) => {
   if (!regex.strictPassword.test(password)) {
     swal(
       "Error",
-      "La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial",
+      "Debe tener como minimo 6 caracteres",
       "error"
     );
     return isValid;

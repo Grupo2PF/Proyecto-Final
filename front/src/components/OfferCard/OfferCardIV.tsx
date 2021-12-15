@@ -4,21 +4,34 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
-import { getSeats, sendFavs } from "../../redux/actions/";
-import {auth} from "../../firebaseConfig";
-import {useLocation, Link, useHistory} from "react-router-dom";
+// import { getSeats, sendFavs } from "../../redux/actions/";
+import { sendFavs } from "../../redux/actions/";
+import { auth, db } from "../../firebaseConfig";
+import { useLocation, Link, useHistory } from "react-router-dom";
+import swal from "sweetalert";
+import { useState, useEffect} from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function OfferCardIV(props: any): JSX.Element {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
-
-  // const handleBuy = (e: any) => {
-  //   const id = props.offers;
-  //   dispatch(getSeats(id));
-  // };
-
+  const [user] = useAuthState(auth);
+  const [fav, setFav] = useState([]);
   const dataFromQuery: any = {};
+  type Swal = {
+    title: string;
+    text: string;
+    icon: string;
+    button: string;
+  }
+
+  const errorMessage:Swal = {
+    title: "Error",
+    text: "Ya has añadido ese favorito!",
+    icon: "error",
+    button: "Volver",
+  }
 
   const getQueryData = (offerQuery: any) => {
     return offerQuery
@@ -53,17 +66,33 @@ export default function OfferCardIV(props: any): JSX.Element {
     ...props,
     recomendations: formatedRecomendations,
   };
-  // console.log("Ida y Vuelta: ", offerProps);
+
+  const getUser = () => {
+    db.collection("saves").onSnapshot((querySnapshot) => {
+      
+      const docs:any = [];
+      querySnapshot.forEach((doc) => {
+        docs.push({ ...doc.data(), id: doc.id });
+      });
+      const filtrado = docs.filter((doc:any) => doc.userId === user?.uid);
+      setFav(filtrado);
+    });
+  };
+  useEffect(() => {
+    getUser();  // eslint-disable-next-line 
+  }, []);
 
   const handleFavs = (e: any) => {
-    if(auth.currentUser){
-    
-    const info = {
-      ...dataFromQuery,
-      userId: auth.currentUser.uid,
-     ...props
-    }
-    console.log(info);
+      if(auth.currentUser){
+        if(fav.some((el:any)=>el.offers === e.target.value)){
+         swal(errorMessage)
+        }else{
+      const info = {
+        ...dataFromQuery,
+        userId: auth.currentUser.uid,
+        ...props,
+      };
+
       if (dispatch(sendFavs(info))) {
         // @ts-ignore
         swal({
@@ -71,8 +100,8 @@ export default function OfferCardIV(props: any): JSX.Element {
           text: "El vuelo se ha agregado a tus favoritos",
           icon: "success",
         }).then(() => console.log("added"));
-      }
-  }else{
+      }}
+    } else {
       // @ts-ignore
       swal({
         title: "Debes iniciar sesión",
@@ -80,8 +109,28 @@ export default function OfferCardIV(props: any): JSX.Element {
         icon: "warning",
         dangerMode: true,
       }).then(() => history.push("/login"));
-  }
-}
+    }
+  };
+
+  const handleBuy = (e: any) => {
+    e.preventDefault();
+    if (auth.currentUser) {
+      history.push({
+        pathname: `/ticket/${props.offers}`,
+        state: {
+          ...offerProps,
+          ...dataFromQuery
+      }
+    });
+     } else {
+      // @ts-ignore
+      swal({
+        title: "Debes iniciar sesión para comprar",
+        icon: "warning",
+        dangerMode: true,
+      }).then(() => history.push("/login"));
+    }
+  };
 
   return (
     <>
@@ -131,20 +180,13 @@ export default function OfferCardIV(props: any): JSX.Element {
                 <AiOutlineExclamationCircle />
                 Ver detalles
               </Link>
-              <button onClick={handleFavs}>Añadir a favs</button>
-              <Link
-                to={{
-                  pathname: `/ticket/${props.offers}`,
-                  state: {
-                    ...offerProps,
-                    ...dataFromQuery,
-                  },
-                }}
+              <button value={props.offers} onClick={handleFavs}>Añadir a favs</button>
+              <button
                 className={styles.offersCardButtonsPrice}
-                // onClick={handleBuy}
+                onClick={handleBuy}
               >
                 {`${props.currency} ${props.price}`}
-              </Link>
+              </button>
             </div>
           </div>
         </div>

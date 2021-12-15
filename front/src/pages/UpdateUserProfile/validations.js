@@ -150,7 +150,7 @@ export const validateForm = (input, inputError, setInputError) => {
   let isValid = false;
 
   // const { name, lastName, photoURL, phone, dni, address, bDate } = input;
-  const { name, lastName, photoURL, phone, dni, address, bDate } = input;
+  const { name, lastName, photoURL, phone, dni, address } = input;
 
   //   Campos vacios
   if (

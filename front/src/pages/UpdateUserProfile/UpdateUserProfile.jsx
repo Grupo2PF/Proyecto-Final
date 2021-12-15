@@ -73,7 +73,8 @@ export default function UpdateUserProfile() {
     });
   };
 
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
   const [value, setValue] = useState({ uploadValue: 0, picture: null });
 
@@ -168,6 +169,7 @@ export default function UpdateUserProfile() {
     if (loading) return;
     if (!user) return history.replace("/");
     getUser();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading, history]);
 
   return (

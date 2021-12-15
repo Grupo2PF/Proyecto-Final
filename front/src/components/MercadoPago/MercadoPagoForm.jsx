@@ -26,12 +26,10 @@ const INITIAL_STATE = {
 };
 
 const VITE_PUBLIC_KEY_MP = "TEST-0f046780-e30e-443a-b0c8-cc6d4fd9be99";
-const VITE_URL_PAYMENT_MP = "http://localhost:3001/mercadoPagob";
 
 export default function MercadoPagoForm(props) {
 
   const [state, setState] = useState(INITIAL_STATE);
-  /*const resultPayment = useMercadoPago();*/
 
   const handleInputChange = (e) => {
     setState({
@@ -43,16 +41,15 @@ export default function MercadoPagoForm(props) {
   // En props esta toda la información necesaria
   // puedes acceder a las props del vuelo mediante props.offer
   // puedes acceder a las props de los pasajeros mediante props.passengers
-  console.log("Data completa: ", props);
-  console.log("Data del vuelo: ", props.offer.price);
-  console.log("Data de los pasajeros: ", props.passengers);
 
   const handleInputFocus = (e) => {
     setState({ ...state, focus: e.target.dataset.name || e.target.name });
   };
 
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
+  /* eslint-disable */
   const [usuario, setUsuario] = useState([]);
+  /* eslint-enable */
   const [resultPayment, setResultPayment] = useState(undefined);
   const history = useHistory();
 
@@ -70,7 +67,6 @@ export default function MercadoPagoForm(props) {
         userId: user.uid,
         ...props.offer,
       }).then(() => {
-        console.log("Ticket guardado");
       })
     } catch (error) {
       console.log(error);
@@ -92,7 +88,7 @@ export default function MercadoPagoForm(props) {
     if (MercadoPago) {
       const mp = new MercadoPago(VITE_PUBLIC_KEY_MP);
       const cardForm = mp.cardForm({
-        amount: props.offer.price,
+        amount:props.offer? props.offer.price : props.price,
         autoMount: true,
         form: formConfig,
         callbacks: {
@@ -161,7 +157,7 @@ export default function MercadoPagoForm(props) {
                         button: "Aceptar",
                       });
                     }
-                ).then(r =>
+                ).then(() =>
                 history.push("/")
             )
                 .catch((err) => {
@@ -181,6 +177,7 @@ export default function MercadoPagoForm(props) {
         },
       });
     }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MercadoPago]);
 
 
@@ -189,7 +186,7 @@ export default function MercadoPagoForm(props) {
         <div className={styles.paymentContainer}>
           <div className={styles.paymentCard}>
             {/* Boton de volver al home */}
-            <h1>Payment Process</h1>
+            <h1>Proceso de Pago</h1>
             <Card
                 cvc={state.cvc}
                 expiry={state.cardExpirationMonth + state.cardExpirationYear}
@@ -200,7 +197,6 @@ export default function MercadoPagoForm(props) {
             />
           </div>
 
-          {/* Numero de la tarjeta */}
           <form id="form-checkout" className={styles.paymentForm}>
             <div className={styles.paymentFormDiv}>
               <BsCreditCard className={styles.paymentFormDivIcon} />

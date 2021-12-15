@@ -3,7 +3,7 @@ import styles from "./TicketPage.module.scss";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import PassengerForm from "../../components/PassengerForm/PassengerForm";
 import { useEffect, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import Ticketinfo from "../../components/TicketInfo/Ticketinfo";
 import { validateForm } from "../../components/PassengerForm/validations";
 import swal from "sweetalert";
@@ -12,7 +12,6 @@ export default function TicketPage() {
   const { state } = useLocation();
   const history = useHistory();
 
-  // console.log("TicketPage: ", state);
 
   const totalPassengers = parseInt(state.adults) + parseInt(state.childs);
 
@@ -41,7 +40,6 @@ export default function TicketPage() {
   }
   insertForms(totalPassengers);
 
-  // console.log("validForms: ", validForms);
 
   const handleSubmit = () => {
     for (let passengerId in validForms) {
@@ -57,7 +55,6 @@ export default function TicketPage() {
           setValidForms
         );
       }
-      // console.log("Se valido uno: ", validForms);
     }
 
     const passengers = Object.values(validForms);
@@ -65,14 +62,13 @@ export default function TicketPage() {
       passenger[0] = `Pasajero ${index + 1}`;
       return passenger;
     });
-    // console.log("Salio del for: ", passengersData);
 
     if (passengersData.every((passenger) => passenger[0])) {
       const offerProps = {
         offer: { ...state },
         passengers: passengersData,
       };
-      console.log("offerProps: ", offerProps);
+
       swal({
         title: "Datos registrados",
         // text: "Tu boleto ha sido generado",
