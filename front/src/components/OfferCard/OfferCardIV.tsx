@@ -134,11 +134,11 @@ export default function OfferCardIV(props: any): JSX.Element {
 
   return (
     <>
-      <section className={styles.offers}>
+      <section className={styles.offers} data-aos="fade-up">
         <div className={styles.offersCard}>
           <div className={styles.offersCardMainInfo}>
             {/* Puntos de partida y llegada */}
-            <div data-aos="fade-left" className={styles.offersCardInfo}>
+            <div className={styles.offersCardInfo}>
               <p>
                 <FaPlaneDeparture />{" "}
                 {props.originCity ? props.originCity : props.originAirport}{" "}
@@ -152,7 +152,7 @@ export default function OfferCardIV(props: any): JSX.Element {
             </div>
 
             {/* Tipo de vuelo */}
-            <div data-aos="fade-up" className={styles.offersCardType}>
+            <div className={styles.offersCardType}>
               {props.transfersD.length === 1 ? (
                 <p>
                   <IoMdAirplane /> Vuelo directo
@@ -166,7 +166,7 @@ export default function OfferCardIV(props: any): JSX.Element {
             </div>
 
             {/* Buttons */}
-            <div data-aos="fade-right" className={styles.offersCardButtons}>
+            <div className={styles.offersCardButtons}>
               <Link
                 to={{
                   pathname: `/offer-detail/${props.offers}`,

@@ -13,7 +13,7 @@ import notFound from "../../assets/notFound.jpg";
 
 export default function OfferPage(): JSX.Element {
   const response: any = useSelector((state: any) => state.allFlight);
-  const [ordenado, setOrdenado] = useState(response);
+  const [order, setOrder] = useState("");
   // const cargando: any = useSelector((state: any) => state.loading);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -26,9 +26,6 @@ export default function OfferPage(): JSX.Element {
   //   setOrdenado(response);
   // },[])
 
-  useEffect(() => {
-    render();
-  }, [ordenado.mode])
 
 
   useEffect(() => {
@@ -37,39 +34,45 @@ export default function OfferPage(): JSX.Element {
     };
   }, [dispatch, location]);
 
-
-  const handleSort = (e: any) => {
+  const getOrder = (e: any)=>{
     e.preventDefault();
-    const sort = response;
-    if (e.target.value === "masbarato") {
-    sort.offers.sort((a: any, b: any) => {
-      if(a.price>b.price){
-        return 1;
-      }
-      setOrdenado(sort);
-      if(a.price<b.price){
-        return -1;
-      }
-      setOrdenado(sort);
-      return 0;
-    });
-  } if (e.target.value === "mascaro") {
-    sort.offers.sort((a: any, b: any) => {
-      if(a.price>b.price){
-        return -1;
-      }
-      setOrdenado(sort);
-      if(a.price<b.price){
-        return 1;
-      }
-      setOrdenado(sort);
-      return 0;
-    });
+
+    setOrder(e.target.value);
   }
-  setOrdenado(sort);
+
+  const handleSort = () => {
+    const sort = response;
+    if (order === "masbarato") {
+    sort.offers.sort((a: any, b: any) => {
+      if(a.price>b.price){
+        return 1;
+      }
+      if(a.price<b.price){
+        return -1;
+      }
+      return 0;
+    });
+    return sort;
+  }else if (order === "mascaro") {
+    sort.offers.sort((a: any, b: any) => {
+      if(a.price>b.price){
+        return -1;
+      }
+      if(a.price<b.price){
+        return 1;
+      }
+      return 0;
+    });
+    return sort;
+  } else {
+    return response;
+  }
 };
 
   const render = () => {
+
+    let ordenado = handleSort();
+
     const recomendations: any = [];
     if (ordenado?.offers.length >= 4) {
       for (let i = 0; i < 3; i++) {
@@ -99,7 +102,7 @@ export default function OfferPage(): JSX.Element {
 
           <section className={styles.offersCards}>
             <p>Ordenar por:</p>
-            <select onChange={handleSort}>
+            <select onChange={getOrder}>
               <option value="nada">nada</option>
               <option value="mascaro">Mayor precio</option>
               <option value="masbarato">Menor precio</option>
