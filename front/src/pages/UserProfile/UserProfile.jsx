@@ -163,7 +163,7 @@ export default function UserProfile(documentPath) {
 
   const render = () => {
     return (
-        <div key={usuario.id} className={styles.user}>
+        <div className={styles.user}>
           <GoHomeButton />
           {usuario.map((dato) => {
             return (

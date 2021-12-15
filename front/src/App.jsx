@@ -17,28 +17,41 @@ import TicketPage from "./pages/TicketPage/TicketPage";
 import OfferDetail from "./pages/OfferDetail/OfferDetail";
 // import Navbar from "./components/Navbar/Navbar";
 import PayPage from "./pages/PayPage/PayPage";
+<<<<<<< HEAD
+=======
 import LandingPage from "./pages/LandingPage/LandingPage";
 import SeatsPage from "./pages/SeatsPage/SeatsPage";
+>>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
 
 function App() {
   return (
     <div>
       
       <Switch>
+<<<<<<< HEAD
+=======
       <Route exact path="/LandingPage" component={LandingPage} />
+>>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
         <Route exact path="/" component={Home} />
         <Route exact path="/popular-destination/:id" component={PopularDestination} />
         <Route exact path="/about-us" component={AboutUs}/>
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={RegisterPage} />
+<<<<<<< HEAD
+=======
         <Route exact path="/terms" component={Terms} />
+>>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
         <Route exact path="/reset" component={Reset} />
         <Route exact path="/user" component={UserProfile} />
         <Route exact path="/user/update" component={UpdateUserProfile} />
         <Route exact path="/offers" component={OfferPage} />
         <Route exact path="/offer-detail/:offerId" component={OfferDetail} />
         <Route exact path="/ticket/:offerId" component={TicketPage} />
+<<<<<<< HEAD
+        <Route exact path="/terms" component={Terms} />
+=======
         <Route exact path="/seats/:offerId" component={SeatsPage} />
+>>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
         <Route exact path="/pay" component={PayPage} />
       </Switch>
         <Footer/>

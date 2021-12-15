@@ -62,23 +62,36 @@ export default function TicketPage() {
       passenger[0] = `Pasajero ${index + 1}`;
       return passenger;
     });
+<<<<<<< HEAD
+
+=======
+>>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
     if (passengersData.every((passenger) => passenger[0])) {
       const offerProps = {
         offer: { ...state },
         passengers: passengersData,
       };
 
+<<<<<<< HEAD
+=======
       console.log("offerProps: ", offerProps);
 
+>>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
       swal({
         title: "Datos registrados",
         // text: "Tu boleto ha sido generado",
         icon: "success",
         button: "Aceptar",
       }).then(() => {
+<<<<<<< HEAD
+        history.push({
+          pathname: `/pay`,
+          state: { ...offerProps },
+=======
         history.push({ 
           pathname : `/seats/${offerProps.offer.offers}`,
           state: {...offerProps} 
+>>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
         });
       });
     } else {
