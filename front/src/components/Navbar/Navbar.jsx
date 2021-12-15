@@ -25,9 +25,7 @@ export default function Navbar() {
      //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  useEffect(() => {
-    return setUserdelback(null)
-  }, [userdelback]);
+  
 
   const getUser = () => {
     db.collection("users").onSnapshot((querySnapshot) => {

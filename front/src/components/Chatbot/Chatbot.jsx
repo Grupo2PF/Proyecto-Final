@@ -31,6 +31,7 @@ export default function Chatbot() {
       });
       const filtrado = docs.filter((doc) => doc.email === user?.email);
       setUserdelback(filtrado[0]?.name);
+      console.log(filtrado[0]?.name);
     });
   };
   useEffect(() => {

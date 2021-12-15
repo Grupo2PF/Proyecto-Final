@@ -139,7 +139,6 @@ export default function SearchBar() {
   function handleClick(e: any) {
     e.preventDefault();
 
-
     const cities: any = json.filter((d) =>
       d.airport.toLowerCase().includes(value.originCity.toLowerCase())
     );
