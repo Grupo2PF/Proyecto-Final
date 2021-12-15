@@ -18,12 +18,9 @@ import OfferDetail from "./pages/OfferDetail/OfferDetail";
 // import Navbar from "./components/Navbar/Navbar";
 import PayPage from "./pages/PayPage/PayPage";
 
-
-
 function App() {
   return (
     <div>
-      
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/popular-destination/:id" component={PopularDestination} />

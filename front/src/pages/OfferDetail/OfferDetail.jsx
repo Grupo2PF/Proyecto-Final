@@ -23,7 +23,7 @@ export default function OfferDetail() {
 
     if (auth.currentUser) {
       history.push({
-        pathname: "/pay",
+        pathname: `/ticket/${state.offers}`,
         state: {
           ...state
         } 

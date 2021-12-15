@@ -208,8 +208,15 @@ router.get('/isavailable', async(req, res, next)=>{
                         }
                     }
                 }
+
+              const error = {
+                  message: "error"
+              }
+      
+              return res.send(error);
     
             }catch{
+
                 const error = {
                     message: "El vuelo solicitado no está disponible"
                 }
@@ -410,7 +417,12 @@ router.get('/isavailable', async(req, res, next)=>{
                             }
                         }
                     }
-                    next();
+
+                  const error = {
+                    message: "error"
+                  }
+          
+                  return res.send(error);
                 }catch{
                     const error = {
                         message: "El vuelo solicitado no está disponible"

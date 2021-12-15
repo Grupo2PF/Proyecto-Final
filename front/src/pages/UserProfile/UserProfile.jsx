@@ -260,7 +260,7 @@ export default function UserProfile(documentPath) {
                                     )}
                                   </div>
                                   <div className={styles.cardFavPrice}>
-                                    <p><span>Precio:</span> U$D{fav.price}</p>
+                                    <p><span>Precio:</span> U$D {fav.price}</p>
                                   </div>
                                 </div>
                                 <div  className={styles.cardFavButtons}>
@@ -303,16 +303,16 @@ export default function UserProfile(documentPath) {
                                   )}
                                 </div>
                                 <div className={styles.cardFavPrice}>
-                                  <p><span>Precio:</span> U$D{ticket.price}</p>
+                                  <p><span>Precio:</span> U$D {ticket.price}</p>
                                 </div>
                               </div>
 
                               <div className={styles.cardFavJourneyAndPrice}>
                                 <div className={styles.cardFavJourney}>
-                                  <p><span>Estado del Pago:</span> {ticket.status}</p>
+                                  <p><span>Estado del Pago:</span> {ticket.status === "approved" ? "Aprobado" : ""}</p>
                                 </div>
                                 <div className={styles.cardFavPrice}>
-                                  <p><span>Detalles:</span> {ticket.status_detail}</p>
+                                  <p><span>Detalles:</span> {ticket.status_detail === "accredited" ? "Acreditado" : ""}</p>
                                 </div>
                               </div>
                             </div>
