@@ -15,7 +15,6 @@ import OfferPage from "./pages/OfferPage/OfferPage";
 import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
 import TicketPage from "./pages/TicketPage/TicketPage";
 import OfferDetail from "./pages/OfferDetail/OfferDetail";
-// import Navbar from "./components/Navbar/Navbar";
 import PayPage from "./pages/PayPage/PayPage";
 
 
