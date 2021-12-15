@@ -1,3 +1,5 @@
+@import "../../scss/variables";
+
 .container{
     background-color: white;
     backdrop-filter: blur(10px);
@@ -12,48 +14,48 @@
     align-items: center;
     justify-content: center;
     padding-bottom: 40px;
-    padding: 40px;  
+    padding: 40px;
 }
 .numbLett{
     font-size: 0.8rem;
-}   
+}
 
-   .logo{
-       font-display: center;
-       justify-content: center;
-       margin: 5px;
-   }
-   .fila {
-       width: 100%;
-       margin: 2px;
-       display: flex;
-       flex-direction: row;
-   }
-   
-   .columna {
-       margin: 10px;
-       height: 60px;
-       width: 100%;
-       background-color: rgb(47, 124, 212);
-       padding: 20px;
-       backdrop-filter: blur(10px);
-       display: flex;
-       flex-direction: row;
-       justify-content: space-evenly;
-       border-radius: 15px;
-   }
-   .oneCard{
+.logo{
+    font-display: center;
+    justify-content: center;
+    margin: 5px;
+}
+.fila {
+    width: 100%;
+    margin: 2px;
+    display: flex;
+    flex-direction: row;
+}
+
+.columna {
+    margin: 10px;
+    height: 60px;
+    width: 100%;
+    background-color: rgb(47, 124, 212);
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border-radius: 15px;
+}
+.oneCard{
     background-color: transparent;
     backdrop-filter: blur(20px);
-       margin: 15px;
-   }
+    margin: 15px;
+}
 
-   .other{
+.other{
     height: 10rem;
     justify-content: center;
-   }
+}
 
-   .allSeats {
+.allSeats {
     background-image: url("../../assets/planes/plane-7.webp");
     background-attachment: fixed;
     background-size: cover;
@@ -63,9 +65,9 @@
     align-items: center;
     justify-content: center;
     padding-bottom: 10rem ;
-  }
+}
 
-  .buttonSubmit{
+.buttonSubmit{
     color: #ffffff;
     background-color: rgb(47, 124, 212);;
     height: 2.5em;
@@ -79,12 +81,19 @@
     transition: 0.2s;
     box-shadow: -1px -1px 3px darkgray;
     background-position: center;
-  }
+}
 
-  .buttondiv{
-    padding: 40px; 
+.buttondiv{
+    padding: 40px;
     display: center;
     text-align: center;
     justify-content: center;
+}
 
-  }
+@media screen and (min-width: $notebook-width) {
+    .allFlightSeats{
+        display: flex;
+        gap: 4rem;
+        padding: 1rem 2rem;
+    }
+}
