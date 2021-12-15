@@ -71,7 +71,11 @@ export function setLoading(payload: boolean) {
 export function getSeats(payload: any) {
   return async function(dispatch: any) {
     try {
+<<<<<<< HEAD
       const info = await axios.get(`http://localhost:3001/${payload}/seats`);
+=======
+      const info = await axios.get(`http://localhost:3001/seats/${payload}`);
+>>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
       return dispatch({
         type: GET_SEATS,
         payload: info.data,
