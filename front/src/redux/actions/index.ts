@@ -1,5 +1,4 @@
 import axios from "axios";
-import { nextTick } from "process";
 import {
   GET_FLIGHT,
   GET_SEATS,
@@ -20,7 +19,7 @@ export function getFlight(payload: any) {
     try {
       if (payload.journeyType === true) {
         const json = await axios.get(
-          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&rDate=${payload.returnDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
+          `https://devskyproject.herokuapp.com/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&rDate=${payload.returnDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
         );
 
         return dispatch({
@@ -29,7 +28,7 @@ export function getFlight(payload: any) {
         });
       } else {
         const json = await axios.get(
-          `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
+          `https://devskyproject.herokuapp.com/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
         );
         return dispatch({
           type: GET_FLIGHT,
@@ -45,7 +44,7 @@ export function getFlight(payload: any) {
 export function getFlightUrl(payload: any) {
   return async function(dispatch: any) {
     try {
-      const json = await axios.get(`http://localhost:3001/search${payload}`);
+      const json = await axios.get(`https://devskyproject.herokuapp.com/search${payload}`);
       return dispatch({
         type: GET_FLIGHT_URL,
         payload: json.data,
@@ -72,7 +71,7 @@ export function setLoading(payload: boolean) {
 export function getSeats(payload: any) {
   return async function(dispatch: any) {
     try {
-      const info = await axios.get(`http://localhost:3001/seats/${payload}`);
+      const info = await axios.get(`https://devskyproject.herokuapp.com/seats/${payload}`);
       return dispatch({
         type: GET_SEATS,
         payload: info.data,
@@ -110,7 +109,7 @@ export function resetUserProfile() {
 export function sendFavs(payload: any) {
   return async function(dispatch: any) {
     /* eslint-disable */
-    const favs = await axios.post("http://localhost:3001/saveflight", payload);
+    const favs = await axios.post("https://devskyproject.herokuapp.com/saveflight", payload);
     /* eslint-enable */
     dispatch({
       type: SEND_FAVS,
@@ -120,7 +119,7 @@ export function sendFavs(payload: any) {
 
 export function getFavs(payload: any) {
   return async function(dispatch: any) {
-    const favs = await axios.get(`http://localhost:3001/getsaves/${payload}`);
+    const favs = await axios.get(`https://devskyproject.herokuapp.com/getsaves/${payload}`);
     dispatch({
       type: GET_FAVS,
       payload: favs.data,
@@ -133,7 +132,7 @@ export function isAvailable(payload: any) {
     if (payload[0].rDate) {
       try {
         const info = await axios.get(
-          `http://localhost:3001/isavailable?origin=${payload[0].origin}&destination=${payload[0].destination}&originAirport=${payload[0].originAirport}&destinationAirport=${payload[0].destinationAirport}&dDate=${payload[0].dDate}&rDate=${payload[0].rDate}&adults=${payload[0].adults}&childs=${payload[0].childs}&baby=${payload[0].baby}&cabin=${payload[0].cabin}&flightId=${payload[0].offers}&price=${payload[0].price}&transfersD=${payload[0].transfersD.length}&transfersR=${payload[0].transfersR.length}`
+          `https://devskyproject.herokuapp.com/isavailable?origin=${payload[0].origin}&destination=${payload[0].destination}&originAirport=${payload[0].originAirport}&destinationAirport=${payload[0].destinationAirport}&dDate=${payload[0].dDate}&rDate=${payload[0].rDate}&adults=${payload[0].adults}&childs=${payload[0].childs}&baby=${payload[0].baby}&cabin=${payload[0].cabin}&flightId=${payload[0].offers}&price=${payload[0].price}&transfersD=${payload[0].transfersD.length}&transfersR=${payload[0].transfersR.length}`
         );
         if(info.data.message){
           return dispatch({
@@ -154,7 +153,7 @@ export function isAvailable(payload: any) {
     } else {
       try {
         const info = await axios.get(
-          `http://localhost:3001/isavailable?origin=${payload[0].origin}&destination=${payload[0].destination}&originAirport=${payload[0].originAirport}&destinationAirport=${payload[0].destinationAirport}&dDate=${payload[0].dDate}&adults=${payload[0].adults}&childs=${payload[0].childs}&baby=${payload[0].baby}&cabin=${payload[0].cabin}&flightId=${payload[0].offers}&price=${payload[0].price}&transfers=${payload[0].transfers.length}`
+          `https://devskyproject.herokuapp.com/isavailable?origin=${payload[0].origin}&destination=${payload[0].destination}&originAirport=${payload[0].originAirport}&destinationAirport=${payload[0].destinationAirport}&dDate=${payload[0].dDate}&adults=${payload[0].adults}&childs=${payload[0].childs}&baby=${payload[0].baby}&cabin=${payload[0].cabin}&flightId=${payload[0].offers}&price=${payload[0].price}&transfers=${payload[0].transfers.length}`
         );
         if(info.data.message){
           return dispatch({
@@ -178,7 +177,7 @@ export function isAvailable(payload: any) {
 export function getTickets(payload: any) {
   return async function(dispatch: any) {
     const tickets = await axios.get(
-      `http://localhost:3001/gettickets/${payload}`
+      `https://devskyproject.herokuapp.com/gettickets/${payload}`
     );
     dispatch({
       type: GET_TICKETS,

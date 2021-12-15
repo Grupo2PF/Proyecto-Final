@@ -1,15 +1,12 @@
-
-import React from 'react'
-import {  useHistory, useLocation } from "react-router-dom";
-import {  useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import styles from "./seatsPage.module.css"
-import OtherBox from "./OtherBox"
+import styles from "./seatsPage.module.scss";
+import OtherBox from "./OtherBox";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
-import seatsDefault from "./seatsDefault"
-import { getSeats } from '../../redux/actions';
+import seatsDefault from "./seatsDefault";
+import { getSeats } from "../../redux/actions";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
-
 
 export default function SeatsPage() {
     const [input, setInput] = useState([])
@@ -80,7 +77,7 @@ export default function SeatsPage() {
             alert("ya seleccionaste todos los asientos, si quieres volver a elejirlos o cambiarlos antes de confirmar, puedes actualizar el navegador y elejirlos nuevamente")
             console.log(input)
         }
-    }
+    };
 
     const handleCheckCuarto = (e) =>{
         let checked = e.target.checked
@@ -108,15 +105,14 @@ export default function SeatsPage() {
               pathname : "/pay",
               state: {...state, allSeats} 
             });
-        
-    }
-    console.log(finalSeats)
+    };
+    console.log(finalSeats);
 
-      const flightsId = finalSeats.map( e => e.id)
-      console.log(flightsId)
+    const flightsId = finalSeats.map((e) => e.id);
+    console.log(flightsId);
 
-     const allSeatsLimit = pax.length * finalSeats.length
-     console.log(allSeatsLimit)
+    const allSeatsLimit = pax.length * finalSeats.length;
+    console.log(allSeatsLimit);
      
      const firstFlight = finalSeats[0]
      const secondFlight = finalSeats[1]
@@ -306,10 +302,9 @@ export default function SeatsPage() {
            )): null  }   
            </div> )*/
 
-
-        return ( 
-                <div className={styles.allSeats}>
-                  <GoHomeButton />   
+        return (
+            <div className={styles.allSeats}>
+                <GoHomeButton />
                 <div className={styles.container}>
                 <div className={styles.oneCard}>    
                  </div>
@@ -327,6 +322,6 @@ export default function SeatsPage() {
                  </div></div>)
     
     }
-    
-    return renderAviones()
+
+    return renderAviones();
 }

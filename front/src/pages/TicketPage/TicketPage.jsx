@@ -76,7 +76,7 @@ export default function TicketPage() {
       }).then(() => {
         history.push({ 
           pathname : `/seats/${offerProps.offer.offers}`,
-          state: {...offerProps} 
+          state: {...offerProps}
         });
       });
     } else {

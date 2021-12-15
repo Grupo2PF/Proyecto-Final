@@ -252,7 +252,6 @@ router.get('/isavailable', async(req, res, next)=>{
                 transfersR: []
             }
 
-
             if(info.originCity === info.originAirport){
                 let i = 0;
                 while(info.originCity === info.originAirport){
