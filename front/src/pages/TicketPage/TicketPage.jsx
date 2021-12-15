@@ -68,8 +68,6 @@ export default function TicketPage() {
         passengers: passengersData,
       };
 
-      console.log("offerProps: ", offerProps);
-
       swal({
         title: "Datos registrados",
         // text: "Tu boleto ha sido generado",

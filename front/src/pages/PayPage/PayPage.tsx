@@ -7,6 +7,7 @@ import {useLocation} from "react-router-dom";
 export default function PayPage (props: any): JSX.Element {
 
     const { state } = useLocation();
+    console.log(state)
 
     return (
         <div className={styles.payPageContainer}>
