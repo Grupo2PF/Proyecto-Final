@@ -339,7 +339,7 @@ export default function RegisterPage() {
               />
               Acepto los términos y condiciones
               <br/>
-               <Link to="/terms">Ver términos y condiciones</Link>
+               <Link to="/terms" target="_blank" rel="noopener">Ver términos y condiciones</Link>
             </label>
           </div>
           <div>

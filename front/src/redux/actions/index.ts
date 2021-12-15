@@ -13,19 +13,6 @@ import {
   GET_PAY,
 } from "../actionTypes";
 
-type Swal = {
-  title: string;
-  text: string;
-  icon: string;
-  button: string;
-};
-
-const messageError: Swal = {
-  title: "El vuelo ya no esta disponible!",
-  text: "",
-  icon: "error",
-  button: "Volver",
-};
 
 export function getFlight(payload: any) {
   return async function(dispatch: any) {
@@ -127,7 +114,9 @@ export function resetUserProfile() {
 
 export function sendFavs(payload: any) {
   return async function(dispatch: any) {
+    /* eslint-disable */
     const favs = await axios.post("http://localhost:3001/saveflight", payload);
+    /* eslint-enable */
     dispatch({
       type: SEND_FAVS,
     });
@@ -192,7 +181,6 @@ export function getTickets(payload: any) {
     const tickets = await axios.get(
       `http://localhost:3001/gettickets/${payload}`
     );
-    console.log(tickets.data);
     dispatch({
       type: GET_TICKETS,
       payload: tickets.data,

@@ -10,8 +10,8 @@ export default function Navbar() {
   const [user, setUser] = useState(null);
   const [userdelback, setUserdelback] = useState(null);
 
-  useEffect(async () => {
-    await auth.onAuthStateChanged((currentUser) => {
+  useEffect( () => {
+     auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
         setUser(currentUser);
       } else {
@@ -22,7 +22,12 @@ export default function Navbar() {
 
   useEffect(() => {
     getUser();
+     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  useEffect(() => {
+    return setUserdelback(null)
+  }, [userdelback]);
 
   const getUser = () => {
     db.collection("users").onSnapshot((querySnapshot) => {

@@ -1,16 +1,14 @@
-import React from "react"
 import { useSelector } from "react-redux";
 import GoogleMaps from "simple-react-google-maps"
-
 export default function Maps() {
-
+    
     const ubicacion = useSelector((state) => state.allFlight);
 
 return (
-    console.log(ubicacion),
+    console.log(process.env.REACT_APP_API_KEY),
     <div>
     <GoogleMaps 
-    apiKey = {"AIzaSyDMn0hAA8XSluTktdHWDR21UYLMxl_2e7U"}
+    apiKey = {process.env.REACT_APP_API_KEY}
     style={{height: "250px", width: "700px"}}
     zoom = {1.3}
     center= {{
