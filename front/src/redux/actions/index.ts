@@ -1,4 +1,5 @@
 import axios from "axios";
+import { nextTick } from "process";
 import {
   GET_FLIGHT,
   GET_SEATS,
@@ -134,6 +135,12 @@ export function isAvailable(payload: any) {
         const info = await axios.get(
           `http://localhost:3001/isavailable?origin=${payload[0].origin}&destination=${payload[0].destination}&originAirport=${payload[0].originAirport}&destinationAirport=${payload[0].destinationAirport}&dDate=${payload[0].dDate}&rDate=${payload[0].rDate}&adults=${payload[0].adults}&childs=${payload[0].childs}&baby=${payload[0].baby}&cabin=${payload[0].cabin}&flightId=${payload[0].offers}&price=${payload[0].price}&transfersD=${payload[0].transfersD.length}&transfersR=${payload[0].transfersR.length}`
         );
+        if(info.data.message){
+          return dispatch({
+            type: IS_AVAILABLE,
+            payload: info.data.message,
+          });
+        }
         return dispatch({
           type: IS_AVAILABLE,
           payload: info.data,
@@ -149,6 +156,12 @@ export function isAvailable(payload: any) {
         const info = await axios.get(
           `http://localhost:3001/isavailable?origin=${payload[0].origin}&destination=${payload[0].destination}&originAirport=${payload[0].originAirport}&destinationAirport=${payload[0].destinationAirport}&dDate=${payload[0].dDate}&adults=${payload[0].adults}&childs=${payload[0].childs}&baby=${payload[0].baby}&cabin=${payload[0].cabin}&flightId=${payload[0].offers}&price=${payload[0].price}&transfers=${payload[0].transfers.length}`
         );
+        if(info.data.message){
+          return dispatch({
+            type: IS_AVAILABLE,
+            payload: info.data.message,
+          });
+        }
         return dispatch({
           type: IS_AVAILABLE,
           payload: info.data,
