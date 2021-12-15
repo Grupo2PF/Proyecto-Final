@@ -1,15 +1,16 @@
 import styles from "./OfferCard.module.scss";
 import { useDispatch } from "react-redux";
-import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { AiOutlineExclamationCircle,AiOutlineStar } from "react-icons/ai";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsArrowLeftRight } from "react-icons/bs";
-import { IoMdAirplane } from "react-icons/io";
+import { IoMdAirplane,IoLogoUsd } from "react-icons/io";
 import { sendFavs } from "../../redux/actions/";
 import {Link, useHistory, useLocation} from "react-router-dom";
 import { auth, db } from "../../firebaseConfig";
 import { useState, useEffect} from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import swal from "sweetalert";
+
 
 export default function OfferCardI(props: any): JSX.Element {
   const dispatch = useDispatch();
@@ -134,11 +135,11 @@ export default function OfferCardI(props: any): JSX.Element {
   };
 
   return (
-    <section className={styles.offers}>
+    <section className={styles.offers} data-aos="fade-up">
       <div className={styles.offersCard}>
         <div className={styles.offersCardMainInfo}>
           {/* Puntos de partida y llegada */}
-          <div className={styles.offersCardInfo}>
+          <div className={styles.offersCardInfo} data-aos="fade-left">
             <p>
               <FaPlaneDeparture />{" "}
               {props.originCity ? props.originCity : props.originAirport}{" "}
@@ -152,7 +153,7 @@ export default function OfferCardI(props: any): JSX.Element {
           </div>
 
           {/* Tipo de vuelo */}
-          <div className={styles.offersCardType}>
+          <div className={styles.offersCardType} data-aos="fade-up">
             {props.transfers.length === 1 ? (
               <p>
                 {" "}
@@ -167,7 +168,7 @@ export default function OfferCardI(props: any): JSX.Element {
           </div>
 
           {/* Buttons */}
-          <div className={styles.offersCardButtons}>
+          <div className={styles.offersCardButtons} data-aos="fade-right">
             <Link
               to={{
                 pathname: `/offer-detail/${props.offers}`,
@@ -181,11 +182,12 @@ export default function OfferCardI(props: any): JSX.Element {
               <AiOutlineExclamationCircle />
               Ver detalles
             </Link>
-            <button value={props.offers} onClick={handleFavs}>Añadir a favs</button>
+            <button value={props.offers} onClick={handleFavs}><AiOutlineStar/> Añadir a favs</button>
             <button
+            
               className={styles.offersCardButtonsPrice}
               onClick={handleBuy}
-            >
+            ><IoLogoUsd /> 
               {`${props.currency} ${props.price}`}
             </button>
           </div>

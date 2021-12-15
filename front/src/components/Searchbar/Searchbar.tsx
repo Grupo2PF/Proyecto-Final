@@ -251,7 +251,7 @@ export default function SearchBar() {
   }
 
   return (
-    <div className={styles.searchBarContainer}>
+    <div className={styles.searchBarContainer} data-aos="fade-right"  data-aos-duration="1200">
       <Errorr
         error={error}
         setError={setError}

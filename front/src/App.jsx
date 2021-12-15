@@ -18,6 +18,17 @@ import OfferDetail from "./pages/OfferDetail/OfferDetail";
 // import Navbar from "./components/Navbar/Navbar";
 import PayPage from "./pages/PayPage/PayPage";
 
+// Animations configuration
+import AOS from "aos";
+AOS.init({
+  duration: 1000,
+  once: true,
+  delay: 250,
+  offset: 50,
+  debounceDelay: 0,
+  throttleDelay: 10,
+});
+
 function App() {
   return (
     <div>
