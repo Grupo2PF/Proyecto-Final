@@ -1,195 +1,334 @@
 const express = require("express");
-const axios = require("axios");
-const { Duffel } = require("@duffel/api");
+const duffel = require('../duffel');
+
 const router = express();
-const codes = require("../../../IATA.json");
 
-const duffel = new Duffel({
-  // Store your access token in an environment variable, keep it secret and only readable on your server
-  token: "duffel_test_5oKRr362CbQ5GAv-enslSuMIgYqXC9nrvaFBVSFbYEi",
-});
-/*
-router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  const detail = await duffel.offerRequests.get(id);
-  return res.send(detail);
-});*/
-/*
-router.get("/SortResult", (req, res) => {
-  const list = duffel.offers.list({
-    after: "g2wAAAACbQAAABBBZXJvbWlzdC1LaGFya2l2bQAAAB=",
-    before: null,
-    limit: 4,
-    offer_request_id: "orq_00009htyDGjIfajdNBZRlw",
-    sort: "total_amount",
-    max_connections: 5,
-  });
-  console.log(list);
-  return res.send(list);
-});*/
 
-//codes.forEach((e) => console.log(e.iata))
-/*
-if(e)
-*/
-/*const addIataCode = function (input) {
-  codes.forEach((e) => {
-   console.log(e.iata);
-  });
-};
-console.log(addIataCode);*/
-// TRANSFORMAR DE CITY A IATA
-router.post("/Result", (req, res) => {
-  const { city } = req.body;
+router.get("/search", async function (req, res, next) {
 
-  const result = codes.filter((e) =>
-    e.city.toLowerCase().includes(city.toLowerCase())
-  );
+  try{
 
-  console.log(result);
 
-  return res.send(result);
-});
+    let mode;
+    
+    let { origin, destination, dDate, rDate, adults, childs, baby, cabin } = req.query;
+    let psgrs = [];
 
-router.get("/Seats/:id", async (req, res) => {
-  const { id } = req.params;
-  const flightSeats = await duffel.seatMaps.get({
-    offer_id: id,
-  });
 
-  const allSeatsInfo = {
-    seatsByFlight: flightSeats.data.map((e) => {
-      const offerSlice = {
-        id: e.id,
-        hallsAmount: e.cabins.map((e) => e.aisles),
-        rowsAmount: e.cabins.map((e) => e.rows.length),
-        columns: e.cabins.map((e) => e.rows.map((e) => e.sections.length)),
-        seatsByColumn: e.cabins.map((e) =>
-          e.rows.map((e) => e.sections.map((e) => e.elements.length))
-        ),
-        //map: e.cabins.rows.map((e) => e),
-        seatsInfo: e.cabins.map((e) =>
-          e.rows.map((e) =>
-            e.sections.map((e) =>
-              e.elements.map((e) => {
-                const boxInfo = {
-                  type: e.type,
-                  numberAndLetter: e.designator,
-                  avaliable: e.available_services ? false : true,
-                  restrictions: e.disclosures,
-                };
-                return boxInfo;
-              })
-            )
-          )
-        ),
+    if(rDate !== undefined){
+      mode = 'roundtrip';
+    }else{
+      mode = 'oneway';
+    }
+
+    for(let i = 0; i < adults; i++){
+      let psgr = {type: "adult"};
+      psgrs.push(psgr);
+    }
+
+    if(childs > 0){
+      for(let k = 0; k < childs; k++){
+        let psgr = {type: "child"};
+        psgrs.push(psgr);
+      }
+    }
+
+    if(baby > 0){
+      for(let k = 0; k < baby; k++){
+        let psgr = {type: "infant_without_seat"};
+        psgrs.push(psgr);
+      }
+    }
+    
+    if(mode === 'oneway'){
+  
+      const offerRequestOneway = await duffel.offerRequests.create(
+        {
+          return_offers: true,
+          slices: [
+            {
+              origin: origin,
+              destination: destination,
+              departure_date: dDate,
+            },
+          ],
+          passengers: psgrs,
+          cabin_class: cabin,
+        }
+      );
+
+      if(!offerRequestOneway.data.slices[0].origin.airports && !offerRequestOneway.data.slices[0].destination.airports ){
+        var latO = offerRequestOneway.data.slices[0].origin.latitude
+        var lngO = offerRequestOneway.data.slices[0].origin.longitude
+        var latD = offerRequestOneway.data.slices[0].destination.latitude
+        var lngD = offerRequestOneway.data.slices[0].destination.longitude
+      } else if(offerRequestOneway.data.slices[0].origin.airports && offerRequestOneway.data.slices[0].destination.airports){
+        var latO = offerRequestOneway.data.slices[0].origin.airports[0].latitude
+        var lngO = offerRequestOneway.data.slices[0].origin.airports[0].longitude
+        var latD = offerRequestOneway.data.slices[0].destination.airports[0].latitude
+        var lngD = offerRequestOneway.data.slices[0].destination.airports[0].longitude
+      } else if (offerRequestOneway.data.slices[0].origin.airports && !offerRequestOneway.data.slices[0].destination.airports){
+        var latO = offerRequestOneway.data.slices[0].origin.airports[0].latitude
+        var lngO = offerRequestOneway.data.slices[0].origin.airports[0].longitude
+        var latD = offerRequestOneway.data.slices[0].destination.latitude
+        var lngD = offerRequestOneway.data.slices[0].destination.longitude
+      } else if (!offerRequestOneway.data.slices[0].origin.airports && offerRequestOneway.data.slices[0].destination.airports){
+        var latO = offerRequestOneway.data.slices[0].origin.latitude
+        var lngO = offerRequestOneway.data.slices[0].origin.longitude
+        var latD = offerRequestOneway.data.slices[0].destination.airports[0].latitude
+        var lngD = offerRequestOneway.data.slices[0].destination.airports[0].longitude
+      }
+
+    
+  
+      const flightResults = {
+        mode: mode,
+        class: cabin,
+        origin: {
+          city: offerRequestOneway.data.slices[0].origin.city_name || offerRequestOneway.data.slices[0].origin.name,
+          airport: offerRequestOneway.data.slices[0].origin.name,
+          latO: latO,
+          lngO: lngO,
+        },
+        destination: {
+          city: offerRequestOneway.data.slices[0].destination.city_name || offerRequestOneway.data.slices[0].destination.name,
+          airport: offerRequestOneway.data.slices[0].destination.name,
+          latD: latD,
+          lngD: lngD,
+        },
+        offers: []
       };
-      return offerSlice;
-    }),
-  };
 
-  return res.send(allSeatsInfo);
-});
+      if(flightResults.origin.city === flightResults.origin.airport){
+        let i = 0;
+        while(flightResults.origin.city === flightResults.origin.airport){
+          if(offerRequestOneway.data.offers[i].slices[0].origin.iata_code === origin){
+            flightResults.origin.airport = offerRequestOneway.data.offers[i].slices[0].origin.name;
+          }
+          i++;
+        }
+      }
 
-router.get("/", async function (req, res) {
-  const { inputOrigin } = req.query;
-  const { inputDestiny } = req.query;
-  const { inputDepartureDate } = req.query;
-  const { inputReturnDate } = req.query;
-
-  inputReturnDate
-    ? (offerRequestResponse = await duffel.offerRequests.create({
-        return_offers: true,
-        slices: [
-          {
-            origin: inputOrigin,
-            destination: inputDestiny,
-            departure_date: inputDepartureDate,
+      if(flightResults.destination.city === flightResults.destination.airport){
+        let i = 0;
+        while(flightResults.destination.city === flightResults.destination.airport){
+          if(offerRequestOneway.data.offers[i].slices[0].destination.iata_code === destination){
+            flightResults.destination.airport = offerRequestOneway.data.offers[i].slices[0].destination.name;
+          }
+          i++;
+        }
+      }
+      
+      for(let i = 0; i < offerRequestOneway.data.offers.length; i++){
+        let flight = {
+          id: offerRequestOneway.data.offers[i].id,
+          origin: {
+            city: offerRequestOneway.data.offers[i].slices[0].origin.city_name,
+            airport: offerRequestOneway.data.offers[i].slices[0].origin.name,
+            date: offerRequestOneway.data.offers[i].slices[0].segments[0].departing_at,
           },
-          {
-            origin: inputDestiny,
-            destination: inputOrigin,
-            departure_date: inputReturnDate,
+          destiny: {
+            city: offerRequestOneway.data.offers[i].slices[0].destination.city_name,
+            airport: offerRequestOneway.data.offers[i].slices[0].destination.name,
+            date: offerRequestOneway.data.offers[i].slices[0].segments[0].arriving_at
           },
-          //otro objeto igual para la vuelta
-        ],
-        passengers: [{ type: "adult" }],
-        cabin_class: "economy",
-      }))
-    : (offerRequestResponse = await duffel.offerRequests.create({
-        return_offers: true,
-        slices: [
-          {
-            origin: inputOrigin,
-            destination: inputDestiny,
-            departure_date: inputDepartureDate,
+          price: offerRequestOneway.data.offers[i].total_amount,
+          currency: offerRequestOneway.data.offers[i].total_currency,
+          airline: offerRequestOneway.data.offers[i].owner.name,
+          transfers: [],
+        }
+  
+        offerRequestOneway.data.offers[i].slices[0].segments.map((transfer)=>{
+          let tr = {
+            origin: transfer.origin.city_name,
+            destination: transfer.destination.city_name,
+            departure: transfer.departing_at,
+            arrive: transfer.arriving_at,
+            airline: transfer.marketing_carrier.name,
+            flightNumber: transfer.marketing_carrier_flight_number
+          }
+  
+          flight.transfers.push(tr);
+  
+        });
+        
+        if(offerRequestOneway.data.offers[i].slices[0].origin.iata_code === origin && offerRequestOneway.data.offers[i].slices[0].destination.iata_code === destination){
+          flightResults.offers.push(flight);
+        }
+      }
+
+      res.send(flightResults);
+    }
+    
+    else if(mode === 'roundtrip')
+    
+    {
+
+      const offerRequestRoundtrip = await duffel.offerRequests.create(
+        {
+          return_offers: true,
+          slices: [
+            {
+              origin: origin,
+              destination: destination,
+              departure_date: dDate,
+            },
+            {
+              origin: destination,
+              destination: origin,
+              departure_date: rDate,
+            },
+          ],
+          passengers: psgrs,
+          cabin_class: cabin,
+        }
+      );
+
+
+      if(!offerRequestRoundtrip.data.slices[0].origin.airports && !offerRequestRoundtrip.data.slices[0].destination.airports ){
+        var latO = offerRequestRoundtrip.data.slices[0].origin.latitude
+        var lngO = offerRequestRoundtrip.data.slices[0].origin.longitude
+        var latD = offerRequestRoundtrip.data.slices[0].destination.latitude
+        var lngD = offerRequestRoundtrip.data.slices[0].destination.longitude
+      } else if(offerRequestRoundtrip.data.slices[0].origin.airports && offerRequestRoundtrip.data.slices[0].destination.airports){
+        var latO = offerRequestRoundtrip.data.slices[0].origin.airports[0].latitude
+        var lngO = offerRequestRoundtrip.data.slices[0].origin.airports[0].longitude
+        var latD = offerRequestRoundtrip.data.slices[0].destination.airports[0].latitude
+        var lngD = offerRequestRoundtrip.data.slices[0].destination.airports[0].longitude
+      } else if (offerRequestRoundtrip.data.slices[0].origin.airports && !offerRequestRoundtrip.data.slices[0].destination.airports){
+        var latO = offerRequestRoundtrip.data.slices[0].origin.airports[0].latitude
+        var lngO = offerRequestRoundtrip.data.slices[0].origin.airports[0].longitude
+        var latD = offerRequestRoundtrip.data.slices[0].destination.latitude
+        var lngD = offerRequestRoundtrip.data.slices[0].destination.longitude
+      } else if (!offerRequestRoundtrip.data.slices[0].origin.airports && offerRequestRoundtrip.data.slices[0].destination.airports){
+        var latO = offerRequestRoundtrip.data.slices[0].origin.latitude
+        var lngO = offerRequestRoundtrip.data.slices[0].origin.longitude
+        var latD = offerRequestRoundtrip.data.slices[0].destination.airports[0].latitude
+        var lngD = offerRequestRoundtrip.data.slices[0].destination.airports[0].longitude
+      }
+   
+      const flightResults = {
+        mode: mode,
+        class: cabin,
+        origin: {
+          city: offerRequestRoundtrip.data.slices[0].origin.city_name || offerRequestRoundtrip.data.slices[0].origin.name,
+          airport: offerRequestRoundtrip.data.slices[0].origin.name,
+          latO: latO,
+          lngO: lngO,
+        },
+        destination: {
+          city: offerRequestRoundtrip.data.slices[0].destination.city_name || offerRequestRoundtrip.data.slices[0].destination.name,
+          airport: offerRequestRoundtrip.data.slices[0].destination.name,
+          latD: latD,
+          lngD: lngD,
+        },
+        offers: []
+      };
+
+      if(flightResults.origin.city === flightResults.origin.airport){
+        let i = 0;
+        while(flightResults.origin.city === flightResults.origin.airport){
+          if(offerRequestRoundtrip.data.offers[i].slices[0].origin.iata_code === origin){
+            flightResults.origin.airport = offerRequestRoundtrip.data.offers[i].slices[0].origin.name;
+          }
+          i++;
+        }
+      }
+
+      if(flightResults.destination.city === flightResults.destination.airport){
+        let i = 0;
+        while(flightResults.destination.city === flightResults.destination.airport){
+          if(offerRequestRoundtrip.data.offers[i].slices[0].destination.iata_code === destination){
+            flightResults.destination.airport = offerRequestRoundtrip.data.offers[i].slices[0].destination.name;
+          }
+          i++;
+        }
+      }
+      
+      for(let i = 0; i < offerRequestRoundtrip.data.offers.length; i++){
+        let flight = {
+          id: offerRequestRoundtrip.data.offers[i].id,
+          price: offerRequestRoundtrip.data.offers[i].total_amount,
+          currency: offerRequestRoundtrip.data.offers[i].total_currency,
+          airline: offerRequestRoundtrip.data.offers[i].owner.name,
+          departure: {
+            id: offerRequestRoundtrip.data.offers[i].slices[0].id,
+            origin: {
+              city: offerRequestRoundtrip.data.offers[i].slices[0].origin.city_name,
+              airport: offerRequestRoundtrip.data.offers[i].slices[0].origin.name,
+              date: offerRequestRoundtrip.data.offers[i].slices[0].segments[0].departing_at,
+            },
+            destiny: {
+              city: offerRequestRoundtrip.data.offers[i].slices[0].destination.city_name,
+              airport: offerRequestRoundtrip.data.offers[i].slices[0].destination.name,
+            },
+            transfers: []
           },
-          //otro objeto igual para la vuelta
-        ],
-        passengers: [{ type: "adult" }],
-        cabin_class: "economy",
-      }));
+          return: {
+            id: offerRequestRoundtrip.data.offers[i].slices[1].id,
+            origin: {
+              city: offerRequestRoundtrip.data.offers[i].slices[1].origin.city_name,
+              airport: offerRequestRoundtrip.data.offers[i].slices[1].origin.name,
+              date: offerRequestRoundtrip.data.offers[i].slices[1].segments[0].departing_at
+            },
+            destiny: {
+              city: offerRequestRoundtrip.data.offers[i].slices[1].destination.city_name,
+              airport: offerRequestRoundtrip.data.offers[i].slices[1].destination.name
+            },
+            transfers: []
+          }
+        }
+  
+        offerRequestRoundtrip.data.offers[i].slices[0].segments.map((transfer)=>{
+          let tr = {
+            origin: transfer.origin.city_name,
+            destination: transfer.destination.city_name,
+            departure: transfer.departing_at,
+            arrive: transfer.arriving_at,
+            airline: transfer.marketing_carrier.name,
+            flightNumber: transfer.marketing_carrier_flight_number
+          }
 
-  const allTicketsInfo = {
-    originCity: offerRequestResponse.data.slices[0].origin.city_name,
-    originAirport: offerRequestResponse.data.slices[0].origin.name,
-    destinyCity: offerRequestResponse.data.slices[0].destination.city_name,
-    destinyAirport: offerRequestResponse.data.slices[0].destination.name,
+          flight.departure.transfers.push(tr);
+          
+        });
 
-    offersCurrencies: offerRequestResponse.data.offers.map(
-      (offer) => offer.total_currency
-    ),
-    offersPrices: offerRequestResponse.data.offers.map(
-      (offer) => offer.total_amount
-    ),
-    offersIds: offerRequestResponse.data.offers.map((offer) => offer.id),
-    AirlineName: offerRequestResponse.data.offers.map(
-      (offer) => offer.owner.name
-    ),
-    class: offerRequestResponse.data.offers.map(
-      (e) => e.slices[0].fare_brand_name
-    ),
-    transfers: offerRequestResponse.data.offers.map((offer) =>
-      offer.slices[0].segments.map((e) => {
-        const myTransfer = {
-          origin: e.origin.city_name,
-          destination: e.destination.city_name,
-          departing: e.departing_at,
-          arriving: e.arriving_at,
-          airline: e.marketing_carrier.name,
-          flightNumber: e.marketing_carrier_flight_number,
-        };
-        return myTransfer;
-      })
-    ),
-    todo: offerRequestResponse.data.offers,
-  };
-  return res.send(allTicketsInfo);
-});
-/*  
-origin and destiny
-Airport name
-Date and time
-city name
+        offerRequestRoundtrip.data.offers[i].slices[1].segments.map((transfer)=>{
+          let tr = {
+            id: transfer.id,
+            origin: transfer.origin.city_name,
+            destination: transfer.destination.city_name,
+            departure: transfer.departing_at,
+            arrive: transfer.arriving_at,
+            airline: transfer.marketing_carrier.name,
+            flightNumber: transfer.marketing_carrier_flight_number
+          }
 
-offer currency
-amount
+          flight.return.transfers.push(tr);
+          
+        });
 
-id ticket
-passenger 
-name , lastname, dni , class
+        if(offerRequestRoundtrip.data.offers[i].slices[0].origin.iata_code === origin && offerRequestRoundtrip.data.offers[i].slices[0].destination.iata_code === destination){
+          if(offerRequestRoundtrip.data.offers[i].slices[1].origin.iata_code === destination && offerRequestRoundtrip.data.offers[i].slices[1].destination.iata_code === origin){
+            flightResults.offers.push(flight);
+          }
+        }
 
-gate 
-seat
-flight number
+      }
 
-*/
+      res.send(flightResults);
 
-router.get("/results", async function (req, res) {
-  // const flightApi = await axios.get();
-  const aircraft = await duffel.aircraft.get("arc_00009VMF8AhXSSRnQDI6Hi");
-  console.log(aircraft);
-  return res.send("Hello World from results!");
+    }
+
+  }catch(error){
+
+    if(error.errors){
+      next(error.errors[0].message);
+    }else{
+      next(error);
+    }
+
+  }
 });
 
 module.exports = router;
