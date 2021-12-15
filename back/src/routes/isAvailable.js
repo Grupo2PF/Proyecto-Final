@@ -65,18 +65,11 @@ router.get('/isavailable', async(req, res, next)=>{
                 airline: data.owner.name,
                 currency: data.total_currency,
                 price: data.total_amount,
-<<<<<<< HEAD
-                class: data.slices[0].segments[0].passengers[0].cabin_class,
-                adults: adults,
-                childs, childs,
-                baby, baby,
-=======
                 cabin: data.slices[0].segments[0].passengers[0].cabin_class,
                 adults: adults,
                 childs: childs,
                 baby: baby,
                 offers:info.offers,
->>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
                 originCity: data.slices[0].origin.city_name,
                 originAirport: data.slices[0].origin.name,
                 destinationCity: data.slices[0].destination.city_name,
@@ -244,14 +237,10 @@ router.get('/isavailable', async(req, res, next)=>{
                 airline: data.owner.name,
                 currency: data.total_currency,
                 price: data.total_amount,
-<<<<<<< HEAD
-                class: data.slices[0].segments[0].passengers[0].cabin_class,
-=======
                 dDate: dDate,
                 rDate: rDate,
                 offers:data.id,
                 cabin: data.slices[0].segments[0].passengers[0].cabin_class,
->>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
                 adults: adults,
                 childs, childs,
                 baby, baby,
@@ -263,10 +252,6 @@ router.get('/isavailable', async(req, res, next)=>{
                 transfersR: []
             }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
             if(info.originCity === info.originAirport){
                 let i = 0;
                 while(info.originCity === info.originAirport){
