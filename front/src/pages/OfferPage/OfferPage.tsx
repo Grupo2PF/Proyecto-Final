@@ -39,8 +39,8 @@ export default function OfferPage(): JSX.Element {
       return (
         <section className={styles.divContainer}>
           <Navbar />
-          <header className={styles.heroBanner}>
-            <h1>
+          <header className={styles.heroBanner} data-aos="fade-right" data-aos-duration="1200">
+            <h1 data-aos="fade-up" data-aos-duration="1200" data-aos-delay="250">
               Las mejores ofertas en vuelos desde{" "}
               {response.origin.city
                 ? response.origin.city
@@ -53,7 +53,7 @@ export default function OfferPage(): JSX.Element {
           </header>
           <Maps />
 
-          <h2>Ofertas disponibles</h2>
+          <h2 data-aos="fade-up">Ofertas disponibles</h2>
 
           <section className={styles.offersCards}>
             {response.mode === "oneway"
@@ -74,6 +74,7 @@ export default function OfferPage(): JSX.Element {
                 ))
               : response.offers.map((item: any) => (
                   <OfferCardIV
+                  
                     key={item.id}
                     offers={item.id}
                     currency={item.currency}

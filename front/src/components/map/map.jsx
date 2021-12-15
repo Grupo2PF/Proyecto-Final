@@ -5,7 +5,7 @@ export default function Maps() {
     const ubicacion = useSelector((state) => state.allFlight);
 
 return (
-    <div>
+    <div data-aos="fade-up">
     <GoogleMaps 
     apiKey = {process.env.REACT_APP_API_KEY}
     style={{height: "250px", width: "700px"}}
