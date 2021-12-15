@@ -6,6 +6,8 @@ const flights = require('./flights.js');
 const seats = require('./seats.js');
 const saves = require('./saves');
 const isAvailable = require('./isAvailable');
+const mercadoPagob = require('./mercadoPagob');
+const gettickets = require('./gettickets');
 
 
 
@@ -16,5 +18,7 @@ router.use('/', flights);
 router.use('/', seats);
 router.use('/', saves);
 router.use('/', isAvailable);
+router.use('/', mercadoPagob);
+router.use('/', gettickets);
 
 module.exports = router;

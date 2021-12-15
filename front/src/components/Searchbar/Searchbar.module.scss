@@ -1,21 +1,23 @@
 @import "../../scss/variables";
 
 .searchBarContainer {
-  width: 100vw;
+  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  background: rgb(128, 177, 255);
+  /*  background: rgb(128, 177, 255);
   background: linear-gradient(
     197deg,
     rgba(128, 177, 255, 1) 0%,
     rgba(56, 132, 254, 1) 30%,
     rgba(75, 144, 254, 1) 81%,
     rgba(136, 182, 255, 1) 100%
-  );
+  ); */
+  background-color: $white;
   box-sizing: border-box;
-  border-radius: 3px;
+  border-radius: 1rem;
+  padding: 1rem;
 
   .titleBox {
     width: 100%;
@@ -24,21 +26,24 @@
     justify-content: center;
     align-items: center;
     margin: 2rem 0;
+    text-align: center;
+
+    // background-color: red;
     h3 {
       // padding-top        : 1rem;
-      font-size: 2rem;
+      font-size: 1.5rem;
       font-weight: $regular-font;
       // font-family     : $titles-font;
-      color: $white;
+      color: black;
       border-bottom: solid 2px $secundary-color;
-      text-shadow: 0px 0px 2px black;
+      // text-shadow: 0px 0px 2px black;
     }
   }
 
   form {
-    // background-color: lawngreen;
+    // background-color: brown;
     // height: 80%;
-    width: 90%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -51,30 +56,40 @@
       .originDestiny {
         width: 100%;
         align-items: center;
-        height: 20vh;
+
+        // height: 30vh;
         .selects {
           width: 80%;
-          height: 50%;
+          // height: 50%;
           display: flex;
           justify-content: center;
           // margin: 0.5rem 0;
+          // background-color: blue;
 
           .inputBox {
-            height: 50%;
-
-            .icon {
-              color: white;
-              text-shadow: 0px 0px 2px black;
-            }
-          }
-          .inputBox:hover {
-            background-color: rgba(255, 255, 255, 0.4);
+            height: 8vh;
+            // background-color: red;
+            margin-bottom: 1rem;
+            border-bottom: solid 1px $main-color;
+            transition: 0.3s;
 
             .icon {
               color: $main-color;
-              filter: drop-shadow(0px 0px 4px white);
-              // margin: 1px;
+              text-shadow: 0px 0px 2px black;
+              height: 50%;
             }
+
+            input {
+              padding-left: 0.4rem;
+              height: 100%;
+              color: black;
+            }
+          }
+
+          .inputBox:hover {
+            // background-color: rgba(255, 255, 255, 0.4);
+
+            outline: 1px solid $main-color;
 
             input::placeholder {
               color: rgba(0, 0, 0, 0.5);
@@ -85,38 +100,40 @@
             // width    : 100%;
             // height: 10vh;
             height: auto;
-
             // background-color: blue;
+            z-index: 5000;
+
             ul {
+              outline: solid 1px $main-color;
               background-color: white;
               list-style: none;
               position: absolute;
               // background-color   : red;
               // width                 : 72%;
+              // border: solid 1px $main-color;
 
               li {
                 display: flex;
                 border-radius: 2px;
-                border: solid 1px $lightgray;
+                // border: solid 1px $lightgray;
                 flex-direction: column;
                 justify-content: center;
                 // height          : 20%;
-                // border: solid 1px $main-color;
-
-                :hover {
-                  box-shadow: 0px 0px 5px $main-color;
-                }
               }
 
               button {
                 transition: 0.1s;
                 width: 100%;
                 padding: 0.5rem 0.2rem;
-                text-align: start;
+                text-align: left;
 
-                background-color: rgba(128, 128, 128, 0.1);
-
+                background-color: white;
                 border: none;
+              }
+
+              button:hover {
+                color: white;
+                background-color: $main-color
               }
             }
           }
@@ -126,17 +143,28 @@
       .journeyBoxWithDate {
         align-items: center;
         width: 100%;
+        // background-color: blue;
 
         .selects {
-          padding: 0.5rem 0;
+          margin: 1rem 0 0 0;
+          width: 80%;
+          border-radius: 3px;
+          border-bottom: solid 1px $main-color;
 
           .inputBox {
+            height: 8vh;
+            transition: 0.3s;
+
             .icon {
-              color: white;
+              color: $main-color;
+              height: 50%;
             }
+
             select {
               background-color: transparent;
-              color: lightgray;
+              color: $black;
+              height: 100%;
+              font-size: 1.3rem;
 
               option {
                 background-color: white;
@@ -148,44 +176,55 @@
               }
             }
           }
+
           .inputBox:hover {
-            background-color: rgba(255, 255, 255, 0.4);
-            .icon {
-              color: $main-color;
-              filter: drop-shadow(0px 0px 4px white);
-            }
+            outline: 1px solid $main-color;
           }
         }
 
         .dataBox {
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
           align-items: center;
-          justify-content: start;
-          // background-color            : mediumslateblue;
+          justify-content: flex-start;
+          // background-color: mediumslateblue;
           width: 100%;
           // height                   : 30vh;
           // border             : 1px solid #505050;
 
           .selectsData {
-            width: 50%;
-            padding: 0 0.2rem;
-            // background-color: mediumspringgreen;
-
-            text-shadow: 0px 0px 2px black;
+            width: 80%;
+            // padding: 0 0.2rem;
+            margin: 1rem 0;
+            border-bottom: solid 1px $main-color;
+            // text-shadow: 0px 0px 2px black;
 
             input {
+              // background-color: mediumspringgreen;
+              height: 6vh;
               font-size: 1.2rem;
-              color: lightgray;
+              color: darkgray;
             }
 
             input::-webkit-calendar-picker-indicator {
-              filter: invert(1);
+              cursor: pointer;
+              border-radius: 4px;
+              margin-right: 2px;
+              opacity: 0.6;
+              filter: invert(0.2);
+              -ms-filter: invert(0.2);
+              -webkit-filter: invert(0.2);
+              -o-filter: invert(0.2);
+            }
+
+            input::-webkit-calendar-picker-indicator:hover {
+              opacity: 1;
             }
 
             .labelDisableD {
               opacity: 0.4;
             }
+
             .inputBoxDisabled {
               // height        : 7vh;
               border-radius: 5px;
@@ -208,7 +247,7 @@
   .botonBox {
     width: 100%;
     height: 6vh;
-    margin: 0.5rem 0;
+    margin-bottom: 1rem;
     // background-color: khaki;
     display: flex;
     align-items: center;
@@ -216,7 +255,7 @@
 
     button {
       color: $white;
-      background-color: transparent;
+      background-color: $main-color;
       height: 100%;
       width: 40%;
       border: none;
@@ -243,9 +282,9 @@
   }
 
   label {
-    text-shadow: 0px 0px 2px black;
+    // text-shadow: 0px 0px 2px black;
 
-    color: $white;
+    color: $black;
     // font-weight: $bold-font;
     font-size: 1.2rem;
     font-family: $content-font;
@@ -297,7 +336,7 @@
     }
 
     input::placeholder {
-      color: rgba(211, 211, 211, 0.6);
+      // color: rgba(211, 211, 211, 0.6);
     }
   }
 
@@ -373,34 +412,42 @@
 
   .searchBarContainer {
     box-shadow: 1px 1px 5px black;
-    width: 50vw;
+    width: 70%;
 
-    fle .titleBox {
+    .titleBox {
+
       // background-color: red;
+      h3 {
+        font-size: 2rem;
+      }
     }
 
     form {
       height: 30vh;
-      width: 98%;
+      width: 100%;
+      flex-direction: row;
 
       .allInputsBox {
+        // background-color: red;
         // background-color: rgba(0, 128, 0, 0.4);
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-between;
+        width: 70%;
+        flex-direction: column;
 
         .originDestiny {
           // background-color: violet;
-          width: 35%;
-          height: 80%;
+          width: 100%;
+          // height: 80%;
           justify-content: center;
+          flex-direction: row;
 
           .selects {
             // background-color: red;
-            width: 90%;
-            height: 5em;
+            // width: 90%;
+            // height: 5em;
+            margin: 0 0.5rem;
+
             label {
-              font-size: 1rem;
+              // font-size: 1rem;
             }
 
             input {
@@ -412,49 +459,61 @@
 
         .journeyBoxWithDate {
           // background-color: yellowgreen;
-          width: 30%;
+          width: 100%;
           // margin: none;
+          flex-direction: row;
+
+          align-items: end;
 
           label {
-            font-size: 0.8rem;
+            // font-size: 1rem;
           }
 
           .selects {
-            width: 95%;
+            width: 60%;
+            margin: 0 0.5rem;
 
             .inputBox {
               select {
                 height: 100%;
-                font-size: 0.8rem;
+                font-size: 1rem;
               }
             }
           }
+
           .dataBox {
             width: 95%;
-            flex-direction: column;
+            flex-direction: row;
 
             .selectsData {
               width: 100%;
-              margin: 0.5rem 0;
+              margin: 0 0.5rem;
+
               input {
-                font-size: 0.8rem;
+                font-size: 1rem;
               }
             }
           }
         }
       }
     }
+
     .botonBox {
+      margin-top: 1.5rem;
     }
 
     .dataBox {
       width: 80%;
+      height: 100%;
+
+      justify-content: space-between;
 
       .selectsData {
-        margin-right: 1rem;
+        // margin-right: 1rem;
+        height: 100%;
 
         input {
-          font-size: 1.3rem;
+          font-size: 1rem;
         }
       }
     }
@@ -481,6 +540,7 @@
 
     .botonBox {
       width: 50%;
+
       // background: red;
       .boton {
         width: 40%;
@@ -496,32 +556,38 @@
 .ErrorBox {
   transition: 0.2s;
   position: fixed;
+  top: 0;
   height: 100vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 3000;
-  
+
+  // background-color: rgba(43, 117, 43, 0.432);
   .errorr {
     transition: 0.4s;
-    
+
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    padding: 2rem 0;
+    // padding: 2rem 0;
     background-color: transparent;
     height: 60%;
     width: 100%;
-    border-radius: 10px;
+    // border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.8);
 
-    h2,
-    p {
-      font-size: 1.6rem;
-      color: white;
-      // text-shadow: 0px 0px 10px black;
-      text-shadow: 0px 0px 50px $main-color;
+    .textBox {
+      text-align: center;
+
+      h2,
+      p {
+        font-size: 1.2rem;
+        color: white;
+        // text-shadow: 0px 0px 10px black;
+        text-shadow: 0px 0px 50px $main-color;
+      }
     }
 
     .exclamation {

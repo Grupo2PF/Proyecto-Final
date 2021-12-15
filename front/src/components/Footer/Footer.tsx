@@ -7,7 +7,7 @@ export default function Footer(): JSX.Element {
   const location = useLocation();
 
   return (
-    <footer className={styles.Footer}>
+    <footer className={styles.Footer} data-aos="fade-left">
       <div className={styles.FooterContent}>
         {location.pathname === "/" ? (
           <Link to="/">

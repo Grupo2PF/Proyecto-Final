@@ -1,15 +1,44 @@
 import ChatBot from "react-simple-chatbot";
 import { ThemeProvider } from "styled-components";
 import styles from "./chatbot.module.scss"
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import botImg from "../../assets/chatBot/chat_bot.jpg";
-
-export default function Chat() {
-
+import { db, auth } from "../../firebaseConfig";
+import Chatbotlogout from "./Chatbotlogout";
+export default function Chatbot() {
+  const [user, setUser] = useState(null);
+  const [userdelback, setUserdelback] = useState(null);
   const [visibility, setVisibility] = useState(false);
 
+  useEffect( ()=> {
+    auth.onAuthStateChanged(currentUser => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    getUser();// eslint-disable-next-line
+  }, [user]);
+
+  const getUser = () => {
+    db.collection("users").onSnapshot((querySnapshot) => {
+      const docs = [];
+      querySnapshot.forEach((doc) => {
+        docs.push({ ...doc.data(), id: doc.id });
+      });
+      const filtrado = docs.filter((doc) => doc.email === user?.email);
+      setUserdelback(filtrado[0]?.name);
+
+    });
+  };
+
   const handleClick = () => {
+    getUser();
     setVisibility(!visibility);
   }
 
@@ -27,19 +56,8 @@ export default function Chat() {
 
   const steps = [
     {
-      id: "1",
-      message: "Hola! ¿Como te llamas?",
-      trigger: "2",
-      delay: false
-    },
-    {
-      id: "2",
-      user: true,
-      trigger: "3",
-    },
-    {
       id: "3",
-      message: "Bienvenido {previousValue}. ¿en que puedo ayudarte?",
+      message: userdelback? `Bienvenida/o ${userdelback}. ¿en que puedo ayudarte?`: `Bienvenido viajero. ¿en que puedo ayudarte?`,
       trigger: "4",
       delay: false
     },
@@ -99,22 +117,28 @@ export default function Chat() {
     },
   ];
 
-  return (
-    <div className={styles.container}>
-    <div className={visibility? styles.visible : styles.hidden}>
-      <button className={styles.cerrar} onClick={handleClick} >X</button>
-      <ThemeProvider theme={theme}>
-        <ChatBot
-          botDelay={3000}
-          botAvatar={botImg}
-          userAvatar="https://i.pinimg.com/originals/6f/d4/90/6fd490df8567c4086c6f7444693543da.png"
-          steps={steps}
-        />
-      </ThemeProvider>
-    </div>
-    <button className={styles.chatButton} onClick={handleClick}> 
-    <BiMessageRoundedDetail className={styles.icon}/>
-     </button>   
+  const render = () => {
+    return (
+      <div className={styles.container}>
+      <div className={visibility? styles.visible : styles.hidden}>
+        <button className={styles.cerrar} onClick={handleClick} >X</button>
+        <ThemeProvider theme={theme}>
+          <ChatBot
+            botDelay={3000}
+            botAvatar={botImg}
+            userAvatar="https://i.pinimg.com/originals/6f/d4/90/6fd490df8567c4086c6f7444693543da.png"
+            steps={steps}
+          />
+        </ThemeProvider>
       </div>
+      <button className={styles.chatButton} onClick={handleClick}> 
+      <BiMessageRoundedDetail className={styles.icon}/>
+       </button>   
+        </div>
+    );
+  };
+
+  return (
+   <div> {userdelback?render(): <Chatbotlogout/> }</div>
   );
 }
