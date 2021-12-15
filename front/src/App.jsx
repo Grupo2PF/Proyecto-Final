@@ -10,13 +10,11 @@ import Terms from "./pages/RegisterPage/Terms";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import PopularDestination from "./pages/PopularDestination/PopularDestination";
 import Reset from "./pages/ResetPass/ResetPass";
-import React from "react";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
 import TicketPage from "./pages/TicketPage/TicketPage";
 import OfferDetail from "./pages/OfferDetail/OfferDetail";
 import PayPage from "./pages/PayPage/PayPage";
-<<<<<<< HEAD
 import SeatsPage from "./pages/SeatsPage/SeatsPage";
 
 // Animations configuration
@@ -29,21 +27,11 @@ AOS.init({
   debounceDelay: 0,
   throttleDelay: 10,
 });
-=======
-import LandingPage from "./pages/LandingPage/LandingPage";
-import SeatsPage from "./pages/SeatsPage/SeatsPage";
->>>>>>> origin/David
 
 function App() {
   return (
     <div>
-<<<<<<< HEAD
       <Switch>
-=======
-      
-      <Switch>
-      <Route exact path="/LandingPage" component={LandingPage} />
->>>>>>> origin/David
         <Route exact path="/" component={Home} />
         <Route exact path="/popular-destination/:id" component={PopularDestination} />
         <Route exact path="/about-us" component={AboutUs}/>
