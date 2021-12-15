@@ -23,6 +23,9 @@ export default function Chatbotlogout() {
   useEffect(() => {
   }, [user]);
 
+  useEffect(() => {
+    return setVisibility(null)
+  }, [visibility]);
 
 
   const handleClick = () => {
