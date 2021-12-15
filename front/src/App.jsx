@@ -20,6 +20,17 @@ import PayPage from "./pages/PayPage/PayPage";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import SeatsPage from "./pages/SeatsPage/SeatsPage";
 
+// Animations configuration
+import AOS from "aos";
+AOS.init({
+  duration: 1000,
+  once: true,
+  delay: 250,
+  offset: 50,
+  debounceDelay: 0,
+  throttleDelay: 10,
+});
+
 function App() {
   return (
     <div>

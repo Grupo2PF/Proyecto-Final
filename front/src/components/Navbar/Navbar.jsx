@@ -39,7 +39,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className={styles.navBar}>
+    <div className={styles.navBar} data-aos="fade-down"  data-aos-duration="1200">
       <nav className={styles.nav}>
         <Link to="/">
           <img src={logo} alt="" />
