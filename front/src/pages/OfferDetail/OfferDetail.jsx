@@ -2,7 +2,9 @@ import Navbar from "../../components/Navbar/Navbar";
 import styles from "./OfferDetail.module.scss";
 import { useEffect } from "react";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { auth } from "../../firebaseConfig";
+import swal from "sweetalert";
+import { useHistory, useLocation } from "react-router-dom";
 import OfferDetailInfo from "../../components/OfferDetailInfo/OfferDetailInfo";
 import { IoIosAirplane } from "react-icons/io";
 import RecomendationCardIda from "../../components/RecomendationCard/RecomendationCardIda";
@@ -12,9 +14,29 @@ export default function OfferDetail() {
   const { state } = useLocation();
   const history = useHistory();
 
-  console.log("OfferDetail: ", state);
 
-  useEffect(() => window.scrollTo(0, 0), []);
+  useEffect(() => 
+  window.scrollTo(0, 0), []);
+
+  const handleBuy = (e) => {
+    e.preventDefault();
+
+    if (auth.currentUser) {
+      history.push({
+        pathname: "/pay",
+        state: {
+          ...state
+        } 
+    });
+     } else {
+      // @ts-ignore
+      swal({
+        title: "Debes iniciar sesión para comprar",
+        icon: "warning",
+        dangerMode: true,
+      }).then(() => history.push("/login"));
+    }
+  };
 
   return (
     <main className={styles.offerDetail}>
@@ -34,19 +56,13 @@ export default function OfferDetail() {
             className={styles.offerDetailBackButton}
             onClick={history.goBack}
           >
-            <IoIosAirplane /> Ver más ofertas
+            <IoIosAirplane /> Volver atrás
           </button>
-          <Link
-            to={{
-              pathname: `/ticket/${state.offers}`,
-              state: {
-                ...state,
-              },
-            }}
+          <button onClick={handleBuy}
             className={styles.offerDetailButton}
           >
             Comprar
-          </Link>
+          </button>
         </div>
 
         {/* Recomendations */}
