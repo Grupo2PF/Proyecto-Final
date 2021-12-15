@@ -18,8 +18,6 @@ import OfferDetail from "./pages/OfferDetail/OfferDetail";
 // import Navbar from "./components/Navbar/Navbar";
 import PayPage from "./pages/PayPage/PayPage";
 
-
-
 function App() {
   return (
     <div>
