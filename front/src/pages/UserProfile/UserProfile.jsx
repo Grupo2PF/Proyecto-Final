@@ -285,7 +285,6 @@ export default function UserProfile(documentPath) {
                       <h1>Compras</h1>
                       <div className={styles.cardsFavs}>
                       {tickets?.map((ticket) => {
-                        // console.log(tickets);
                         return (
                             <div className={styles.cardFav + " " + styles.ticketCard} key={ticket.id}>
                               <h3>Ticket  comprado</h3>

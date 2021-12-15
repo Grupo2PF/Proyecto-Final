@@ -4,19 +4,34 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
-// import { getSeats, sendFavs } from "../../redux/actions/";
 import { sendFavs } from "../../redux/actions/";
 import {Link, useHistory, useLocation} from "react-router-dom";
-import { auth } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
+import { useState, useEffect} from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import swal from "sweetalert";
 
 export default function OfferCardI(props: any): JSX.Element {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
-
-
+  const [user] = useAuthState(auth);
   const dataFromQuery: any = {};
+  const [fav, setFav] = useState([]);
 
+  type Swal = {
+    title: string;
+    text: string;
+    icon: string;
+    button: string;
+  }
+
+  const errorMessage:Swal = {
+    title: "Error",
+    text: "Ya has añadido ese favorito!",
+    icon: "error",
+    button: "Volver",
+  } 
   const getQueryData = (offerQuery: any) => {
     return offerQuery
       .split("&")
@@ -29,6 +44,23 @@ export default function OfferCardI(props: any): JSX.Element {
       .forEach((el: any) => (dataFromQuery[el[0]] = el[1]));
     };
     getQueryData(location.search);
+
+    const getUser = () => {
+      db.collection("saves").onSnapshot((querySnapshot) => {
+        
+        const docs:any = [];
+        querySnapshot.forEach((doc) => {
+          docs.push({ ...doc.data(), id: doc.id });
+        });
+        const filtrado = docs.filter((doc:any) => doc.userId === user?.uid);
+        setFav(filtrado);
+      });
+    };
+
+    useEffect(() => {
+      getUser();  // eslint-disable-next-line 
+    }, []);
+
 
   const formatedRecomendations = props.recomendations?.map((item: any) => {
     return {
@@ -52,14 +84,15 @@ export default function OfferCardI(props: any): JSX.Element {
 
   const handleFavs = (e: any) => {
     if(auth.currentUser){
+       if(fav.some((el:any)=>el.offers === e.target.value)){
+        swal(errorMessage)
+       }
+        else{
     const info = {
       ...dataFromQuery,
       userId: auth.currentUser.uid,
       ...props
     }
-    console.log("info")
-    console.log(info)
-
     if (dispatch(sendFavs(info))) {
       // @ts-ignore
       swal({
@@ -67,7 +100,7 @@ export default function OfferCardI(props: any): JSX.Element {
         text: "El vuelo se ha agregado a tus favoritos",
         icon: "success",
       }).then(() => console.log("added"));
-    }
+    }}
     }else{
       // @ts-ignore
       swal({
@@ -81,8 +114,8 @@ export default function OfferCardI(props: any): JSX.Element {
 
   /*Funcion para validar login al comprar*/
   const handleBuy = (e: any) => {
-    e.preventDefault();
     if (auth.currentUser) {
+    e.preventDefault();
       history.push({
         pathname: `/ticket/${props.offers}`,
         state: {
@@ -148,7 +181,7 @@ export default function OfferCardI(props: any): JSX.Element {
               <AiOutlineExclamationCircle />
               Ver detalles
             </Link>
-            <button onClick={handleFavs}>Añadir a favs</button>
+            <button value={props.offers} onClick={handleFavs}>Añadir a favs</button>
             <button
               className={styles.offersCardButtonsPrice}
               onClick={handleBuy}

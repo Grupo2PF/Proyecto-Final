@@ -21,7 +21,9 @@ export default function Chatbot() {
     });
   }, []);
 
- 
+  useEffect(() => {
+    getUser();// eslint-disable-next-line
+  }, [user]);
 
   const getUser = () => {
     db.collection("users").onSnapshot((querySnapshot) => {
@@ -31,13 +33,9 @@ export default function Chatbot() {
       });
       const filtrado = docs.filter((doc) => doc.email === user?.email);
       setUserdelback(filtrado[0]?.name);
-      console.log(filtrado[0]?.name);
+
     });
   };
-  useEffect(() => {
-    getUser();
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
 
   const handleClick = () => {
     getUser();

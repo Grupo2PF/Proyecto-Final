@@ -5,7 +5,6 @@ export default function Maps() {
     const ubicacion = useSelector((state) => state.allFlight);
 
 return (
-    console.log(process.env.REACT_APP_API_KEY),
     <div>
     <GoogleMaps 
     apiKey = {process.env.REACT_APP_API_KEY}

@@ -19,6 +19,7 @@ import { GiCommercialAirplane } from "react-icons/gi";
 export default function OneWayInfo(props) {
   return (
     <>
+
       {/* Main info */}
       <section className={styles.offerMainInfo}>
         {/* Origen - Destino*/}

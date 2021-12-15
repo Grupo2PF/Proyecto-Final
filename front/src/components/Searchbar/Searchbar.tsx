@@ -165,18 +165,16 @@ export default function SearchBar() {
         adult: value.adult,
       };
 
-      console.log('cities');
-      console.log(cities);
+
 
       if (value.journeyType === false) {
         if (value.departureDate) {
-          console.log("Se envia para buscar solo ida");
-          console.log(toSend);
+
           dispatch(setLoading(true));
           dispatch(getFlight(toSend));
           sendpack();
         } else {
-          console.log("falte llenar la fecha de salida");
+
           setMsjError({
             title: "Debes ingresar una fecha de origen",
             p: "Selecciona una fecha de ida",
@@ -185,13 +183,11 @@ export default function SearchBar() {
         }
       } else if (value.journeyType === true) {
         if (value.returnDate) {
-          console.log("Se envia para ida y vuelta");
-          console.log(toSend);
+
           dispatch(setLoading(true));
           dispatch(getFlight(toSend));
           sendpack();
         } else {
-          console.log("falta llenar la fecha de vuelta");
           setMsjError({
             title: "Debes ingresar una fecha de vuelta",
             p: "Selecciona una fecha de regreso",
@@ -199,10 +195,8 @@ export default function SearchBar() {
           setError(true);
         }
       }
-      // console.log(toSend)
-      // dispatch(getFlight(toSend));
+
     } else {
-      console.log(cities);
       setMsjError({
         title: "Ingrese un origen y destino valido",
         p: "Puedes usar el autocompletar para buscar lugares especificos",
@@ -236,8 +230,7 @@ export default function SearchBar() {
     return `${yyyy}-${mm}-${dd}`;
   };
 
-  // console.log(dd, mm, yyyy)
-  ////////////////////////////////////////////
+
 
   ///////// Logica de habilitar viaje de vuelta /////////
 
