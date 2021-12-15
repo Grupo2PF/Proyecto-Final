@@ -62,7 +62,10 @@ export default function TicketPage() {
       passenger[0] = `Pasajero ${index + 1}`;
       return passenger;
     });
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/David
     if (passengersData.every((passenger) => passenger[0])) {
       const offerProps = {
         offer: { ...state },
@@ -77,7 +80,11 @@ export default function TicketPage() {
       }).then(() => {
         history.push({ 
           pathname : `/seats/${offerProps.offer.offers}`,
+<<<<<<< HEAD
           state: {...offerProps}
+=======
+          state: {...offerProps} 
+>>>>>>> origin/David
         });
       });
     } else {
