@@ -22,14 +22,17 @@ export default function OfferPage(): JSX.Element {
     dispatch(getFlightUrl(location.search));
   }, [dispatch, location.search]);
 
-  // useEffect(() => {
-  //   setOrdenado(response);
-  // },[])
+  useEffect(() => {
+    setOrdenado(response);
+    console.log("ordenado al cargar")
+    console.log(ordenado)
+  },[])
 
   useEffect(() => {
     render();
-  }, [ordenado.mode])
-
+    console.log("ordenado escuchando cambios")
+    console.log(ordenado)
+  }, [ordenado.offers[0].price])
 
   useEffect(() => {
     return () => {
@@ -77,7 +80,7 @@ export default function OfferPage(): JSX.Element {
       }
     }
 
-    if (response.mode) {
+    if (response?.mode) {
       return (
         <section className={styles.divContainer}>
           <Navbar />
