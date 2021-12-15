@@ -1,33 +1,57 @@
 @import "../../scss/variables";
 
+.page {
+  background-color: #fff;
+  background-image: url("../../assets/airport/airport-1.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+
 .AboutUsTotal {
-  width: 100%;
+  background-color: $white;
+  width: 90%;
+  border-radius: 1rem;
+  max-width: 75rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 7rem auto;
+  padding: 2rem 0;
+  z-index: 10;
+
   .titleBox {
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
+    gap: 2rem;
     justify-content: center;
-    margin: 1rem 0;
-    
-    .linkHome {
-        transition:0.4s;
-      color: $main-color;
-      position: absolute;
-      left: 3vw;
-      font-size: 1.5rem;
-      filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.4));
-      :hover {
-      filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.2));
+    margin: 2rem 0 4rem;
 
-      }
+    img {
+      width: 8rem;
     }
 
     h2 {
-      font-size: 2rem;
+      font-size: 2.2rem;
 
       //   width: auto;
       border-bottom: solid 2px $main-color;
@@ -37,85 +61,84 @@
 
 .AboutUs {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-evenly;
+  column-gap: 2rem;
+  row-gap: 3rem;
   padding-bottom: 2rem;
+  width: 90%;
 }
 
 .cardGonza {
-  background-color: aqua;
   background-image: url("./photo/fotoGonza.jpg");
   background-size: cover;
   background-position: center;
-  // border-radius      : 1rem;
-  // border          : solid 3px $main-color;
+  border-radius: .5rem;
   box-shadow: 0px 0px 5px black;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
-  width: 21rem;
-  height: 80vh;
+  padding: 1.5rem .5rem 2rem;
+  width: 85%;
+  max-width: 18rem;
+  height: 25rem;
   object-fit: cover;
-  margin-top: 2rem;
 }
 
 .cardDavid {
-  background-color: aqua;
-  background-image: url("./photo/noimg2.jpg");
+  background-image: url("./photo/fotoDavid.jpeg");
   background-size: cover;
-  // border-radius      : 1rem;
-  // border          : solid 3px $main-color;
+  border-radius: .5rem;
   box-shadow: 0px 0px 5px black;
   background-position: center;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 21rem;
-  height: 80vh;
+  padding: 1.5rem .5rem 2rem;
+  width: 85%;
+  max-width: 18rem;
+  height: 25rem;
   object-fit: cover;
-  margin-top: 2rem;
 }
 
 .cardBautista {
   background-color: aqua;
   background-image: url("./photo/fotoBautista.jpeg");
   background-size: cover;
-  // border-radius      : 1rem;
-  // border          : solid 3px $main-color;
+  border-radius: .5rem;
   box-shadow: 0px 0px 5px black;
   background-position: center;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 21rem;
-  height: 80vh;
+  padding: 1.5rem .5rem 2rem;
+  width: 85%;
+  max-width: 18rem;
+  height: 25rem;
   object-fit: cover;
-  margin-top: 2rem;
+
 }
 
 .cardAngel {
-  background-color: aqua;
   background-image: url("./photo/jose-angel-rey.png");
   background-size: cover;
-  // border-radius      : 1rem;
-  // border          : solid 3px $main-color;
+  border-radius: .5rem;
   box-shadow: 0px 0px 5px black;
   background-position: center;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 21rem;
-  height: 80vh;
+  padding: 1.5rem .5rem 2rem;
+  width: 85%;
+  max-width: 18rem;
+  height: 25rem;
   object-fit: cover;
-  margin-top: 2rem;
+
 }
 
 .cardEze {
@@ -123,27 +146,26 @@
   background-image: url("./photo/fotoEze.jpeg");
   background-size: cover;
   background-position: center;
-  // border-radius         : 1rem;
-  // border             : solid 3px $main-color;
+  border-radius: .5rem;
   box-shadow: 0px 0px 5px black;
   background-position: center;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 21rem;
-  height: 80vh;
+  padding: 1.5rem .5rem 2rem;
+  width: 85%;
+  max-width: 18rem;
+  height: 25rem;
   object-fit: cover;
-  margin-top: 2rem;
+
 }
 
 .cardEsteban {
   background-color: aqua;
   background-image: url("./photo/fotoEsteban.jpeg");
   background-size: cover;
-  // border-radius      : 1rem;
-  // border          : solid 3px $main-color;
+  border-radius: .5rem;
   box-shadow: 0px 0px 5px black;
   background-position: center;
 
@@ -151,29 +173,30 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 21rem;
-  height: 80vh;
+  padding: 1.5rem .5rem 2rem;
+  width: 85%;
+  max-width: 18rem;
+  height: 25rem;
   object-fit: cover;
-  margin-top: 2rem;
+
 }
 
 .cardFer {
-  background-color: aqua;
   background-image: url("./photo/fotoFer.jpeg");
   background-size: cover;
-  // border-radius      : 1rem;
-  // border          : solid 3px $main-color;
+  border-radius: .5rem;
   box-shadow: 0px 0px 5px black;
   background-position: center;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 21rem;
-  height: 80vh;
+  padding: 1.5rem .5rem 2rem;
+  width: 85%;
+  max-width: 18rem;
+  height: 25rem;
   object-fit: cover;
-  margin-top: 2rem;
+
 }
 
 .nameBox {
@@ -188,7 +211,7 @@
   h4 {
     border-bottom: solid 2px $main-color;
     text-shadow: 1px 1px 5px black;
-border-radius: 4px;
+    border-radius: 4px;
     // color    : $main-color;
     color: white;
     opacity: 0.9;
@@ -225,62 +248,9 @@ border-radius: 4px;
   }
 }
 
-@media screen and (min-width: $tablet-width) {
-  .AboutUs {
-    flex-direction: row;
-    justify-content:space-evenly;
-    flex-wrap: wrap;
-  }
-
-  .cardFer,
-  .cardGonza,
-  .cardAngel,
-  .cardEze,
-  .cardBautista,
-  .cardDavid,
-  .cardEsteban {
-    margin: 0.5rem 0.5rem;
-    filter: brightness(0.4);
-    transition: 0.1s;
-    width: 12rem;
-    height: 50vh;
-
-    h4 {
-      display: none;
-      font-size: 1.3rem;
-    }
-
-    a {
-      display: none;
-      font-size: 1.8rem;
-    }
-  }
-
-  .cardFer:hover,
-  .cardGonza:hover,
-  .cardAngel:hover,
-  .cardEze:hover,
-  .cardBautista:hover,
-  .cardDavid:hover,
-  .cardEsteban:hover {
-    // margin: 1rem 2rem;
-    filter: brightness(1);
-
-    h4 {
-      display: inherit;
-    }
-
-    a {
-      display: inherit;
-    }
-  }
-}
-
 @media screen and (min-width: $notebook-width) {
   .AboutUs {
-    flex-direction: row;
-    justify-content:space-evenly;
-    flex-wrap: wrap;
+    width: 95%;
   }
 
   .cardFer,
@@ -290,11 +260,11 @@ border-radius: 4px;
   .cardBautista,
   .cardDavid,
   .cardEsteban {
-    // margin: 1rem 1rem;
+    cursor: pointer;
     filter: brightness(0.4);
     transition: 0.2s;
-    width: 20rem;
-    height: 70vh;
+    max-width: 21rem;
+    height: 29rem;
 
     h4 {
       display: none;
@@ -314,58 +284,6 @@ border-radius: 4px;
   .cardBautista:hover,
   .cardDavid:hover,
   .cardEsteban:hover {
-    // margin: 1rem 2rem;
-    filter: brightness(1);
-
-    h4 {
-      display: inherit;
-    }
-
-    a {
-      display: inherit;
-    }
-  }
-}
-
-@media screen and (min-width: $desktop-width) {
-  .AboutUs {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .cardFer,
-  .cardGonza,
-  .cardAngel,
-  .cardEze,
-  .cardBautista,
-  .cardDavid,
-  .cardEsteban {
-    margin: 1rem 2rem;
-    filter: brightness(0.4);
-    transition: 0.2s;
-    // width: 18rem;
-    height: 70vh;
-
-    h4 {
-      display: none;
-      font-size: 1.6rem;
-    }
-
-    a {
-      display: none;
-      font-size: 2rem;
-    }
-  }
-
-  .cardFer:hover,
-  .cardGonza:hover,
-  .cardAngel:hover,
-  .cardEze:hover,
-  .cardBautista:hover,
-  .cardDavid:hover,
-  .cardEsteban:hover {
-    // margin: 1rem 2rem;
     filter: brightness(1);
 
     h4 {

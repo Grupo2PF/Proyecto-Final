@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import { FcGoogle } from "react-icons/fc";
 import { FaEnvelope, FaUserAlt } from "react-icons/fa";
-import {RiLockPasswordFill, RiLockPasswordLine} from "react-icons/ri";
+import {RiLockPasswordFill} from "react-icons/ri";
 import styles from "./RegisterPage.module.scss";
 import "firebase/auth";
 import {
@@ -339,7 +339,7 @@ export default function RegisterPage() {
               />
               Acepto los términos y condiciones
               <br/>
-               <Link to="/terms">Ver términos y condiciones</Link>
+               <Link to="/terms" target="_blank" rel="noopener">Ver términos y condiciones</Link>
             </label>
           </div>
           <div>

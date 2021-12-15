@@ -23,13 +23,7 @@ router.get('/isavailable', async(req, res, next)=>{
         transfersD,
         transfersR
     } = req.query;
-    console.log("req.query");
 
-    console.log("AIRPORT: ", originAirport)
-
-    console.log("AIRPORT: ", destinationAirport)
-
-    console.log(req.query);
 
     const escalasIda = parseInt(transfers);
     const psgrs = [];
@@ -53,12 +47,12 @@ router.get('/isavailable', async(req, res, next)=>{
         }
     }
 
-    console.log(rDate);
+
 
     if(!rDate){
         try{
 
-            console.log("EL ID ES: ", flightId);
+
 
             const flight = await duffel.offers.get(flightId, {
                 "return_available_services": true
@@ -71,10 +65,11 @@ router.get('/isavailable', async(req, res, next)=>{
                 airline: data.owner.name,
                 currency: data.total_currency,
                 price: data.total_amount,
-                class: data.slices[0].segments[0].passengers[0].cabin_class,
+                cabin: data.slices[0].segments[0].passengers[0].cabin_class,
                 adults: adults,
-                childs, childs,
-                baby, baby,
+                childs: childs,
+                baby: baby,
+                offers:info.offers,
                 originCity: data.slices[0].origin.city_name,
                 originAirport: data.slices[0].origin.name,
                 destinationCity: data.slices[0].destination.city_name,
@@ -118,7 +113,7 @@ router.get('/isavailable', async(req, res, next)=>{
                 info.transfers.push(tr);
                 
               });
-              console.log(info)
+
 
             return res.send(info);
     
@@ -130,9 +125,6 @@ router.get('/isavailable', async(req, res, next)=>{
     
                 let originIATA = origin, destinationIATA = destination;
     
-                console.log(originIATA, destinationIATA);
-
-                console.log(originIATA, destinationIATA, dDate, psgrs, cabin);
     
                 const offerRequestOneway = await duffel.offerRequests.create(
                     {
@@ -169,7 +161,7 @@ router.get('/isavailable', async(req, res, next)=>{
                     
                     if(offerRequestOneway.data.offers[i].slices[0].origin.iata_code === originIATA && offerRequestOneway.data.offers[i].slices[0].destination.iata_code === destinationIATA){
                         if(offerRequestOneway.data.offers[i].total_amount === price){
-                            console.log(escalasIda, transfers.length);
+
                           if(escalasIda === transfers.length){
                               let response = {
                                 offers: offerRequestOneway.data.offers[i].id,
@@ -238,7 +230,10 @@ router.get('/isavailable', async(req, res, next)=>{
                 airline: data.owner.name,
                 currency: data.total_currency,
                 price: data.total_amount,
-                class: data.slices[0].segments[0].passengers[0].cabin_class,
+                dDate: dDate,
+                rDate: rDate,
+                offers:data.id,
+                cabin: data.slices[0].segments[0].passengers[0].cabin_class,
                 adults: adults,
                 childs, childs,
                 baby, baby,
@@ -249,6 +244,7 @@ router.get('/isavailable', async(req, res, next)=>{
                 transfersD: [],
                 transfersR: []
             }
+
 
             if(info.originCity === info.originAirport){
                 let i = 0;
@@ -310,7 +306,7 @@ router.get('/isavailable', async(req, res, next)=>{
         
                 let originIATA = origin, destinationIATA = destination;
         
-                    console.log(originIATA, destinationIATA);
+
         
                     const offerRequestRoundtrip = await duffel.offerRequests.create(
                         {
@@ -365,8 +361,7 @@ router.get('/isavailable', async(req, res, next)=>{
                         if(offerRequestRoundtrip.data.offers[i].slices[0].origin.iata_code === originIATA && offerRequestRoundtrip.data.offers[i].slices[0].destination.iata_code === destinationIATA &&
                             offerRequestRoundtrip.data.offers[i].slices[1].origin.iata_code === destinationIATA && offerRequestRoundtrip.data.offers[i].slices[1].destination.iata_code === originIATA
                             ){
-                            console.log(price, offerRequestRoundtrip.data.offers[i].total_amount)
-                            console.log(parseInt(transfersD), transfers[0].length)
+
                             if(offerRequestRoundtrip.data.offers[i].total_amount === price){
                             if(parseInt(transfersD) === transfers[0].length && parseInt(transfersR) === transfers[1].length){
                                 let response = {
@@ -437,7 +432,7 @@ router.get('/zoronguito/:id', async(req, res, next)=>{
 
     const flightId = req.params.id;
 
-    console.log(flightId);
+
 
     try{
         const flight = await duffel.offers.get(flightId, {

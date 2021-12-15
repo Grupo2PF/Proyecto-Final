@@ -1,173 +1,196 @@
-import React, { useState } from "react";
 import styles from "./OfferCard.module.scss";
 import { useDispatch } from "react-redux";
-import { AiOutlineExclamationCircle, AiOutlineFieldNumber  } from "react-icons/ai";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
-import { BsArrowLeftRight, BsCalendarDateFill, BsCalendarDate } from "react-icons/bs";
+import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane } from "react-icons/io";
-import { GiCommercialAirplane } from "react-icons/gi";
-import { getSeats, sendFavs } from "../../redux/actions/";
-import {auth} from "../../firebaseConfig";
-import { useLocation } from "react-router-dom";
-
+import { sendFavs } from "../../redux/actions/";
+import {Link, useHistory, useLocation} from "react-router-dom";
+import { auth, db } from "../../firebaseConfig";
+import { useState, useEffect} from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import swal from "sweetalert";
 
 export default function OfferCardI(props: any): JSX.Element {
-  const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
+  const [user] = useAuthState(auth);
+  const dataFromQuery: any = {};
+  const [fav, setFav] = useState([]);
 
-  const handleClick = (e: any) => {
-    if (!clicked) {
-      return setClicked(true);
-    } else {
-      return setClicked(false);
-    }
-  };
+  type Swal = {
+    title: string;
+    text: string;
+    icon: string;
+    button: string;
+  }
 
-  const handleBuy = (e: any) => {
-    const id = props.offers;
-    dispatch(getSeats(id));
-  };
-
-  const dataFromQuery:any = {};
-
-  const getQueryData = (offerQuery:any) => {
+  const errorMessage:Swal = {
+    title: "Error",
+    text: "Ya has añadido ese favorito!",
+    icon: "error",
+    button: "Volver",
+  } 
+  const getQueryData = (offerQuery: any) => {
     return offerQuery
       .split("&")
-      .map((word:any) => word.replace("=", ",").replace("?", "").split(","))
-      .forEach((el:any) => (dataFromQuery[el[0]] = el[1]));
+      .map((word: any) =>
+        word
+          .replace("=", ",")
+          .replace("?", "")
+          .split(",")
+      )
+      .forEach((el: any) => (dataFromQuery[el[0]] = el[1]));
+    };
+    getQueryData(location.search);
+
+    const getUser = () => {
+      db.collection("saves").onSnapshot((querySnapshot) => {
+        
+        const docs:any = [];
+        querySnapshot.forEach((doc) => {
+          docs.push({ ...doc.data(), id: doc.id });
+        });
+        const filtrado = docs.filter((doc:any) => doc.userId === user?.uid);
+        setFav(filtrado);
+      });
+    };
+
+    useEffect(() => {
+      getUser();  // eslint-disable-next-line 
+    }, []);
+
+
+  const formatedRecomendations = props.recomendations?.map((item: any) => {
+    return {
+      offers: item.id,
+      currency: item.currency,
+      price: item.price,
+      transfers: item.transfers,
+      mode: props.mode,
+      originCity: item.origin.city,
+      destinationCity: item.destiny.city,
+      originAirport: item.origin.airport,
+      destinationAirport: item.destiny.airport,
+      ...dataFromQuery,
+    };
+  });
+
+  const offerProps = {
+    ...props,
+    recomendations: formatedRecomendations,
   };
-  getQueryData(location.search);
 
   const handleFavs = (e: any) => {
     if(auth.currentUser){
+       if(fav.some((el:any)=>el.offers === e.target.value)){
+        swal(errorMessage)
+       }
+        else{
     const info = {
       ...dataFromQuery,
       userId: auth.currentUser.uid,
       ...props
-      // id: props.offers,
-      // mode: props.mode,
-      // origin: props.originCity,
-      // destination: props.destinationCity,
-      // originAirport: props.originAirport,
-      // destinationAirport: props.destinationAirport,
-      // transfers: props.transfers.length -1,
-      // price: `${props.currency} ${props.price}`,
     }
-    console.log("info")
-    console.log(info)
-    dispatch(sendFavs(info));
+    if (dispatch(sendFavs(info))) {
+      // @ts-ignore
+      swal({
+        title: "Se ha agregado a favoritos",
+        text: "El vuelo se ha agregado a tus favoritos",
+        icon: "success",
+      }).then(() => console.log("added"));
+    }}
     }else{
-      alert("Debes iniciar sesión para poder agregar a favoritos")
+      // @ts-ignore
+      swal({
+        title: "Debes iniciar sesión",
+        text: "Para poder agregar a favoritos debes estar registrado",
+        icon: "warning",
+        dangerMode: true,
+      }).then(() => history.push("/login"));
     }
+  };
 
-  }
+  /*Funcion para validar login al comprar*/
+  const handleBuy = (e: any) => {
+    if (auth.currentUser) {
+    e.preventDefault();
+      history.push({
+        pathname: `/ticket/${props.offers}`,
+        state: {
+          ...offerProps,
+          ...dataFromQuery
+      }
+    });
+     } else {
+      // @ts-ignore
+      swal({
+        title: "Debes iniciar sesión para comprar",
+        icon: "warning",
+        dangerMode: true,
+      }).then(() => history.push("/login"));
+    }
+  };
 
   return (
-    <>
-      <section className={styles.offers}>
-          <div className={styles.offersCard}>
-            <div className={styles.offersCardMainInfo}>
-            {/* Puntos de partida y llegada */}
-            <div className={styles.offersCardInfo}>
+    <section className={styles.offers}>
+      <div className={styles.offersCard}>
+        <div className={styles.offersCardMainInfo}>
+          {/* Puntos de partida y llegada */}
+          <div className={styles.offersCardInfo}>
+            <p>
+              <FaPlaneDeparture />{" "}
+              {props.originCity ? props.originCity : props.originAirport}{" "}
+            </p>
+            <p>
+              <FaPlaneArrival />{" "}
+              {props.destinationCity
+                ? props.destinationCity
+                : props.destinationAirport}{" "}
+            </p>
+          </div>
+
+          {/* Tipo de vuelo */}
+          <div className={styles.offersCardType}>
+            {props.transfers.length === 1 ? (
               <p>
-               <FaPlaneDeparture />{" "}
-                {props.originCity ? props.originCity : props.originAirport}{" "}
+                {" "}
+                <IoMdAirplane /> Vuelo directo{" "}
               </p>
+            ) : (
               <p>
-                 <FaPlaneArrival />{" "}
-                {props.destinationCity
-                  ? props.destinationCity
-                  : props.destinationAirport}{" "}
+                {" "}
+                <BsArrowLeftRight /> Tiene {props.transfers.length - 1} escalas
               </p>
-            </div>
-
-            {/* Tipo de vuelo */}
-            <div className={styles.offersCardType}>
-              {props.transfers.length === 1 ? <p> <IoMdAirplane/> Vuelo directo </p> : <p> <BsArrowLeftRight /> Tiene {props.transfers.length-1} escalas</p> }
-            </div>
-
-            {/* Buttons */}
-            <div className={styles.offersCardButtons}>
-              <button
-                onClick={(e) => {
-                  handleClick(e);
-                }}
-                >
-                <AiOutlineExclamationCircle />
-                Ver detalles
-              </button>
-
-              <button onClick={handleFavs}>añadir a favs</button>
-
-              <button
-                className={styles.offersCardButtonsPrice}
-                onClick={handleBuy}
-                >
-                {`${props.currency} ${props.price}`}
-              </button>
-            </div>
+            )}
           </div>
 
-          <div className={styles.offersCardDetail}>
-            {clicked ? 
-            <>
-            <h3>Detalles del Vuelo</h3>
-            {props.transfers.length > 1 ? <h4>Escalas de Ida</h4> : <h4>Vuelo directo</h4> }
-            </>
-            : false}
-            {clicked
-              ? props.transfers.map((escala: any) => (
-                <div className={styles.offersCardTransfers}>
-                  <div>
-                    <p> <FaPlaneDeparture /> <span className={styles.sp} >{escala.origin}</span> </p>
-                    <p> <FaPlaneArrival /> <span className={styles.sp} >{escala.destination}</span> </p>
-                  </div>
-                  <div>
-                    <p>  <BsCalendarDateFill/> <span> Salida: </span> {escala.departure.slice(0, 10)}{" "}{escala.departure.slice(11, 19)} </p>
-                    <p> <BsCalendarDate/> <span>Llegada:</span> {escala.arrive.slice(0, 10)}{" "}{escala.arrive.slice(11, 19)} </p>
-                  </div>
-                  <div>
-                    <p> <GiCommercialAirplane /> <span>Aerolinea:</span> {escala.airline}</p>
-                    <p> <AiOutlineFieldNumber/><span>Vuelo Nro:</span> {escala.flightNumber}</p>
-                  </div>
-                  </div>
-                ))
-                : false}
+          {/* Buttons */}
+          <div className={styles.offersCardButtons}>
+            <Link
+              to={{
+                pathname: `/offer-detail/${props.offers}`,
+                state: {
+                  ...offerProps,
+                  ...dataFromQuery,
+                },
+              }}
+              className={styles.offersCardButtonsDetail}
+            >
+              <AiOutlineExclamationCircle />
+              Ver detalles
+            </Link>
+            <button value={props.offers} onClick={handleFavs}>Añadir a favs</button>
+            <button
+              className={styles.offersCardButtonsPrice}
+              onClick={handleBuy}
+            >
+              {`${props.currency} ${props.price}`}
+            </button>
           </div>
-
-          </div>
-      </section>
-    </>
+        </div>
+      </div>
+    </section>
   );
-
-  // return (
-  //   <div className={styles.cardContainer}>
-
-  //     <div className={styles.cardInfo}>
-  //         <h2>
-  //         {props.originCity ? props.originCity : props.originAirport} -
-  //         {props.destinationCity ? props.destinationCity : props.destinationAirport}
-  //         </h2>
-  //         <div className={styles.cardNumTransfers}>
-  //           Tiene {props.transfers.length} Escalas
-  //         <button onClick={(e) => {handleClick(e);}}> <AiOutlineExclamationCircle size={23}/> </button>
-  //         </div>
-  //         <div className={styles.cardPrice}>
-  //         <button onClick={handleBuy} >{`${props.currency} ${props.price}`} </button>
-  //         </div>
-  //     </div>
-
-  //     {clicked
-  // ? props.transfers.map((escala: any) => (
-  //           <div className={styles.cardTransfers}>
-  //             <p> {escala.origin} - {escala.destination} </p>
-  //             <p> Salida: {escala.departure} - Llegada: {escala.arrive}</p>
-  //             <p> Aerolinea: {escala.airline}</p>
-  //           </div>
-  //         ))
-  //       : false}
-
-  //   </div>
-  // );
 }

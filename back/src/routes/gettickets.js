@@ -12,9 +12,9 @@ router.get('/gettickets/:userId', async(req, res, next)=>{
         const tickets = [];
 
         data.forEach(doc => {
-                    
+
                 if(userId === doc.data().userId){
-                    var ticket= {}
+                    var ticket = {}
 
                     if(doc.data().rDate){
                         ticket = {
@@ -71,7 +71,7 @@ router.get('/gettickets/:userId', async(req, res, next)=>{
                             userId: doc.data().userId
                         }
                     }
-            saves.push(ticket);
+            tickets.push(ticket);
             
         }});
 

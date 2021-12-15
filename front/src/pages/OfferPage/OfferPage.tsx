@@ -8,34 +8,33 @@ import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import Navbar from "../../components/Navbar/Navbar";
 import { getFlightUrl, resetState } from "../../redux/actions";
 // import HeroBanner from "../../components/HeroBanner/HeroBanner";
-import Maps from "../../components/map/map"
+import Maps from "../../components/map/map";
+import notFound from "../../assets/notFound.jpg";
 
 export default function OfferPage(): JSX.Element {
   const response: any = useSelector((state: any) => state.allFlight);
-  const cargando: any = useSelector((state: any) => state.loading);
+  // const cargando: any = useSelector((state: any) => state.loading);
   const dispatch = useDispatch();
   const location = useLocation();
 
-
   useEffect(() => {
-    setTimeout(() => {
-      if (cargando) {
-        <LoadingScreen />;
-      } else {
-        console.log("soy location")
-        console.log(location)
-        dispatch(getFlightUrl(location.search));
-      }
-    }, 3000);
-  }, []);
+    dispatch(getFlightUrl(location.search));
+  }, [dispatch, location.search]);
 
   useEffect(() => {
     return () => {
       dispatch(resetState());
     };
-  }, [location]);
+  }, [dispatch, location]);
 
   const render = () => {
+    const recomendations: any = [];
+    if (response.offers?.length >= 4) {
+      for (let i = 0; i < 3; i++) {
+        recomendations.push(response.offers[i]);
+      }
+    }
+
     if (response.mode) {
       return (
         <section className={styles.divContainer}>
@@ -43,21 +42,24 @@ export default function OfferPage(): JSX.Element {
           <header className={styles.heroBanner}>
             <h1>
               Las mejores ofertas en vuelos desde{" "}
-              {response.origin.city ? response.origin.city : response.origin.airport}{" "}
+              {response.origin.city
+                ? response.origin.city
+                : response.origin.airport}{" "}
               hacia{" "}
-              {response.destination.city ? response.destination.city : response.destination.airport}
+              {response.destination.city
+                ? response.destination.city
+                : response.destination.airport}
             </h1>
           </header>
-          <Maps/>
+          <Maps />
 
           <h2>Ofertas disponibles</h2>
 
           <section className={styles.offersCards}>
             {response.mode === "oneway"
               ? response.offers.map((item: any) => (
-                console.log("location"),
-                console.log(location.search),
                   <OfferCardI
+                    key={item.id}
                     offers={item.id}
                     currency={item.currency}
                     price={item.price}
@@ -67,10 +69,12 @@ export default function OfferPage(): JSX.Element {
                     destinationCity={response.destination.city}
                     originAirport={response.origin.airport}
                     destinationAirport={response.destination.airport}
+                    recomendations={recomendations}
                   />
                 ))
               : response.offers.map((item: any) => (
                   <OfferCardIV
+                    key={item.id}
                     offers={item.id}
                     currency={item.currency}
                     price={item.price}
@@ -81,13 +85,19 @@ export default function OfferPage(): JSX.Element {
                     destinationCity={response.destination.city}
                     originAirport={response.origin.airport}
                     destinationAirport={response.destination.airport}
+                    recomendations={recomendations}
                   />
                 ))}
           </section>
         </section>
       );
-    }else {
-      return <div><p>No hay vuelos</p></div>;
+    } else {
+      return (
+        <div>
+          <Navbar />
+          <img className={styles.imagen} src={notFound} alt="error"></img>
+        </div>
+      );
     }
   };
 
@@ -95,5 +105,5 @@ export default function OfferPage(): JSX.Element {
     return <LoadingScreen />;
   };
 
-  return <div>{response? render() : loading()}</div>;
+  return <div>{response ? render() : loading()}</div>;
 }

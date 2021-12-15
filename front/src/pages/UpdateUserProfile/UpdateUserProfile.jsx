@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 import styles from "./UpdateUserProfile.module.scss";
-import regex from "../../helpers/regex";
+// import regex from "../../helpers/regex";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import {
   // FaBirthdayCake,
@@ -24,7 +24,7 @@ import {
   lastNameValidation,
   nameValidation,
   phoneValidation,
-  photoURLValidation,
+  // photoURLValidation,
   validateForm,
 } from "./validations";
 
@@ -73,7 +73,8 @@ export default function UpdateUserProfile() {
     });
   };
 
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [usuario, setUsuario] = useState([]);
   const [value, setValue] = useState({ uploadValue: 0, picture: null });
 
@@ -168,6 +169,7 @@ export default function UpdateUserProfile() {
     if (loading) return;
     if (!user) return history.replace("/");
     getUser();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading, history]);
 
   return (
