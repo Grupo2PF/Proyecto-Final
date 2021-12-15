@@ -7,7 +7,6 @@ import {auth, db} from "../firebaseConfig";
 import {useAuthState} from "react-firebase-hooks/auth";
 
 const VITE_PUBLIC_KEY_MP = "TEST-0f046780-e30e-443a-b0c8-cc6d4fd9be99";
-const VITE_URL_PAYMENT_MP = "http://localhost:3001/mercadoPagob";
 
 export default function useMercadoPago(props) {
 
@@ -77,7 +76,7 @@ export default function useMercadoPago(props) {
                             identificationType: identification_type,
                         } = cardForm.getCardFormData();
 
-                        fetch(`http://localhost:3001/process-payment`,
+                        fetch(`https://dev-sky.herokuapp.com/process-payment`,
                             {
                                 // entry point backend
                                 method: "POST",
