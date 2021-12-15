@@ -16,7 +16,6 @@ import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
 import TicketPage from "./pages/TicketPage/TicketPage";
 import OfferDetail from "./pages/OfferDetail/OfferDetail";
 import PayPage from "./pages/PayPage/PayPage";
-import LandingPage from "./pages/LandingPage/LandingPage";
 import SeatsPage from "./pages/SeatsPage/SeatsPage";
 
 // Animations configuration
