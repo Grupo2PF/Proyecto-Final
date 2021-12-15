@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./RecomendationCard.module.scss";
 import {
   AiOutlineExclamationCircle,
@@ -10,38 +10,94 @@ import {
   BsCalendarDateFill,
   BsCalendarDate,
 } from "react-icons/bs";
+import { useHistory } from "react-router-dom";
 import { IoMdAirplane } from "react-icons/io";
 import { GiCommercialAirplane } from "react-icons/gi";
 import { useDispatch } from "react-redux";
-import { auth } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
 import { sendFavs } from "../../redux/actions/";
-import { Link } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+
+import swal from "sweetalert";
 
 export default function OfferCardI(props) {
   const [clicked, setClicked] = useState([false, "Ver detalles"]);
+  const [user] = useAuthState(auth);
+  const [fav, setFav] = useState([]);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const dataFromQuery = {};
+
+  const getUser = () => {
+    db.collection("saves").onSnapshot((querySnapshot) => {
+      const docs = [];
+      querySnapshot.forEach((doc) => {
+        docs.push({ ...doc.data(), id: doc.id });
+      });
+      const filtrado = docs.filter((doc) => doc.userId === user?.uid);
+      setFav(filtrado);
+    });
+  };
+
+  useEffect(() => {
+    getUser();  // eslint-disable-next-line 
+  }, []);
 
   const handleFavs = (e) => {
     if (auth.currentUser) {
-      const info = {
-        userId: auth.currentUser.uid,
-        ...props,
-        // id: props.offers,
-        // mode: props.mode,
-        // origin: props.originCity,
-        // destination: props.destinationCity,
-        // originAirport: props.originAirport,
-        // destinationAirport: props.destinationAirport,
-        // transfers: props.transfers.length -1,
-        // price: `${props.currency} ${props.price}`,
-      };
-      console.log("info");
-      console.log(info);
-      dispatch(sendFavs(info));
+      if (fav.some((el) => el.offers === e.target.value)) {
+        swal({
+          title: "Error",
+          text: "Ya has añadido ese favorito!",
+          icon: "error",
+          button: "Volver",
+        });
+      } else {
+        const info = {
+          ...dataFromQuery,
+          userId: auth.currentUser.uid,
+          ...props,
+        };
+        if (dispatch(sendFavs(info))) {
+          // @ts-ignore
+          swal({
+            title: "Se ha agregado a favoritos",
+            text: "El vuelo se ha agregado a tus favoritos",
+            icon: "success",
+          }).then(() => console.log("added"));
+        }
+      }
     } else {
-      alert("Debes iniciar sesión para poder agregar a favoritos");
+      // @ts-ignore
+      swal({
+        title: "Debes iniciar sesión",
+        text: "Para poder agregar a favoritos debes estar registrado",
+        icon: "warning",
+        dangerMode: true,
+      }).then(() => history.push("/login"));
     }
   };
+
+  const handleBuy = (e) => {
+    e.preventDefault();
+    if (auth.currentUser) {
+      history.push({
+        pathname: `/ticket/${props.offers}`,
+        state: {
+          ...props,
+          ...dataFromQuery,
+        },
+      });
+    } else {
+      // @ts-ignore
+      swal({
+        title: "Debes iniciar sesión para comprar",
+        icon: "warning",
+        dangerMode: true,
+      }).then(() => history.push("/login"));
+    }
+  };
+
   const handleClick = () => {
     if (!clicked[0]) {
       return setClicked([true, "Cerrar"]);
@@ -95,18 +151,14 @@ export default function OfferCardI(props) {
                 <AiOutlineExclamationCircle />
                 {clicked[1]}
               </button>
-              <button onClick={handleFavs}>Añadir a favs</button>
-              <Link
-                to={{
-                  pathname: `/ticket/${props.offers}`,
-                  state: {
-                    ...props,
-                  },
-                }}
+              <button value={props.offers} onClick={handleFavs}>Añadir a favs</button>
+              <button
+              
+                onClick={handleBuy}
                 className={styles.offersCardButtonsPrice}
               >
                 {`${props.currency} ${props.price}`}
-              </Link>
+              </button>
             </div>
           </div>
 

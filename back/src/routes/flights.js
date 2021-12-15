@@ -14,7 +14,6 @@ router.get("/search", async function (req, res, next) {
     let { origin, destination, dDate, rDate, adults, childs, baby, cabin } = req.query;
     let psgrs = [];
 
-    console.log(cabin);
 
     if(rDate !== undefined){
       mode = 'roundtrip';

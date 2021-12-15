@@ -47,7 +47,9 @@ export default function MercadoPagoForm(props) {
   };
 
   const [user] = useAuthState(auth);
+  /* eslint-disable */
   const [usuario, setUsuario] = useState([]);
+  /* eslint-enable */
   const [resultPayment, setResultPayment] = useState(undefined);
   const history = useHistory();
 
@@ -65,13 +67,6 @@ export default function MercadoPagoForm(props) {
         userId: user.uid,
         ...props.offer,
       }).then(() => {
-        console.log({...resultPayment,
-          date: new Date(),
-          user: user.email,
-          userId: user.uid,
-          ...props.offer})
-        console.log("Ticket guardado");
-        console.log(usuario);
       })
     } catch (error) {
       console.log(error);
@@ -93,7 +88,7 @@ export default function MercadoPagoForm(props) {
     if (MercadoPago) {
       const mp = new MercadoPago(VITE_PUBLIC_KEY_MP);
       const cardForm = mp.cardForm({
-        amount: props.offer.price,
+        amount:props.offer? props.offer.price : props.price,
         autoMount: true,
         form: formConfig,
         callbacks: {

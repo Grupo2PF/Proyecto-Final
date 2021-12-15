@@ -27,7 +27,6 @@ export function getFlight(payload: any) {
           payload: json.data,
         });
       } else {
-        console.log(payload);
         const json = await axios.get(
           `http://localhost:3001/search?origin=${payload.originCity}&destination=${payload.destinyCity}&dDate=${payload.departureDate}&adults=${payload.adult}&childs=${payload.kid}&baby=${payload.baby}&cabin=${payload.class}`
         );
@@ -61,7 +60,6 @@ export function getFlightUrl(payload: any) {
 }
 
 export function setLoading(payload: boolean) {
-  console.log(payload);
   return async function(dispatch: any) {
     return dispatch({
       type: SET_LOADING,
@@ -73,10 +71,7 @@ export function setLoading(payload: boolean) {
 export function getSeats(payload: any) {
   return async function(dispatch: any) {
     try {
-      console.log(payload);
       const info = await axios.get(`http://localhost:3001/${payload}/seats`);
-      console.log("respuesta de la api");
-      console.log(info.data);
       return dispatch({
         type: GET_SEATS,
         payload: info.data,
@@ -95,7 +90,6 @@ export function resetState() {
   };
 }
 export function getPay(payload: any) {
-  console.log(payload);
   return async function(dispatch: any) {
     return dispatch({
       type: GET_PAY,
@@ -126,7 +120,6 @@ export function sendFavs(payload: any) {
 export function getFavs(payload: any) {
   return async function(dispatch: any) {
     const favs = await axios.get(`http://localhost:3001/getsaves/${payload}`);
-    console.log(favs.data);
     dispatch({
       type: GET_FAVS,
       payload: favs.data,
@@ -136,16 +129,11 @@ export function getFavs(payload: any) {
 
 export function isAvailable(payload: any) {
   return async function(dispatch: any) {
-    console.log("payload");
-    console.log(payload[0].origin);
     if (payload[0].rDate) {
       try {
-        console.log(payload[0].transfersD.length);
         const info = await axios.get(
           `http://localhost:3001/isavailable?origin=${payload[0].origin}&destination=${payload[0].destination}&originAirport=${payload[0].originAirport}&destinationAirport=${payload[0].destinationAirport}&dDate=${payload[0].dDate}&rDate=${payload[0].rDate}&adults=${payload[0].adults}&childs=${payload[0].childs}&baby=${payload[0].baby}&cabin=${payload[0].cabin}&flightId=${payload[0].offers}&price=${payload[0].price}&transfersD=${payload[0].transfersD.length}&transfersR=${payload[0].transfersR.length}`
         );
-        console.log("infodata");
-        console.log(info.data);
         return dispatch({
           type: IS_AVAILABLE,
           payload: info.data,
@@ -161,8 +149,6 @@ export function isAvailable(payload: any) {
         const info = await axios.get(
           `http://localhost:3001/isavailable?origin=${payload[0].origin}&destination=${payload[0].destination}&originAirport=${payload[0].originAirport}&destinationAirport=${payload[0].destinationAirport}&dDate=${payload[0].dDate}&adults=${payload[0].adults}&childs=${payload[0].childs}&baby=${payload[0].baby}&cabin=${payload[0].cabin}&flightId=${payload[0].offers}&price=${payload[0].price}&transfers=${payload[0].transfers.length}`
         );
-        console.log("infodata");
-        console.log(info.data);
         return dispatch({
           type: IS_AVAILABLE,
           payload: info.data,
