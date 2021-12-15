@@ -1,3 +1,5 @@
+@import "../../scss/variables";
+
 .container{
     background-color: white;
     backdrop-filter: blur(10px);
@@ -86,5 +88,12 @@
     display: center;
     text-align: center;
     justify-content: center;
-
   }
+
+@media screen and (min-width: $notebook-width) {
+    .allFlightSeats{
+        display: flex;
+        gap: 4rem;
+        padding: 1rem 2rem;
+    }
+}

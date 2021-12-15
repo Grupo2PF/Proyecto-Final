@@ -4,10 +4,7 @@ import reportWebVitals from "./reportWebVitals";
 import  store  from "./redux/store/index";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route } from "react-router-dom";
-<<<<<<< HEAD
-=======
 import App from "./App"
->>>>>>> 293bebb88cbdeb3144347f8f0ad08f110b650840
 
 
 ReactDOM.render(
