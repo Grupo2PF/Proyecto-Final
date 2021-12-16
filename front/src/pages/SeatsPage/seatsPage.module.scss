@@ -1,99 +1,135 @@
 @import "../../scss/variables";
 
-.container{
-    background-color: white;
-    backdrop-filter: blur(10px);
-    margin: 2px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border-radius: 15px;
-    padding: 10px;
+.container {
+  background-color: white;
+  backdrop-filter: blur(10px);
+  margin: 0.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 15px;
+  padding: 10px;
+  width: 85%;
 }
-.rotulo{
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 40px;
-    padding: 40px;
-}
-.numbLett{
-    font-size: 0.8rem;
+.rotulo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 4rem;
+  padding: 4rem;
+  width: 100%;
+  gap: .5rem;
 }
 
-.logo{
-    font-display: center;
-    justify-content: center;
-    margin: 5px;
+.columnaAInput {
+  justify-content: center;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  width: 25%;
+}
+.inputs {
+  input {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.logo {
+  font-display: center;
+  justify-content: center;
 }
 .fila {
-    width: 100%;
-    margin: 2px;
-    display: flex;
-    flex-direction: row;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1rem;
 }
 
 .columna {
-    margin: 10px;
-    height: 60px;
-    width: 100%;
-    background-color: rgb(47, 124, 212);
-    padding: 20px;
-    backdrop-filter: blur(10px);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    border-radius: 15px;
+  width: 100%;
+  background-color: rgb(47, 124, 212);
+  padding: 1rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  border-radius: 10px;
+  margin: .5rem 0;
 }
-.oneCard{
-    background-color: transparent;
-    backdrop-filter: blur(20px);
-    margin: 15px;
+.oneCard {
+  background-color: transparent;
+  backdrop-filter: blur(20px);
+  margin: 2rem;
 }
 
-.other{
-    height: 10rem;
-    justify-content: center;
+.other {
+  justify-content: center;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  size: 1rem;
+  p {
+    font-size: 0.7rem;
+  }
+  &Icon {
+    size: 1rem;
+  }
+}
+.otherBox {
+  display: flex;
+  width: 100%;
 }
 
 .allSeats {
-    background-image: url("../../assets/planes/plane-7.webp");
-    background-attachment: fixed;
-    background-size: cover;
-    padding-top: 5rem;
+  background-image: url("../../assets/planes/plane-7.webp");
+  background-attachment: fixed;
+  background-size: cover;
+  padding-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10rem;
+}
+
+.buttonSubmit {
+  color: #ffffff;
+  background-color: rgb(47, 124, 212);
+  width: 60%;
+  border: none;
+  border-radius: 10px;
+  display: center;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  box-shadow: -1px -1px 3px darkgray;
+  background-position: center;
+}
+
+.buttondiv {
+  padding: 40px;
+  display: center;
+  text-align: center;
+  justify-content: center;
+}
+
+@media screen and (min-width: $tablet-width) {
+  .container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 10rem ;
-}
-
-.buttonSubmit{
-    color: #ffffff;
-    background-color: rgb(47, 124, 212);;
-    height: 2.5em;
-    width: 15em;
-    border: none;
-    border-radius: 10px;
-    display: center;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    transition: 0.2s;
-    box-shadow: -1px -1px 3px darkgray;
-    background-position: center;
-}
-
-.buttondiv{
-    padding: 40px;
-    display: center;
-    text-align: center;
-    justify-content: center;
-}
-
-@media screen and (min-width: $notebook-width) {
-    .allFlightSeats{
-        display: flex;
-        gap: 4rem;
-        padding: 1rem 2rem;
-    }
+    gap: 4rem;
+    padding: 1rem 2rem;
+    width: 40%;
+  }
+  .columnaAInput {
+    width: 6%;
+  }
 }
