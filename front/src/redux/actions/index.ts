@@ -11,6 +11,7 @@ import {
   IS_AVAILABLE,
   RESET_FAVS_Y_AVAILABLES,
   GET_PAY,
+  RESET_SEATS_STATE
 } from "../actionTypes";
 
 
@@ -78,8 +79,20 @@ export function getSeats(payload: any) {
       });
     } catch (err) {
       console.log(err);
+      return dispatch({
+        type: GET_SEATS,
+        payload: "error",
+      });
     }
   };
+}
+
+export function resetSeatsState(payload: any) {
+  return async function(dispatch: any) {
+    return dispatch({
+      type: RESET_SEATS_STATE,
+    });
+  }
 }
 
 export function resetState() {

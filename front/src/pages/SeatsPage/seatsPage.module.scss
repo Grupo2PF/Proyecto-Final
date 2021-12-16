@@ -83,6 +83,39 @@
     background-position: center;
 }
 
+.buttonConfirm{
+    color: $black;
+    background-color: rgb(255, 255, 255);;
+    height: 4em;
+    width: 20em;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: -1px -1px 3px darkgray;
+    position: relative;
+    bottom: 4rem;
+    font-weight:$bold-font;
+}
+
+.goHome{
+    background-color: black;
+    color: rgb(53, 7, 7);
+}
+.errorContainer{
+      background-image: url(../../assets/asientos.jpg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      align-items: flex-end;
+}
+
 .buttondiv{
     padding: 40px;
     display: center;

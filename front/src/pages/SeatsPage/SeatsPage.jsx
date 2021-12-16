@@ -5,16 +5,17 @@ import styles from "./seatsPage.module.scss";
 import OtherBox from "./OtherBox";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
 import seatsDefault from "./seatsDefault";
-import { getSeats } from "../../redux/actions";
+import { getSeats, resetSeatsState } from "../../redux/actions";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
+import Asientos from "../../assets/asientos.jpg"
+import Navbar from "../../components/Navbar/Navbar";
 
 export default function SeatsPage() {
     const [input, setInput] = useState([])
     const [inputSegundo, setInputSegundo] = useState([])
     const [inputTres, setInputTres] = useState([])
     const [inputCuatro, setInputCuatro] = useState([])
-    const [ checkState, setCheckState] = useState(false)
-
     const { state } = useLocation();
     const history = useHistory();
     const dispatch = useDispatch();
@@ -23,14 +24,20 @@ export default function SeatsPage() {
     useEffect(() => {
         dispatch(getSeats(offerId));
     }, []);
+
+    
  
    // desde STATE useLocation
     const pax = state.passengers
    //desde redux/api
     const seats = useSelector((state) => state.allSeats);
     const firstOprtionSeats  = seats.seatsByFlight
-    console.log(seats)
-
+    useEffect(() => {
+        return () => {
+          dispatch(resetSeatsState());
+        };
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [state]);
     const { economySeatsDefault, firstSeatsDefault , otherDefault } = seatsDefault
     const { seatsByFlight } = otherDefault
     
@@ -156,6 +163,14 @@ export default function SeatsPage() {
          }
       }
 
+      const handleSend = (e) => {
+          e.preventDefault()
+          history.push({ 
+            pathname : "/pay",
+            state: {...state} 
+          })
+        }
+
     const allSeatsLimit = pax.length * finalSeats.length;
      
      const firstFlight = finalSeats[0]
@@ -163,8 +178,10 @@ export default function SeatsPage() {
      const tirdFlight = finalSeats[2]
      const fourtFlight = finalSeats[3]
      
-    function renderAviones() {
-        const oneFlight = (<div>
+      const render = () => {
+
+         if(typeof(seats) === "object"){
+            const oneFlight = (<div>
                 <div className={styles.rotulo}>
                <img src={logo} alt="logo" className={styles.logo} display="center"/>
                  <div>Elije los <b>{pax.length} asientos</b> del vuelo</div>
@@ -345,9 +362,20 @@ export default function SeatsPage() {
                 onClick={()=>handleSubmit()}>
                     Confirmar asientos
                     </button>
-                 </div></div>)
-    
+                 </div></div>
+        )}else if (typeof seats === "string"){
+            return (
+                <div className= {styles.errorContainer}>
+                    <Navbar/>
+                    <button className={styles.buttonConfirm} onClick={handleSend}>Continuar con el pago</button>
+                </div>
+            )}
     }
 
-    return renderAviones();
+        const loading = () => {
+            return <LoadingScreen />;
+          };
+    
+        return <div>{ seats.seatsByFlight?.length>0 || seats === "No hay asientos disponibles"? render(): loading() }</div>
+    
 }
