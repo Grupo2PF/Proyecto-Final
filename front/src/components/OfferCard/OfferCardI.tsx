@@ -85,7 +85,7 @@ export default function OfferCardI(props: any): JSX.Element {
 
   const handleFavs = (e: any) => {
     if(auth.currentUser){
-       if(fav.some((el:any)=>el.offers === e.target.value)){
+       if(fav.some((el:any)=>el.offers === props.offers || fav.some((el:any)=>el.price === props.price)) && fav.some((el:any)=>el.transfers.length === props.transfers.length) && fav.some((el:any)=>el.userId === auth.currentUser?.uid)){
         swal(errorMessage)
        }
         else{
@@ -135,11 +135,11 @@ export default function OfferCardI(props: any): JSX.Element {
   };
 
   return (
-    <section className={styles.offers} data-aos="fade-up">
+    <section className={styles.offers}>
       <div className={styles.offersCard}>
         <div className={styles.offersCardMainInfo}>
           {/* Puntos de partida y llegada */}
-          <div className={styles.offersCardInfo} data-aos="fade-left">
+          <div className={styles.offersCardInfo}>
             <p>
               <FaPlaneDeparture />{" "}
               {props.originCity ? props.originCity : props.originAirport}{" "}
@@ -153,7 +153,7 @@ export default function OfferCardI(props: any): JSX.Element {
           </div>
 
           {/* Tipo de vuelo */}
-          <div className={styles.offersCardType} data-aos="fade-up">
+          <div className={styles.offersCardType}>
             {props.transfers.length === 1 ? (
               <p>
                 {" "}
@@ -168,7 +168,7 @@ export default function OfferCardI(props: any): JSX.Element {
           </div>
 
           {/* Buttons */}
-          <div className={styles.offersCardButtons} data-aos="fade-right">
+          <div className={styles.offersCardButtons}>
             <Link
               to={{
                 pathname: `/offer-detail/${props.offers}`,
@@ -182,7 +182,7 @@ export default function OfferCardI(props: any): JSX.Element {
               <AiOutlineExclamationCircle />
               Ver detalles
             </Link>
-            <button value={props.offers} onClick={handleFavs}><AiOutlineStar/> Añadir a favs</button>
+            <button value={props} onClick={handleFavs}><AiOutlineStar/> Añadir a favs</button>
             <button
             
               className={styles.offersCardButtonsPrice}

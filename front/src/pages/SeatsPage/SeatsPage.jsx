@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import styles from "./seatsPage.module.scss";
 import OtherBox from "./OtherBox";
 import logo from "../../assets/logo/dev-sky-black-logo.svg";
-import seatsDefault from "./seatsDefault";
 import { getSeats } from "../../redux/actions";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
 
@@ -19,17 +18,16 @@ export default function SeatsPage() {
   const dispatch = useDispatch();
   const offerId = state.offer.offers;
 
-  useEffect(() => {
-    dispatch(getSeats(offerId));
-  }, [dispatch, offerId]);
-
-  const pax = state.passengers;
-  const seats = useSelector((state) => state.allSeats);
-  const firstOprtionSeats = seats.seatsByFlight;
-  console.log(seats);
-  const { otherDefault } = seatsDefault;
-  const { seatsByFlight } = otherDefault;
-  console.log(seatsByFlight);
+    useEffect(() => {
+        dispatch(getSeats(offerId));
+    }, [dispatch,offerId]);
+ 
+   // desde STATE useLocation
+    const pax = state.passengers
+   //desde redux/api
+    const seats = useSelector((state) => state.allSeats);
+    const firstOprtionSeats  = seats.seatsByFlight
+    console.log(seats)
 
   const finalSeats = firstOprtionSeats ? firstOprtionSeats : seatsByFlight;
 
