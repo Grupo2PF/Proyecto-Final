@@ -7,7 +7,8 @@ import {
   GET_FAVS,
   IS_AVAILABLE,
   RESET_FAVS_Y_AVAILABLES,
-  GET_TICKETS
+  GET_TICKETS,
+  RESET_SEATS_STATE
 } from "../actionTypes";
 
 const initialState: any = {
@@ -70,6 +71,11 @@ export default function rootReducer(state = initialState, action: Action) {
         ...state,
         favs: initialState.favs,
         availableFlight: initialState.availableFlight
+      };
+      case RESET_SEATS_STATE:
+      return {
+        ...state,
+        allSeats: initialState.allSeats
       };
     default:
       return state;
