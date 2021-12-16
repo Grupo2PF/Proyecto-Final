@@ -13,26 +13,15 @@ import notFound from "../../assets/notFound.jpg";
 
 export default function OfferPage(): JSX.Element {
   const response: any = useSelector((state: any) => state.allFlight);
-  const [ordenado, setOrdenado] = useState(response);
+  const [order, setOrder] = useState("");
   // const cargando: any = useSelector((state: any) => state.loading);
   const dispatch = useDispatch();
   const location = useLocation();
+  const respaldo = {...response}
 
   useEffect(() => {
     dispatch(getFlightUrl(location.search));
   }, [dispatch, location.search]);
-
-  useEffect(() => {
-    setOrdenado(response);
-    console.log("ordenado al cargar")
-    console.log(ordenado)
-  },[])
-
-  useEffect(() => {
-    render();
-    console.log("ordenado escuchando cambios")
-    console.log(ordenado)
-  }, [ordenado.offers[0].price])
 
   useEffect(() => {
     return () => {
@@ -40,39 +29,50 @@ export default function OfferPage(): JSX.Element {
     };
   }, [dispatch, location]);
 
-
-  const handleSort = (e: any) => {
+  const getOrder = (e: any) => {
     e.preventDefault();
-    const sort = response;
-    if (e.target.value === "masbarato") {
-    sort.offers.sort((a: any, b: any) => {
-      if(a.price>b.price){
-        return 1;
-      }
-      setOrdenado(sort);
-      if(a.price<b.price){
-        return -1;
-      }
-      setOrdenado(sort);
-      return 0;
-    });
-  } if (e.target.value === "mascaro") {
-    sort.offers.sort((a: any, b: any) => {
-      if(a.price>b.price){
-        return -1;
-      }
-      setOrdenado(sort);
-      if(a.price<b.price){
-        return 1;
-      }
-      setOrdenado(sort);
-      return 0;
-    });
-  }
-  setOrdenado(sort);
-};
 
+    setOrder(e.target.value);
+  };
+
+  function randomize(a:any, b:any) {
+    return Math.random() - 0.5;
+}
+
+
+  const handleSort = () => {
+    const sort = response;
+    if (order === "masbarato") {
+      sort.offers.sort((a: any, b: any) => {
+        if (parseInt(a.price) > parseInt(b.price)) {
+          return 1;
+        }
+        if (parseInt(a.price) < parseInt(b.price)) {
+          return -1;
+        }
+        return 0;
+      });
+      return sort;
+    } else if (order === "mascaro") {
+      sort.offers.sort((a: any, b: any) => {
+        if (parseInt(a.price) > parseInt(b.price)) {
+          return -1;
+        }
+        if (parseInt(a.price) < parseInt(b.price)) {
+          return 1;
+        }
+        return 0;
+      });
+      return sort;
+    } else {
+        sort.offers = sort.offers.sort(randomize)
+
+        return sort
+      };
+}
   const render = () => {
+    let ordenado = handleSort();
+
     const recomendations: any = [];
     if (ordenado?.offers.length >= 4) {
       for (let i = 0; i < 3; i++) {
@@ -84,8 +84,16 @@ export default function OfferPage(): JSX.Element {
       return (
         <section className={styles.divContainer}>
           <Navbar />
-          <header className={styles.heroBanner} data-aos="fade-right" data-aos-duration="1200">
-            <h1 data-aos="fade-up" data-aos-duration="1200" data-aos-delay="250">
+          <header
+            className={styles.heroBanner}
+            data-aos="fade-right"
+            data-aos-duration="1200"
+          >
+            <h1
+              data-aos="fade-up"
+              data-aos-duration="1200"
+              data-aos-delay="250"
+            >
               Las mejores ofertas en vuelos desde{" "}
               {ordenado?.origin.city
                 ? ordenado?.origin.city
@@ -101,12 +109,14 @@ export default function OfferPage(): JSX.Element {
           <h2 data-aos="fade-up">Ofertas disponibles</h2>
 
           <section className={styles.offersCards}>
-            <p>Ordenar por:</p>
-            <select onChange={handleSort}>
-              <option value="nada">nada</option>
-              <option value="mascaro">Mayor precio</option>
-              <option value="masbarato">Menor precio</option>
-            </select>
+            <div data-aos="fade-up" className={styles.selectContainer}>
+              <p>Ordenar por:</p>
+              <select className={styles.select} onChange={getOrder}>
+                <option value="nada">Aleatorio</option>
+                <option value="mascaro">Mayor precio</option>
+                <option value="masbarato">Menor precio</option>
+              </select>
+            </div>
             {ordenado?.mode === "oneway"
               ? ordenado?.offers.map((item: any) => (
                   <OfferCardI
@@ -125,7 +135,6 @@ export default function OfferPage(): JSX.Element {
                 ))
               : ordenado?.offers.map((item: any) => (
                   <OfferCardIV
-                  
                     key={item.id}
                     offers={item.id}
                     currency={item.currency}

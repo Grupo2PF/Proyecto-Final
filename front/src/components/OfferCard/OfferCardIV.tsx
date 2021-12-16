@@ -83,8 +83,10 @@ export default function OfferCardIV(props: any): JSX.Element {
   }, []);
 
   const handleFavs = (e: any) => {
+    console.log(fav);
+    console.log(props)
       if(auth.currentUser){
-        if(fav.some((el:any)=>el.offers === e.target.value)){
+        if(fav.some((el:any)=>el.offers === props.offers || fav.some((el:any)=>el.price === props.price)) && fav.some((el:any)=>el.originCity === props.originCity) && fav.some((el:any)=>el.destinationCity === props.destinationCity) && fav.some((el:any)=>el.userId === auth.currentUser?.uid)){
          swal(errorMessage)
         }else{
       const info = {
@@ -134,11 +136,11 @@ export default function OfferCardIV(props: any): JSX.Element {
 
   return (
     <>
-      <section className={styles.offers}>
+      <section className={styles.offers} >
         <div className={styles.offersCard}>
           <div className={styles.offersCardMainInfo}>
             {/* Puntos de partida y llegada */}
-            <div data-aos="fade-left" className={styles.offersCardInfo}>
+            <div className={styles.offersCardInfo}>
               <p>
                 <FaPlaneDeparture />{" "}
                 {props.originCity ? props.originCity : props.originAirport}{" "}
@@ -152,7 +154,7 @@ export default function OfferCardIV(props: any): JSX.Element {
             </div>
 
             {/* Tipo de vuelo */}
-            <div data-aos="fade-up" className={styles.offersCardType}>
+            <div className={styles.offersCardType}>
               {props.transfersD.length === 1 ? (
                 <p>
                   <IoMdAirplane /> Vuelo directo
@@ -166,7 +168,7 @@ export default function OfferCardIV(props: any): JSX.Element {
             </div>
 
             {/* Buttons */}
-            <div data-aos="fade-right" className={styles.offersCardButtons}>
+            <div className={styles.offersCardButtons}>
               <Link
                 to={{
                   pathname: `/offer-detail/${props.offers}`,
