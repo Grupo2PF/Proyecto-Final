@@ -65,7 +65,7 @@ export default function OfferPage(): JSX.Element {
             });
             return sort;
         } else {
-            sort.offers = sort.offers.sort(randomize)
+            sort.offers = sort.offers?.sort(randomize)
 
             return sort
         };

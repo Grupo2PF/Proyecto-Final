@@ -163,7 +163,7 @@ export default function UserProfile(documentPath) {
 
   const render = () => {
     return (
-        <div key={usuario.id} className={styles.user}>
+        <div key={user.uid} className={styles.user}>
           <GoHomeButton />
           {usuario.map((dato) => {
             return (
@@ -306,13 +306,25 @@ export default function UserProfile(documentPath) {
                                   <p><span>Precio:</span> U$D {ticket.price}</p>
                                 </div>
                               </div>
-
                               <div className={styles.cardFavJourneyAndPrice}>
                                 <div className={styles.cardFavJourney}>
-                                  <p><span>Estado del Pago:</span> {ticket.status === "approved" ? "Aprobado" : ""}</p>
+                                  <p><span>Pasajeros</span></p>
                                 </div>
+                              </div>
+                              <div className={styles.cardFavPassengers}>
+                                <div className={styles.cardFavPassengersDetail}>
+                                  <p><span>Adultos:</span> {ticket.adults}</p>
+                                </div>
+                                <div className={styles.cardFavPassengersDetail}>
+                                  <p><span>Niños:</span> {ticket.childs}</p>
+                                </div>
+                                <div className={styles.cardFavPassengersDetail}>
+                                  <p><span>Bebes:</span> {ticket.baby}</p>
+                                </div>
+                              </div>
+                              <div className={styles.cardFavJourneyAndPrice}>
                                 <div className={styles.cardFavPrice}>
-                                  <p><span>Detalles:</span> {ticket.status_detail === "accredited" ? "Acreditado" : ""}</p>
+                                  <p><span>Fecha Salida: </span> {ticket.dDate}</p>
                                 </div>
                               </div>
                             </div>
