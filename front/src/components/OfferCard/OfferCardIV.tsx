@@ -4,7 +4,6 @@ import { AiOutlineExclamationCircle, AiOutlineStar } from "react-icons/ai";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { IoMdAirplane, IoLogoUsd } from "react-icons/io";
-// import { getSeats, sendFavs } from "../../redux/actions/";
 import { sendFavs } from "../../redux/actions/";
 import { auth, db } from "../../firebaseConfig";
 import { useLocation, Link, useHistory } from "react-router-dom";
@@ -138,7 +137,7 @@ export default function OfferCardIV(props: any): JSX.Element {
         <div className={styles.offersCard}>
           <div className={styles.offersCardMainInfo}>
             {/* Puntos de partida y llegada */}
-            <div data-aos="fade-left" className={styles.offersCardInfo}>
+            <div className={styles.offersCardInfo}>
               <p>
                 <FaPlaneDeparture />{" "}
                 {props.originCity ? props.originCity : props.originAirport}{" "}
@@ -152,7 +151,7 @@ export default function OfferCardIV(props: any): JSX.Element {
             </div>
 
             {/* Tipo de vuelo */}
-            <div data-aos="fade-up" className={styles.offersCardType}>
+            <div className={styles.offersCardType}>
               {props.transfersD.length === 1 ? (
                 <p>
                   <IoMdAirplane /> Vuelo directo
@@ -166,7 +165,7 @@ export default function OfferCardIV(props: any): JSX.Element {
             </div>
 
             {/* Buttons */}
-            <div data-aos="fade-right" className={styles.offersCardButtons}>
+            <div className={styles.offersCardButtons}>
               <Link
                 to={{
                   pathname: `/offer-detail/${props.offers}`,
