@@ -62,7 +62,6 @@ export default function TicketPage() {
       passenger[0] = `Pasajero ${index + 1}`;
       return passenger;
     });
-
     if (passengersData.every((passenger) => passenger[0])) {
       const offerProps = {
         offer: { ...state },
