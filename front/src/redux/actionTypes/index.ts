@@ -10,4 +10,4 @@ export const GET_TICKETS: string = "GET_TICKETS";
 export const IS_AVAILABLE: string = "IS_AVAILABLE";
 export const GET_PAY: string = "GET_PAY";
 export const RESET_FAVS_Y_AVAILABLES: string = "RESET_FAVS_Y_AVAILABLES";
-
+export const RESET_SEATS_STATE: string = "RESET_SEATS_STATE";

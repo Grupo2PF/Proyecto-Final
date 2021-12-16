@@ -75,9 +75,9 @@ export default function TicketPage() {
         icon: "success",
         button: "Aceptar",
       }).then(() => {
-        history.push({
-          pathname: `/pay`,
-          state: { ...offerProps },
+        history.push({ 
+          pathname : `/seats/${offerProps.offer.offers}`,
+          state: {...offerProps}
         });
       });
     } else {

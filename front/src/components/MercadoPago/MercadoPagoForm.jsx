@@ -66,6 +66,7 @@ export default function MercadoPagoForm(props) {
         user: user.email,
         userId: user.uid,
         ...props.offer,
+        ...props.allSeats,
       }).then(() => {
       })
     } catch (error) {
@@ -114,7 +115,7 @@ export default function MercadoPagoForm(props) {
               identificationType: identification_type,
             } = cardForm.getCardFormData();
 
-            fetch(`http://localhost:3001/process-payment`,
+            fetch(`https://devskyproject.herokuapp.com/process-payment`,
                 {
                   // entry point backend
                   method: "POST",

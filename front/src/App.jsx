@@ -15,8 +15,8 @@ import OfferPage from "./pages/OfferPage/OfferPage";
 import UpdateUserProfile from "./pages/UpdateUserProfile/UpdateUserProfile";
 import TicketPage from "./pages/TicketPage/TicketPage";
 import OfferDetail from "./pages/OfferDetail/OfferDetail";
-// import Navbar from "./components/Navbar/Navbar";
 import PayPage from "./pages/PayPage/PayPage";
+import SeatsPage from "./pages/SeatsPage/SeatsPage";
 
 // Animations configuration
 import AOS from "aos";
@@ -38,13 +38,14 @@ function App() {
         <Route exact path="/about-us" component={AboutUs}/>
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={RegisterPage} />
+        <Route exact path="/terms" component={Terms} />
         <Route exact path="/reset" component={Reset} />
         <Route exact path="/user" component={UserProfile} />
         <Route exact path="/user/update" component={UpdateUserProfile} />
         <Route exact path="/offers" component={OfferPage} />
         <Route exact path="/offer-detail/:offerId" component={OfferDetail} />
         <Route exact path="/ticket/:offerId" component={TicketPage} />
-        <Route exact path="/terms" component={Terms} />
+        <Route exact path="/seats/:offerId" component={SeatsPage} />
         <Route exact path="/pay" component={PayPage} />
       </Switch>
         <Footer/>
