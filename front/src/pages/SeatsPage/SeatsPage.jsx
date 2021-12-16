@@ -13,6 +13,7 @@ export default function SeatsPage() {
     const [inputSegundo, setInputSegundo] = useState([])
     const [inputTres, setInputTres] = useState([])
     const [inputCuatro, setInputCuatro] = useState([])
+    const [ checkState, setCheckState] = useState(false)
 
     const { state } = useLocation();
     const history = useHistory();
@@ -29,76 +30,84 @@ export default function SeatsPage() {
     const seats = useSelector((state) => state.allSeats);
     const firstOprtionSeats  = seats.seatsByFlight
     console.log(seats)
-    //caso default 
+
     const { economySeatsDefault, firstSeatsDefault , otherDefault } = seatsDefault
     const { seatsByFlight } = otherDefault
-    console.log(seatsByFlight)
     
     const finalSeats = firstOprtionSeats ? firstOprtionSeats : seatsByFlight
-    //const amountFlights = finalSeats.length
-    /*
-    for (let i=0; i < amountFlights ; i++ ){
-        const obj = { id: seats.seatsByFlight[i].id , amount : pax.length }
-          setLimit(limit.push(obj))
-    }
-    console.log(seats)*/
 
     const handleCheckIda = (e) =>{
         let checked = e.target.checked
+        let valor = e.target.value
+
+        if(input.includes(valor)) {
+             console.log("hola")
+            let nuevoArray = input.filter(x => x !== valor)
+            console.log(nuevoArray)
+           setInput(nuevoArray)
+        }
+
         if(checked && input.length < pax.length){ 
             setInput([...input, e.target.value])
-            if(input.length === pax.length -1) return alert("ya seleccionaste todos los asientos que necesitas para este vuelo, puedes continuar con el siguiente")
-              else alert(`asiento ${e.target.value} seleccionado exitosamente`)
-        } else { 
-            alert("ya seleccionaste todos los asientos, si quieres volver a elejirlos o cambiarlos antes de confirmar, puedes actualizar el navegador y elejirlos nuevamente")
-            console.log(input)
         }
     }
 
     const handleCheckSegundo = (e) =>{
         let checked = e.target.checked
+        let valor = e.target.value
+
+        if(inputSegundo.includes(valor)) {
+             console.log("hola")
+            let nuevoArray = inputSegundo.filter(x => x !== valor)
+            console.log(nuevoArray)
+           setInputSegundo(nuevoArray)
+        }
+
         if(checked && inputSegundo.length < pax.length){ 
             setInputSegundo([...inputSegundo, e.target.value])
-            if(inputSegundo.length === pax.length -1) return alert("ya seleccionaste todos los asientos que necesitas para este vuelo, puedes continuar con el siguiente")
-              else alert(`asiento ${e.target.value} seleccionado exitosamente`)
-        } else { 
-            alert("ya seleccionaste todos los asientos, si quieres volver a elejirlos o cambiarlos antes de confirmar, puedes actualizar el navegador y elejirlos nuevamente")
-            console.log(input)
         }
     }
 
     const handleCheckTercero = (e) =>{
         let checked = e.target.checked
-        if(checked && inputTres.length < pax.length){ 
-            setInputTres([...inputTres, e.target.value])
-            if(inputTres.length === pax.length -1) return alert("ya seleccionaste todos los asientos que necesitas para este vuelo, puedes continuar con el siguiente")
-              else alert(`asiento ${e.target.value} seleccionado exitosamente`)
-        } else { 
-            alert("ya seleccionaste todos los asientos, si quieres volver a elejirlos o cambiarlos antes de confirmar, puedes actualizar el navegador y elejirlos nuevamente")
-            console.log(input)
-        }
-    };
+        let valor = e.target.value
 
-    const handleCheckCuarto = (e) =>{
-        let checked = e.target.checked
-        if(checked && inputCuatro.length < pax.length){ 
-            setInputCuatro([...inputCuatro, e.target.value])
-            if(inputCuatro.length === pax.length -1) return alert("ya seleccionaste todos los asientos que necesitas para este vuelo, puedes continuar con el siguiente")
-              else alert(`asiento ${e.target.value} seleccionado exitosamente`)
-        } else { 
-            alert("ya seleccionaste todos los asientos, si quieres volver a elejirlos o cambiarlos antes de confirmar, puedes actualizar el navegador y elejirlos nuevamente")
-            console.log(input)
+        if(inputTres.includes(valor)) {
+             console.log("hola")
+            let nuevoArray = inputTres.filter(x => x !== valor)
+            console.log(nuevoArray)
+            setInputTres(nuevoArray)
+        }
+
+        if(checked && inputTres.length < pax.length){ 
+            //setCheckState(true)
+            setInputTres([...inputTres, e.target.value])
         }
     }
 
+    const handleCheckCuarto = (e) =>{
+        let checked = e.target.checked
+        let valor = e.target.value
+
+        if(inputCuatro.includes(valor)) {
+             console.log("hola")
+            let nuevoArray = inputCuatro.filter(x => x !== valor)
+            console.log(nuevoArray)
+            setInputCuatro(nuevoArray)
+        }
+
+        if(checked && inputCuatro.length < pax.length){ 
+
+            setInputCuatro([...inputCuatro, e.target.value])
+        }
+    }
+
+
       const actualSeats = [ ...input, ...inputSegundo, ...inputTres, ...inputCuatro ]
-      console.log(actualSeats)
+
       const allSeats = [[ ...input], [...inputSegundo], [...inputTres] , [...inputCuatro]]
 
     const handleSubmit = () => {
-
-        console.log(input)
-        console.log(allSeatsLimit)
         if(actualSeats.length < allSeatsLimit ) return alert("faltan asientos por elegir")
         if(actualSeats.length > allSeatsLimit) return alert("ya seleccionaste todos los asientos")
         else if (actualSeats.length === allSeatsLimit) return history.push({ 
@@ -106,26 +115,59 @@ export default function SeatsPage() {
               state: {...state, allSeats} 
             });
     };
-    console.log(finalSeats);
 
-    const flightsId = finalSeats.map((e) => e.id);
-    console.log(flightsId);
+ const handleDisabledOne = (e) => {
+       console.log(e.target)
+      let checked = document.getElementById(e)
+        if(pax.length === input.length) {
+            if ( checked.checked) {
+                return false }
+            return true
+        }
+     }
+
+     const handleDisabledTwo = (e) => {
+        console.log(e.target)
+       let checked = document.getElementById(e)
+         if(pax.length === inputSegundo.length) {
+             if ( checked.checked) {
+                 return false }
+             return true
+         }
+      }
+
+      const handleDisabledTree = (e) => {
+        console.log(e.target)
+       let checked = document.getElementById(e)
+         if(pax.length === inputTres.length) {
+             if ( checked.checked) {
+                 return false }
+             return true
+         }
+      }
+
+      const handleDisabledFourt = (e) => {
+        console.log(e.target)
+       let checked = document.getElementById(e)
+         if(pax.length === inputCuatro.length) {
+             if ( checked.checked) {
+                 return false }
+             return true
+         }
+      }
 
     const allSeatsLimit = pax.length * finalSeats.length;
-    console.log(allSeatsLimit);
      
      const firstFlight = finalSeats[0]
      const secondFlight = finalSeats[1]
      const tirdFlight = finalSeats[2]
      const fourtFlight = finalSeats[3]
-
-     console.log(firstFlight)
      
     function renderAviones() {
         const oneFlight = (<div>
                 <div className={styles.rotulo}>
                <img src={logo} alt="logo" className={styles.logo} display="center"/>
-                 <div>Elije los <b>{pax.length} asientos</b> del vuelo {firstFlight.id }</div>
+                 <div>Elije los <b>{pax.length} asientos</b> del vuelo</div>
                  </div>
                   { 
                  firstFlight.seatsInfo[0].map( e => (
@@ -139,9 +181,9 @@ export default function SeatsPage() {
                             { x.available.length === 0 
                           ? <div>
                             <input type="checkbox" name="libre" title="ckeckida"
-                            id={x.numberAndLetter}
+                            id={`${x.numberAndLetter}${firstFlight.id}`}
                             value={x.numberAndLetter} 
-                            disabled = {input.length === pax.length}
+                            disabled = {handleDisabledOne(`${x.numberAndLetter}${firstFlight.id}`  )}
                             onChange={(e)=> handleCheckIda(e)}/>
                             </div>
                          : <div >
@@ -166,7 +208,7 @@ export default function SeatsPage() {
      const dobleFlight = secondFlight ? (<div>
         <div className={styles.rotulo}>
        <img src={logo} alt="logo" className={styles.logo} display="center"/>
-         <div>Elije los <b>{pax.length} asientos</b> del vuelo {secondFlight.id }</div>
+         <div>Elije los <b>{pax.length} asientos</b> del vuelo</div>
          </div>
           { 
          secondFlight.seatsInfo[0].map( e => (
@@ -179,12 +221,12 @@ export default function SeatsPage() {
                     ?  <div>
                     { x.available.length === 0 
                   ? <div>
-                    <input type="checkbox" name="libre" 
-                    id={x.numberAndLetter}
-                    value={x.numberAndLetter} 
-                    disabled = {inputSegundo.length === pax.length}
-                    onChange={(e)=> handleCheckSegundo(e)}/>
-                    </div>
+                  <input type="checkbox" name="libre" title="ckeckida"
+                  id={`${x.numberAndLetter}${secondFlight.id}`}
+                  value={x.numberAndLetter} 
+                  disabled ={handleDisabledTwo(`${x.numberAndLetter}${secondFlight.id}`)}
+                  onChange={(e)=> handleCheckSegundo(e)}/>
+                  </div>
                  : <div >
                    <input 
                    type="checkbox" 
@@ -207,7 +249,7 @@ export default function SeatsPage() {
     const tripleFlight = tirdFlight ? (<div>
         <div className={styles.rotulo}>
        <img src={logo} alt="logo" className={styles.logo} display="center"/>
-         <div>Elije los <b>{pax.length} asientos</b> del vuelo {tirdFlight.id }</div>
+         <div>Elije los <b>{pax.length} asientos</b> del vuelo </div>
          </div>
           { 
          tirdFlight.seatsInfo[0].map( e => (
@@ -220,12 +262,12 @@ export default function SeatsPage() {
                     ?  <div>
                     { x.available.length === 0 
                   ? <div>
-                    <input type="checkbox" name="libre" 
-                    id={x.numberAndLetter}
-                    value={x.numberAndLetter} 
-                    disabled = {inputTres.length === pax.length}
-                    onChange={(e)=> handleCheckTercero(e)}/>
-                    </div>
+                  <input type="checkbox" name="libre" title="ckeckida"
+                  id={`${x.numberAndLetter}${tirdFlight.id}`}
+                  value={x.numberAndLetter} 
+                  disabled = {handleDisabledTree(`${x.numberAndLetter}${tirdFlight.id}`)}
+                  onChange={(e)=> handleCheckTercero(e)}/>
+                  </div>
                  : <div >
                    <input 
                    type="checkbox" 
@@ -248,7 +290,7 @@ export default function SeatsPage() {
   const lastFlight = fourtFlight ? (<div>
     <div className={styles.rotulo}>
    <img src={logo} alt="logo" className={styles.logo} display="center"/>
-     <div>Elije los <b>{pax.length} asientos</b> del vuelo {fourtFlight.id }</div>
+     <div>Elije los <b>{pax.length} asientos</b> del vuelo</div>
      </div>
       { 
      fourtFlight.seatsInfo[0].map( e => (
@@ -261,12 +303,12 @@ export default function SeatsPage() {
                 ?  <div>
                 { x.available.length === 0 
               ? <div>
-                <input type="checkbox" name="libre" 
-                id={x.numberAndLetter}
-                value={x.numberAndLetter} 
-                disabled = {inputCuatro.length === pax.length}
-                onChange={(e)=> handleCheckCuarto(e)}/>
-                </div>
+              <input type="checkbox" name="libre" title="ckeckida"
+              id={`${x.numberAndLetter}${fourtFlight.id}`}
+              value={x.numberAndLetter} 
+              disabled = {handleDisabledFourt(`${x.numberAndLetter}${fourtFlight.id}`)}
+              onChange={(e)=> handleCheckCuarto(e)}/>
+              </div>
              : <div >
                <input 
                type="checkbox" 
@@ -285,22 +327,6 @@ export default function SeatsPage() {
 )) } 
 
 </div> ) : null
-
-/*
-            const secondFloorFlight = seatsByFlight.map( e => <div>
-                { e.seatsInfo[1] ?
-                e.seatsInfo[1].map( e => (
-               <div className={styles.fila}>
-                   { e.map( columna => ( 
-                   <div className={styles.columna}>{
-                       columna.map( e => e.numberAndLetter
-                           ? <SeatBox numberAndLetter={e.numberAndLetter} restrictions={e.restrictions} available={e.available}  /> 
-                           : <OtherBox type={e.type}/> )
-                       }</div>
-                   ))}
-               </div>
-           )): null  }   
-           </div> )*/
 
         return (
             <div className={styles.allSeats}>
