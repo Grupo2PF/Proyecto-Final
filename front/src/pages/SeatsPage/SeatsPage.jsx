@@ -23,7 +23,7 @@ export default function SeatsPage() {
     useEffect(() => {
         dispatch(getSeats(offerId));
     }, []);
-
+ 
    // desde STATE useLocation
     const pax = state.passengers
    //desde redux/api
