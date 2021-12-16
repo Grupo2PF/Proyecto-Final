@@ -115,7 +115,7 @@ export default function MercadoPagoForm(props) {
               identificationType: identification_type,
             } = cardForm.getCardFormData();
 
-            fetch(`https://dev-sky.herokuapp.com/process-payment`,
+            fetch(`https://devskyproject.herokuapp.com/process-payment`,
                 {
                   // entry point backend
                   method: "POST",
