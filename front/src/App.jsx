@@ -29,7 +29,6 @@ AOS.init({
   throttleDelay: 10,
 });
 
-
 function App() {
   return (
     <div>
