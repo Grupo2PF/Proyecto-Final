@@ -41,10 +41,10 @@ export default function OfferPage(): JSX.Element {
   }
 
   const handleSort = () => {
-    const sort = response;
+    const sorted = response;
     if (order === "masbarato") {
-    sort.offers.sort((a: any, b: any) => {
-      if(a.price>b.price){
+    sorted.offers.sort((a: any, b: any) => {
+      if(parseInt(a.price)>parseInt(b.price)){
         return 1;
       }
       if(a.price<b.price){
@@ -52,20 +52,21 @@ export default function OfferPage(): JSX.Element {
       }
       return 0;
     });
-    return sort;
+    return sorted;
   }else if (order === "mascaro") {
-    sort.offers.sort((a: any, b: any) => {
-      if(a.price>b.price){
+    sorted.offers.sort((a: any, b: any) => {
+      if(parseInt(a.price)>parseInt(b.price)){
         return -1;
       }
-      if(a.price<b.price){
+      if(parseInt(a.price)<parseInt(b.price)){
         return 1;
       }
       return 0;
     });
-    return sort;
+    return sorted;
   } else {
-    return response;
+    console.log(sorted);
+    return sorted;
   }
 };
 

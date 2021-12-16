@@ -16,14 +16,29 @@ router.post('/saveflight', async(req, res, next)=>{
         const data = await db.collection('saves').get();
     
         data.forEach(doc => {
-                if(offers === doc.data().offers){
+                if(offers === doc.data().offers && userId === doc.data().userId){
                     isSaved = true;
+                }else{
+                    if(transfers && doc.data().transfers){
+                        if(transfers.length === doc.data().transfers.length && price === doc.data().price){
+                            if(userId === doc.data().userId){
+                                isSaved = true;
+                            }
+                        }
+                    }else if(transfersD && doc.data().transfersD){
+                        if(transfersD.length === doc.data().transfersD.length && transfersR.length === doc.data().transfersR.length && price === doc.data().price){
+                            if(userId === doc.data().userId){
+                                isSaved = true;
+                            }
+                        }
+                    }
                 }   
             });
 
     }
 
     if(isSaved){
+        console.log(offers);
         const error = {
             message: "El vuelo ya está guardado"
         }
@@ -31,6 +46,7 @@ router.post('/saveflight', async(req, res, next)=>{
         next(error);
     
     }else{
+        console.log(offers);
         var save= {}
         if(rDate){
              save = {
