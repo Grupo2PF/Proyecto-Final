@@ -68,7 +68,7 @@ function Reset() {
               var actionCodeSettings = {
                 // After password reset, the user will be give the ability to go back
                 // to this page.
-                url: 'https://localhost:3000/login',
+                url: 'https://dev-sky.vercel.app/login',
                 handleCodeInApp: true,
               };
 

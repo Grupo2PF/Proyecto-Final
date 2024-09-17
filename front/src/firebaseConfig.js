@@ -6,13 +6,13 @@ import "firebase/storage"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyBU8aFxkr8Mhe4Ak-pIny6CMpStyGNqVNs",
-    authDomain: "proyecto-final-c5855.firebaseapp.com",
-    databaseURL: "https://proyecto-final-c5855-default-rtdb.firebaseio.com",
-    projectId: "proyecto-final-c5855",
-    storageBucket: "proyecto-final-c5855.appspot.com",
-    messagingSenderId: "400989597935",
-    appId: "1:400989597935:web:4402630d1acedaa232eb1a"
+    databaseUrl: "https://dev-sky-project-default-rtdb.firebaseio.com/",
+    apiKey: "AIzaSyBSsYnNWVR7UflVcvwaAqdYs19x_rMhE3Y",
+    authDomain: "dev-sky-project.firebaseapp.com",
+    projectId: "dev-sky-project",
+    storageBucket: "dev-sky-project.appspot.com",
+    messagingSenderId: "53040925044",
+    appId: "1:53040925044:web:fa0ccefaa8c5891759c421"
 };
 
 // Initialize Firebase

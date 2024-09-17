@@ -67,7 +67,7 @@ export default function Chatbot() {
         { value: 1, label: "¿Como puedo comprar un pasaje?", trigger: "5" },
         { value: 2, label: "Olvide mi contraseña", trigger: "6" },
         { value: 3, label: "¿Que medios de pago aceptan?", trigger: "7" },
-        { value: 4, label: "¿Como puedo cancelar mi reserva?", trigger: "8" },
+        { value: 4, label: "¿Como puedo borrar un favorito?", trigger: "8" },
         {
           value: 5,
           label: "Quiero ir de vacaciones. ¿Que pais me recomiendan?",
@@ -99,7 +99,7 @@ export default function Chatbot() {
     },
     {
       id: "8",
-      message: "aun no se ha implementado esta funcionalidad",
+      message: "en cada tarjeta de tus favoritos veras el boton X para eliminar el favorito de la lista",
       trigger: "10",
       delay: false
     },

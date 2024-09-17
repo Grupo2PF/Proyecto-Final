@@ -66,8 +66,8 @@ export default function MercadoPagoForm(props) {
         user: user.email,
         userId: user.uid,
         ...props.offer,
+        ...props.allSeats,
       }).then(() => {
-        console.log(props)
       })
     } catch (error) {
       console.log(error);
